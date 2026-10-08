@@ -22,3 +22,4 @@ Before every change to the website:
 | Backup | Tag | Live commit | Created (Zürich) | Notes |
 |---|---|---|---|---|
 | `QGZ_Website_Backup_2026-10-08.zip` | `backup-2026-10-08` | `a0277d9` | 2026-10-08 16:22 | Version 1 as published (PR #1) plus custom domain `CNAME` |
+| `QGZ_Website_Backup_2026-10-08_1628.zip` | `backup-2026-10-08_1628` | `a0277d9` | 2026-10-08 16:28 | Live site before the logo, photo-privacy and Kids image update. |
