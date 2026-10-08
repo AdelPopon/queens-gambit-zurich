@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Queen's Gambit Zürich · Glassmorphism theme ("Blue, Indigo & Ice")
+   Visual layer loaded after css/site.css. It changes colours, surfaces and
+   effects only: no content, layout structure or behaviour.
+   To return to the previous editorial look, remove the <link> to this file.
+   ========================================================================== */
+
+:root {
+  /* Palette: Blue, Indigo & Ice */
+  --g-blue: #0070B4;          /* primary blue */
+  --g-electric: #1479FF;      /* electric blue */
+  --g-indigo: #3949AB;        /* deep indigo */
+  --g-ice: #EAF3FF;           /* ice blue */
+  --g-lavender: #E4E9FF;      /* soft lavender-blue */
+  --g-white: #FFFFFF;         /* frosted white */
+  --g-ink: #202334;           /* dark text */
+
+  /* Glass surfaces */
+  --glass-bg: rgba(255, 255, 255, .62);
+  --glass-bg-strong: rgba(255, 255, 255, .78);
+  --glass-border: rgba(255, 255, 255, .85);
+  --glass-edge: rgba(57, 73, 171, .10);
+  --glass-shadow: 0 10px 30px rgba(32, 35, 52, .06), 0 2px 6px rgba(57, 73, 171, .05);
+  --glass-blur: 16px;
+  --g-radius: 18px;
+  --g-radius-sm: 12px;
+
+  /* Map the existing design tokens onto the new palette */
+  --ivory: var(--g-white);
+  --sand: var(--g-lavender);
+  --charcoal: var(--g-ink);
+  --blue: var(--g-blue);
+  --blue-deep: var(--g-indigo);
+  --muted: #4E5470;
+  --rule: rgba(57, 73, 171, .14);
+}
+
+/* ---------- Page background: soft ice gradient + abstract shapes ---------- */
+html { background: var(--g-ice); }
+body {
+  background: linear-gradient(180deg, var(--g-ice) 0%, #F5F8FF 38%, var(--g-lavender) 100%);
+  color: var(--g-ink);
+  position: relative;
+  isolation: isolate;
+}
+/* Abstract gradient shapes, fixed behind the content (no blur filter: cheap on mobile) */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(38rem 30rem at 92% 6%, rgba(20, 121, 255, .16), transparent 70%),
+    radial-gradient(30rem 26rem at 4% 38%, rgba(57, 73, 171, .12), transparent 70%),
+    radial-gradient(34rem 28rem at 78% 72%, rgba(0, 112, 180, .10), transparent 70%),
+    radial-gradient(26rem 22rem at 18% 96%, rgba(57, 73, 171, .10), transparent 70%);
+}
+
+/* Reusable glass surface */
+.site-header,
+.event--featured,
+.feature-grid,
+.pilot,
+.kids__media,
+.impact__project,
+.collab-grid,
+.about__values,
+.site-footer {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass-bg: rgba(255, 255, 255, .88); --glass-bg-strong: rgba(255, 255, 255, .94); }
+}
+
+/* ---------- Header and navigation ---------- */
+.site-header {
+  background: rgba(255, 255, 255, .55);
+  border-bottom: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 1px 0 var(--glass-edge);
+}
+.site-header.is-scrolled { border-bottom-color: rgba(255, 255, 255, .7); box-shadow: 0 6px 24px rgba(32, 35, 52, .06); }
+.site-nav__list a:hover,
+.site-header__ig:hover { color: var(--g-electric); }
+@media (max-width: 1023px) {
+  /* Solid frosted panel: a nested backdrop blur can't work inside the blurred
+     header, so the menu stays opaque to keep its items readable. */
+  .site-nav__list {
+    background: #FBFCFF;
+    border-top: 1px solid rgba(255, 255, 255, .8);
+    border-bottom: 1px solid var(--glass-edge);
+    box-shadow: 0 18px 30px rgba(32, 35, 52, .08);
+  }
+}
+
+/* ---------- Buttons ---------- */
+.btn { border-radius: 999px; transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.btn--primary {
+  background: linear-gradient(135deg, var(--g-blue) 0%, var(--g-indigo) 100%);
+  color: var(--g-white);
+  box-shadow: 0 6px 18px rgba(20, 121, 255, .22);
+}
+.btn--primary:hover { background: linear-gradient(135deg, var(--g-indigo) 0%, #2A3488 100%); color: var(--g-white); box-shadow: 0 8px 22px rgba(57, 73, 171, .26); }
+.btn--ghost {
+  background: rgba(255, 255, 255, .55); color: var(--g-ink);
+  border-color: rgba(57, 73, 171, .28);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.btn--ghost:hover { background: var(--g-white); color: var(--g-indigo); border-color: var(--g-indigo); }
+.btn--light { color: var(--g-white); border-color: rgba(255, 255, 255, .6); background: rgba(255, 255, 255, .08); }
+.btn--light:hover { background: var(--g-white); color: var(--g-indigo); }
+@media (prefers-reduced-motion: no-preference) {
+  .btn--primary:hover, .btn--ghost:hover, .btn--light:hover { transform: translateY(-1px); }
+}
+
+/* ---------- Shared accents ---------- */
+.eyebrow { color: var(--g-indigo); }
+.eyebrow::before { background: linear-gradient(135deg, var(--g-blue), var(--g-electric)); border-radius: 3px; }
+.caption { color: var(--muted); }
+.text-link { color: var(--g-blue); }
+.text-link:hover { color: var(--g-indigo); }
+a:hover { color: var(--g-electric); }
+
+.status { border-radius: 999px; }
+.status--active { background: var(--g-indigo); color: var(--g-white); }
+.status--pilot { background: var(--g-blue); color: var(--g-white); }
+.status--planned, .status--dev { border-color: rgba(57, 73, 171, .45); color: var(--g-indigo); background: rgba(255, 255, 255, .5); }
+.status--planned::before, .status--dev::before { border-color: var(--g-indigo); }
+
+/* ---------- Sections ---------- */
+.section--sand { background: linear-gradient(180deg, rgba(228, 233, 255, .45) 0%, rgba(234, 243, 255, .35) 100%); }
+
+/* ---------- 1. Hero ---------- */
+.hero__title-line--city {
+  background: linear-gradient(100deg, var(--g-blue) 0%, var(--g-electric) 55%, var(--g-indigo) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* extend the painted area above the tight line box so the Ü umlaut shows; layout unchanged */
+  padding-top: .2em; margin-top: -.2em;
+}
+.hero__tagline { border-top-color: rgba(57, 73, 171, .35); }
+.hero__frame::before {
+  background: linear-gradient(140deg, rgba(20, 121, 255, .22), rgba(57, 73, 171, .18));
+  border: 1px solid rgba(255, 255, 255, .7);
+  border-radius: var(--g-radius);
+}
+.hero__frame::after {
+  background: linear-gradient(135deg, var(--g-electric), var(--g-indigo));
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(20, 121, 255, .3);
+}
+.hero__frame img { border-radius: var(--g-radius); box-shadow: var(--glass-shadow); }
+.hero__notation { border-top-color: var(--rule); }
+
+/* ---------- 2. Upcoming ---------- */
+.event-list { border-top-color: rgba(57, 73, 171, .3); }
+.event__day { color: var(--g-indigo); }
+.event__programme { background: var(--g-lavender); color: var(--g-indigo); border-radius: 999px; }
+.event--featured {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+}
+.event--featured .event__programme { background: var(--g-white); }
+
+/* ---------- 3. Community ---------- */
+.feature-grid {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+  padding: .25rem clamp(1.1rem, 3vw, 1.75rem);
+}
+.feature:last-child { border-bottom-color: transparent; }
+.community__media img { border-radius: var(--g-radius-sm); box-shadow: var(--glass-shadow); }
+.pull { border-left-color: var(--g-electric); color: var(--g-ink); }
+
+/* ---------- 4. Kids Chess ---------- */
+.pilot {
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: calc(var(--g-radius) + 4px);
+  box-shadow: var(--glass-shadow);
+}
+.sessions th { border-bottom-color: rgba(57, 73, 171, .35); color: var(--g-indigo); }
+.facts dt { color: var(--g-indigo); }
+.pilot__levels > div { border-top-color: rgba(57, 73, 171, .35); }
+.kids__media {
+  padding: .75rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+}
+/* Matches the illustration's own paper colour so the letterbox is seamless */
+.kids__media img { background: #FCF9F3; border-radius: var(--g-radius-sm); }
+
+/* ---------- 5. Social Impact ---------- */
+.card--ivory.impact__project {
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-top: 4px solid var(--g-electric);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ---------- 6. Collaborations ---------- */
+.collab-grid {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  padding-inline: 1.25rem;
+}
+.collab__type { color: var(--g-indigo); }
+.collab--open { background: linear-gradient(140deg, rgba(20, 121, 255, .10), rgba(57, 73, 171, .10)); }
+@media (max-width: 639px) {
+  .collab:last-child { border-bottom-color: transparent; }
+  .collab--open { margin-inline: -1.25rem; padding-inline: 1.25rem; }
+}
+@media (min-width: 640px) {
+  .collab-grid { padding-inline: 0; }
+  .collab:nth-child(2n + 1) { padding-left: 1.75rem; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .collab:nth-last-child(-n + 2) { border-bottom-color: transparent; }
+}
+@media (min-width: 1024px) {
+  .collab:nth-child(3n + 1) { padding-left: 1.75rem; }
+  .collab:nth-last-child(-n + 3) { border-bottom-color: transparent; }
+}
+
+/* ---------- 7. About ---------- */
+.mission p { color: var(--g-ink); }
+.about__values {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border);
+  border-radius: var(--g-radius);
+  box-shadow: var(--glass-shadow);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.values li { border-color: rgba(57, 73, 171, .3); border-radius: 999px; background: rgba(255, 255, 255, .7); color: var(--g-indigo); }
+
+/* ---------- 8. Join (deep indigo band) ---------- */
+.section--charcoal {
+  background:
+    radial-gradient(30rem 22rem at 88% 10%, rgba(20, 121, 255, .45), transparent 70%),
+    radial-gradient(26rem 20rem at 6% 96%, rgba(234, 243, 255, .12), transparent 70%),
+    linear-gradient(135deg, #2A3488 0%, var(--g-indigo) 48%, var(--g-blue) 100%);
+  color: var(--g-white);
+}
+.join__intro .lead { color: var(--g-lavender); }
+.join__actions { border-top: 0; gap: 1rem; }
+.join-card {
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: var(--g-radius);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25);
+  padding: 1.5rem;
+}
+.join-card p { color: var(--g-lavender); }
+@media (min-width: 900px) {
+  .join-card,
+  .join-card:not([hidden]) ~ .join-card:not([hidden]) { padding: 1.75rem; border-left: 1px solid rgba(255, 255, 255, .28); }
+}
+
+/* ---------- 9. Footer ---------- */
+.site-footer {
+  background: rgba(255, 255, 255, .55);
+  border-top: 1px solid rgba(255, 255, 255, .8);
+  box-shadow: 0 -1px 0 var(--glass-edge);
+}
+.site-footer__title { color: var(--g-indigo); }
+.site-footer__base-inner { border-top-color: var(--rule); }
+
+/* ---------- Toast ---------- */
+.toast { background: var(--g-indigo); color: var(--g-white); border-radius: 999px; }
+
+/* ---------- Mobile: lighter glass for performance and readability ---------- */
+@media (max-width: 719px) {
+  :root { --glass-blur: 10px; --glass-bg: rgba(255, 255, 255, .72); --glass-bg-strong: rgba(255, 255, 255, .84); }
+}
