@@ -66,7 +66,6 @@
     venue: "Combi Face",
     address: "Oberdorfstrasse 37, 8702 Zollikon",
     summary: "Three mornings of chess for children aged 5–13.",
-    price: "195",            // CHF, complete programme (used for search-engine event data)
     linkKey: "kidsRegistration",
     linkLabel: "Register"
   };
