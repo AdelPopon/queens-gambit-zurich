@@ -242,8 +242,19 @@ a:hover { color: var(--blue); }
 }
 .site-header__join { flex: none; }
 
-@media (max-width: 380px) {
-  .site-header__join { display: none; }
+/* Mobile navigation (below 1024px only; desktop navigation is unchanged) */
+@media (max-width: 1023px) {
+  .site-nav__list { list-style: none; margin: 0; max-height: calc(100dvh - var(--header-h)); overflow-y: auto; }
+  .site-nav__list li { margin: 0; padding: 0; }
+}
+/* Small phones: tighter header spacing so logo, Menu/Close and Join always fit */
+@media (max-width: 479px) {
+  .site-header__inner { gap: .5rem; }
+  .site-nav__toggle { padding-inline: .35rem; gap: .45rem; }
+  .site-header__join { padding-inline: .8rem; }
+  .brand__kids { gap: .45rem; }
+  .brand__kids .brand__crown { width: 26px; }
+  .brand__kids .brand__wordmark { width: clamp(96px, calc(100vw - 230px), 150px); }
 }
 
 @media (min-width: 1024px) {
