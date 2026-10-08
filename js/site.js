@@ -94,6 +94,15 @@
   /* ---------- 3. Header state ---------- */
   var header = document.querySelector(".site-header");
   var kidsSection = document.getElementById("kids");
+  var qgzLogo = document.querySelector(".brand__logo");
+  var kidsLogo = document.querySelector(".brand__kids");
+
+  // Show exactly one header logo: Kids Chess logo inside #kids, QGZ logo elsewhere.
+  function setKidsLogo(active) {
+    header.classList.toggle("is-kids", active);
+    if (qgzLogo && qgzLogo.hidden !== active) qgzLogo.hidden = active;
+    if (kidsLogo && kidsLogo.hidden !== !active) kidsLogo.hidden = !active;
+  }
   var ticking = false;
 
   // Kids Chess logo is shown while the #kids section sits directly under the header.
@@ -102,9 +111,10 @@
     if (!header) return;
     header.classList.toggle("is-scrolled", window.scrollY > 8);
     if (kidsSection) {
-      var line = header.getBoundingClientRect().bottom + 1;
+      // Detection line sits just below the gap anchor links leave under the header (scroll-padding-top).
+      var line = header.getBoundingClientRect().bottom + 32;
       var r = kidsSection.getBoundingClientRect();
-      header.classList.toggle("is-kids", r.top <= line && r.bottom > line);
+      setKidsLogo(r.top <= line && r.bottom > line);
     }
   }
   function onScroll() {
