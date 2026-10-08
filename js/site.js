@@ -272,6 +272,51 @@
   }
   renderEvents();
 
+  /* ---------- 4b. Event structured data (schema.org) for search engines ----------
+     Built from data/events.js, so events only need to be edited in one place. */
+  function zurichOffset(d) {           // CET/CEST: last Sunday of March to last Sunday of October
+    var y = d.getFullYear();
+    var lastSunday = function (m) { var x = new Date(y, m + 1, 0); x.setDate(x.getDate() - x.getDay()); return x; };
+    return (d >= lastSunday(2) && d < lastSunday(9)) ? "+02:00" : "+01:00";
+  }
+  function isoAt(dateStr, hhmm) {
+    var d = parseDate(dateStr);
+    return dateStr + "T" + hhmm + ":00" + zurichOffset(d);
+  }
+  function times(t) { return (t || "").match(/\d{1,2}:\d{2}/g) || []; }
+
+  function addEventSchema() {
+    var org = { "@id": "https://queensgambitzurich.ch/#organization" };
+    var upcoming = prepare(EVENTS, startOfToday());
+    if (!upcoming.length) return;
+    var graph = upcoming.map(function (item) {
+      var ev = item.ev, first = ev.sessions[0], last = ev.sessions[ev.sessions.length - 1];
+      var t0 = times(first.time), t1 = times(last.time);
+      var parts = (ev.address || "").match(/^(.*),\s*(\d{4})\s+(.*)$/) || [];
+      var obj = {
+        "@type": "Event",
+        "name": ev.title === "Chess Club meet-up" ? "Queen's Gambit Zürich chess club meet-up" : ev.title,
+        "description": ev.summary || "",
+        "startDate": t0.length ? isoAt(first.date, t0[0]) : first.date,
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": { "@type": "Place", "name": ev.venue, "address": { "@type": "PostalAddress",
+          "streetAddress": parts[1] || ev.address, "postalCode": parts[2], "addressLocality": parts[3], "addressCountry": "CH" } },
+        "organizer": org,
+        "url": "https://queensgambitzurich.ch/#" + (ev.programme === "kids" ? "kids" : "upcoming")
+      };
+      if (t1.length > 1) obj.endDate = isoAt(last.date, t1[1]);
+      if (ev.programme === "kids") obj.image = "https://queensgambitzurich.ch/assets/photos/kids-chess-illustration.jpg";
+      if (ev.price) obj.offers = { "@type": "Offer", "price": ev.price, "priceCurrency": "CHF", "url": obj.url, "availability": "https://schema.org/InStock" };
+      return obj;
+    });
+    var s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+    document.head.appendChild(s);
+  }
+  addEventSchema();
+
   /* ---------- 5. Copy email ---------- */
   document.querySelectorAll("[data-copy-email]").forEach(function (btn) {
     btn.addEventListener("click", function () {

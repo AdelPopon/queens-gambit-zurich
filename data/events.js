@@ -20,6 +20,7 @@
      summary     optional short description
      linkKey     optional key from config.js links (e.g. "kidsRegistration")
      linkLabel   optional button text
+     price       optional price in CHF (search-engine event data only)
 
    Sources: Winter Schedule 2026/27 flyer (W26QGflzers.pdf, InstaW26QGZ.png)
             Zollikon Kids Chess email flyer + final pilot overview (Oct 2026)
@@ -65,6 +66,7 @@
     venue: "Combi Face",
     address: "Oberdorfstrasse 37, 8702 Zollikon",
     summary: "Three mornings of chess for children aged 5–13.",
+    price: "195",            // CHF, complete programme (used for search-engine event data)
     linkKey: "kidsRegistration",
     linkLabel: "Register"
   };

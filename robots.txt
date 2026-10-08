@@ -1,0 +1,5 @@
+# Queen's Gambit Zürich: all pages may be indexed.
+User-agent: *
+Allow: /
+
+Sitemap: https://queensgambitzurich.ch/sitemap.xml
