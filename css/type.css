@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Queen's Gambit Zürich · Heading typography: Archivo Black
+   Loaded last. Applies Archivo Black (self-hosted, SIL OFL 1.1) to headings
+   and prominent display text only. Body text, navigation, buttons and small
+   interface text keep their existing fonts.
+   ========================================================================== */
+
+/* Archivo Black has one (black) style; it is registered for weights 400–900 so
+   weight 900 uses the real letterforms and the browser never fakes a bold. */
+@font-face {
+  font-family: "Archivo Black"; font-style: normal; font-weight: 400 900; font-display: swap;
+  src: url("../assets/fonts/archivo-black-latin-400-normal.woff2?v=20261008-1745") format("woff2");
+}
+
+:root {
+  --font-heading: "Archivo Black", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+
+  /* Archivo Black is wider than the previous heading font: slightly smaller
+     sizes keep headings inside their containers at every width. */
+  --fs-display: clamp(2.6rem, 11vw, 7.75rem);
+  --fs-h2: clamp(1.7rem, 5vw, 3.5rem);
+  --fs-h3: clamp(1.05rem, 1.2vw + .75rem, 1.3rem);
+}
+/* Two-column hero (900px+): the title sizes to its column, not the full width */
+@media (min-width: 900px) {
+  :root { --fs-display: clamp(2.6rem, 10vw, 7.75rem); }
+}
+
+/* Headings and display text */
+h1, h2, h3, h4,
+.hero__tagline, .event__day, .pull, .statement, .mission p, .person__name {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-synthesis: none;
+}
+/* Small label-style headings stay in the body font, as before */
+h3.h-small, h2.site-footer__title { font-family: var(--font-body); font-weight: 600; }
+
+h1, h2 { letter-spacing: -0.03em; line-height: .95; }
+h3, h4 { letter-spacing: -0.02em; }
+.hero__title { letter-spacing: -0.04em; line-height: .92; }
+.hero__tagline { font-size: clamp(1.2rem, 2vw + .6rem, 1.75rem); letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
+.event__day { letter-spacing: -0.04em; }
+.pull { font-size: clamp(1.3rem, 1.9vw + .75rem, 2rem); letter-spacing: -0.02em; line-height: 1.15; }
+.statement { font-size: clamp(1.5rem, 2.6vw + .75rem, 2.5rem); letter-spacing: -0.025em; line-height: 1.08; }
+.mission p { font-size: clamp(1.5rem, 2.4vw + .75rem, 2.4rem); letter-spacing: -0.025em; line-height: 1.08; }
+.pilot__head h3 { font-size: clamp(1.5rem, 2.4vw + .85rem, 2.3rem); letter-spacing: -0.03em; line-height: 1; }
+.feature h3, .collab h3, .join-card h3, .event__title { line-height: 1.15; }
+.pilot__levels h4 { font-size: 1rem; }
+
+/* Navigation keeps its existing font (League Spartan in the mobile menu) */
+@media (max-width: 1023px) {
+  .site-nav__list a { font-family: "League Spartan", "Futura", "Avenir Next", "Helvetica Neue", Arial, sans-serif; font-weight: 700; }
+}
