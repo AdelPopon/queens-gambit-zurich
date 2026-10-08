@@ -27,7 +27,12 @@
 <header class="site-header" id="top">
   <div class="container site-header__inner">
     <a class="brand" href="#home" aria-label="Queen's Gambit Zürich, back to top">
-      <img class="brand__logo" src="assets/brand/qgz-logo.png" alt="Queen's Gambit Zürich" width="336" height="360">
+      <img class="brand__logo" src="assets/brand/qgz-logo.png" alt="" width="336" height="360">
+      <!-- Kids Chess logo: shown instead of the QGZ logo while the #kids section is in view (js/site.js) -->
+      <span class="brand__kids" aria-hidden="true">
+        <img class="brand__crown" src="assets/brand/qgz-crown.png" alt="" width="69" height="33">
+        <img class="brand__wordmark" src="assets/brand/qgz-wordmark-line.png" alt="" width="277" height="21">
+      </span>
     </a>
 
     <!-- Kids Chess logo (crown + thin wordmark), kept unchanged for the future

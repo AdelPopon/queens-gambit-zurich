@@ -93,11 +93,27 @@
 
   /* ---------- 3. Header state ---------- */
   var header = document.querySelector(".site-header");
+  var kidsSection = document.getElementById("kids");
+  var ticking = false;
+
+  // Kids Chess logo is shown while the #kids section sits directly under the header.
+  function updateHeader() {
+    ticking = false;
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (kidsSection) {
+      var line = header.getBoundingClientRect().bottom + 1;
+      var r = kidsSection.getBoundingClientRect();
+      header.classList.toggle("is-kids", r.top <= line && r.bottom > line);
+    }
+  }
   function onScroll() {
-    if (header) header.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (!ticking) { ticking = true; window.requestAnimationFrame(updateHeader); }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  window.addEventListener("resize", onScroll);
+  window.addEventListener("hashchange", onScroll);
+  updateHeader();
 
   /* ---------- 4. Upcoming events ---------- */
   var PROGRAMMES = { community: "Community", kids: "Kids Chess", impact: "Social Impact" };
