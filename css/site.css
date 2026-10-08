@@ -189,6 +189,9 @@ a:hover { color: var(--blue); }
 .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; margin-right: auto; min-width: 0; }
 .brand__crown { width: 34px; height: auto; flex: none; }
 .brand__wordmark { width: clamp(150px, 30vw, 196px); height: auto; min-width: 0; }
+/* Official QGZ logo (blue graffiti crown) */
+.brand__logo { height: 52px; width: auto; flex: none; }
+@media (max-width: 479px) { .brand__logo { height: 46px; } }
 
 .site-nav__toggle {
   display: inline-flex; align-items: center; gap: .55rem;
@@ -415,7 +418,7 @@ a:hover { color: var(--blue); }
 
 .kids__side { display: grid; gap: 1.25rem; align-content: start; min-width: 0; }
 .kids__media { margin: 0 0 .75rem; }
-.kids__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.kids__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--ivory); } /* whole illustration, no cropping or distortion */
 
 @media (min-width: 720px) {
   .facts { grid-template-columns: 1fr 1fr; column-gap: 2rem; }
@@ -504,7 +507,7 @@ a:hover { color: var(--blue); }
 .site-footer { padding-block: clamp(3.5rem, 7vw, 5.5rem) 2rem; background: var(--ivory); }
 .site-footer__grid { display: grid; gap: 2.5rem; grid-template-columns: 1fr 1fr; }
 .site-footer__brand { grid-column: 1 / -1; display: grid; gap: 1rem; justify-items: start; }
-.site-footer__brand img { width: 170px; }
+.site-footer__brand img { width: 112px; }
 .site-footer__brand p { color: var(--muted); }
 .site-footer__col { display: grid; gap: .9rem; align-content: start; min-width: 0; }
 .site-footer__title { font-family: var(--font-body); font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--track-label); text-transform: uppercase; }

@@ -6,7 +6,7 @@
 <title>Queen's Gambit Zürich</title>
 <meta name="description" content="Queen's Gambit Zürich: a place for women to play chess.">
 <meta name="theme-color" content="#FDFBF7">
-<link rel="icon" type="image/png" href="assets/brand/qgz-crown.png">
+<link rel="icon" type="image/png" href="assets/brand/qgz-favicon.png">
 <link rel="preload" href="assets/fonts/league-spartan-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/site.css">
@@ -27,9 +27,18 @@
 <header class="site-header" id="top">
   <div class="container site-header__inner">
     <a class="brand" href="#home" aria-label="Queen's Gambit Zürich, back to top">
-      <img class="brand__crown" src="assets/brand/qgz-crown.png" alt="" width="69" height="33">
-      <img class="brand__wordmark" src="assets/brand/qgz-wordmark-line.png" alt="Queen's Gambit Zürich" width="277" height="21">
+      <img class="brand__logo" src="assets/brand/qgz-logo.png" alt="Queen's Gambit Zürich" width="336" height="360">
     </a>
+
+    <!-- Kids Chess logo (crown + thin wordmark), kept unchanged for the future
+         Kids Chess section/page. Inert until used:
+         document.getElementById("tpl-kids-chess-logo").content.cloneNode(true) -->
+    <template id="tpl-kids-chess-logo">
+<a class="brand" href="#home" aria-label="Queen's Gambit Zürich, back to top">
+  <img class="brand__crown" src="assets/brand/qgz-crown.png" alt="" width="69" height="33">
+  <img class="brand__wordmark" src="assets/brand/qgz-wordmark-line.png" alt="Queen's Gambit Zürich" width="277" height="21">
+</a>
+    </template>
 
     <nav class="site-nav" aria-label="Main">
       <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
@@ -73,7 +82,7 @@
 
       <figure class="hero__media">
         <div class="hero__frame">
-          <img src="assets/photos/community-club-evening-2025-11.jpg" alt="A group of women playing chess together around a café table" width="1200" height="1600">
+          <img src="assets/photos/club-evening-boards-2025-11.jpg" alt="Chessboards set up along a café table before a club evening" width="676" height="845">
         </div>
         <figcaption class="caption">Club evening, November 2025</figcaption>
       </figure>
@@ -146,12 +155,12 @@
 
         <div class="community__media">
           <figure>
-            <img src="assets/photos/community-summer-terrace-2026-06.jpg" alt="Women playing chess on a café terrace in summer" width="1200" height="1600" loading="lazy">
+            <img src="assets/photos/summer-terrace-board-2026-06.jpg" alt="A game in progress on a red café table outdoors" width="571" height="761" loading="lazy">
             <figcaption class="caption">June 2026</figcaption>
           </figure>
           <figure>
-            <img src="assets/photos/community-game-2026-03.jpg" alt="Four women concentrating on a game of chess" width="1200" height="1600" loading="lazy">
-            <figcaption class="caption">March 2026</figcaption>
+            <img src="assets/photos/boards-matcha-2025-12.jpg" alt="Chessboards in play with a matcha latte in the foreground" width="538" height="715" loading="lazy">
+            <figcaption class="caption">December 2025</figcaption>
           </figure>
         </div>
       </div>
@@ -221,7 +230,7 @@
 
         <div class="kids__side">
           <figure class="kids__media">
-            <img src="assets/photos/chessboard-2026-09.jpg" alt="A wooden chessboard with pieces mid-game on a table with flowers" width="1600" height="1200" loading="lazy">
+            <img src="assets/photos/kids-chess-illustration.jpg" alt="Illustration of four children playing chess together" width="1600" height="643" loading="lazy">
           </figure>
         </div>
       </div>
@@ -364,7 +373,7 @@
 <footer class="site-footer">
   <div class="container site-footer__grid">
     <div class="site-footer__brand">
-      <img src="assets/brand/qgz-logo-stacked.png" alt="Queen's Gambit Zürich" width="300" height="148">
+      <img src="assets/brand/qgz-logo.png" alt="Queen's Gambit Zürich" width="336" height="360">
       <p>A place for women to play chess.</p>
     </div>
 
