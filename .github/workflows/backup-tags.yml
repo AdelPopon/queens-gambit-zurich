@@ -1,0 +1,56 @@
+# Creates a Git tag and a GitHub Release (with the backup ZIP attached) for
+# every backup listed in backups/manifest.tsv that does not have a tag yet.
+# Runs whenever the `backups` branch is pushed. It never changes `main` or the
+# published website.
+name: Backup tags
+
+on:
+  push:
+    branches: [backups]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tag-backups:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: backups
+          fetch-depth: 0
+
+      - name: Create missing tags and releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' --quiet
+          git fetch --tags --quiet
+
+          # manifest.tsv columns: tag <TAB> zip file <TAB> source commit <TAB> note
+          tail -n +2 backups/manifest.tsv | while IFS=$'\t' read -r tag zip sha note; do
+            [ -z "${tag:-}" ] && continue
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              echo "Tag $tag already exists, skipping."
+              continue
+            fi
+            if [ ! -f "backups/$zip" ]; then
+              echo "::error::backups/$zip not found for $tag"; exit 1
+            fi
+            git cat-file -e "$sha^{commit}"
+            git tag -a "$tag" "$sha" -m "Backup $zip: $note"
+            git push origin "refs/tags/$tag"
+            gh release create "$tag" "backups/$zip" \
+              --verify-tag \
+              --title "Website backup $tag" \
+              --notes "Backup ZIP **$zip** of the live website at commit \`$sha\`.
+
+          $note
+
+          To restore: download the ZIP below, or check out tag \`$tag\`."
+            echo "Created tag and release $tag"
+          done
