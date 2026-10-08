@@ -241,20 +241,32 @@ a:hover { color: var(--blue); }
   text-transform: uppercase; letter-spacing: var(--track-tight); text-decoration: none;
 }
 .site-header__join { flex: none; }
+/* Instagram icon link (header and footer); charcoal outline, blue on hover */
+.ig-icon { display: block; flex: none; }
+.site-header__ig {
+  flex: none; display: inline-grid; place-items: center;
+  width: 40px; height: 40px; color: var(--charcoal); border-radius: var(--radius);
+}
+.site-header__ig:hover { color: var(--blue); }
 
 /* Mobile navigation (below 1024px only; desktop navigation is unchanged) */
 @media (max-width: 1023px) {
   .site-nav__list { list-style: none; margin: 0; max-height: calc(100dvh - var(--header-h)); overflow-y: auto; }
   .site-nav__list li { margin: 0; padding: 0; }
 }
+@media (max-width: 349px) {
+  .site-nav__toggle-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .site-header__inner { gap: .4rem; }
+}
 /* Small phones: tighter header spacing so logo, Menu/Close and Join always fit */
 @media (max-width: 479px) {
   .site-header__inner { gap: .5rem; }
   .site-nav__toggle { padding-inline: .35rem; gap: .45rem; }
   .site-header__join { padding-inline: .8rem; }
+  .site-header__ig { width: 32px; }
   .brand__kids { gap: .45rem; }
   .brand__kids .brand__crown { width: 26px; }
-  .brand__kids .brand__wordmark { width: clamp(96px, calc(100vw - 230px), 150px); }
+  .brand__kids .brand__wordmark { width: clamp(96px, calc(100vw - 262px), 150px); }
 }
 
 @media (min-width: 1024px) {

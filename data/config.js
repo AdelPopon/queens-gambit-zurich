@@ -15,7 +15,7 @@ window.QGZ_CONFIG = {
     whatsapp: null,
 
     // Instagram profile URL, e.g. "https://www.instagram.com/<handle>/"
-    instagram: null,
+    instagram: "https://www.instagram.com/queensgambitzurich/",
 
     // Kids Chess / Zollikon pilot registration form URL
     kidsRegistration: null,
