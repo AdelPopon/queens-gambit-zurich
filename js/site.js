@@ -193,10 +193,7 @@
 
     var meta = el("p", "event__meta");
     if (!multi && ev.sessions[0].time) {   // time is shown only when confirmed
-      var t = el("span");
-      t.appendChild(el("b", null, "Time "));
-      t.appendChild(document.createTextNode(ev.sessions[0].time));
-      meta.appendChild(t);
+      meta.appendChild(el("b", null, ev.sessions[0].time));   // e.g. "From 19:00"
     }
     var v = el("span");
     v.appendChild(el("b", null, ev.venue + " "));
@@ -267,6 +264,8 @@
       nextEl.textContent = "";
       nextEl.appendChild(el("span", null, "Next chess club:"));
       nextEl.appendChild(el("strong", null, fmt(nextMeetup.next, { weekday: "long", day: "numeric", month: "long" })));
+      var startsAt = nextMeetup.ev.sessions[0].time;
+      if (startsAt) nextEl.appendChild(el("span", null, "· " + startsAt));
       nextEl.appendChild(el("span", null, "· " + nextMeetup.ev.venue + ", Zürich"));
       nextEl.hidden = false;
     }

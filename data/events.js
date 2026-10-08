@@ -26,7 +26,14 @@
    ========================================================================== */
 
 (function () {
-  // Winter Schedule 2026/27, Robins Caffè. Session times not on the flyer yet.
+  // Winter Schedule 2026/27, Robins Caffè.
+  // Meet-ups start at fixed times and have no fixed end (members stay as long
+  // as they like), so only the start time is shown.
+  var START_TIMES = { 5: "From 19:00", 0: "From 15:00" };   // Friday, Sunday
+  function startTime(iso) {
+    var p = iso.split("-").map(Number);
+    return START_TIMES[new Date(p[0], p[1] - 1, p[2]).getDay()] || null;
+  }
   var winterDates = [
     "2026-10-09", "2026-10-25", "2026-11-13", "2026-11-29", "2026-12-11",
     "2026-12-27", "2027-01-08", "2027-01-31", "2027-02-12", "2027-02-28",
@@ -38,7 +45,7 @@
       id: "chess-club-" + date,
       programme: "community",
       title: "Chess Club meet-up",
-      sessions: [{ date: date, time: null, label: null }],
+      sessions: [{ date: date, time: startTime(date), label: null }],
       venue: "Robins Caffè",
       address: "Stampfenbachstrasse 38, 8006 Zürich",
       summary: "Winter Schedule 2026/27. All levels welcome."
