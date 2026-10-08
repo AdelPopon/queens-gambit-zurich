@@ -193,17 +193,19 @@ a:hover { color: var(--blue); }
 .brand__logo { height: 52px; width: auto; flex: none; }
 @media (max-width: 479px) { .brand__logo { height: 46px; } }
 
-/* Header logo switch: QGZ logo by default, Kids Chess logo while #kids is in
-   view (.site-header.is-kids, set in js/site.js). Both logos share one grid
-   cell, so switching never moves the navigation. */
+/* Header logo switch: exactly one logo is displayed at a time. The inactive
+   one carries the `hidden` attribute (set in index.html and toggled by
+   js/site.js), so both can never show together. Both share one grid cell,
+   so switching never moves the navigation. */
 .site-header .brand { display: grid; align-items: center; justify-items: start; }
 .brand > .brand__logo,
-.brand > .brand__kids { grid-area: 1 / 1; transition: opacity .35s ease, visibility .35s ease; }
-.brand__kids { display: flex; align-items: center; gap: .7rem; min-width: 0; opacity: 0; visibility: hidden; }
-.site-header.is-kids .brand__kids { opacity: 1; visibility: visible; }
-.site-header.is-kids .brand__logo { opacity: 0; visibility: hidden; }
+.brand > .brand__kids { grid-area: 1 / 1; }
+.brand__kids { display: flex; align-items: center; gap: .7rem; min-width: 0; }
+.brand > .brand__logo:not([hidden]),
+.brand > .brand__kids:not([hidden]) { animation: brand-fade-in .3s ease both; }
+@keyframes brand-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .brand > .brand__logo, .brand > .brand__kids { transition: none; }
+  .brand > .brand__logo, .brand > .brand__kids { animation: none; }
 }
 
 .site-nav__toggle {
