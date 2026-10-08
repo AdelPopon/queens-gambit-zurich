@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Queen's Gambit Zürich</title>
+<meta name="description" content="Queen's Gambit Zürich: a place for women to play chess.">
+<meta name="theme-color" content="#FDFBF7">
+<link rel="icon" type="image/png" href="assets/brand/qgz-crown.png">
+<link rel="preload" href="assets/fonts/league-spartan-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<!-- ======================================================================
+     Queen's Gambit Zürich · Website v1 (single-page landing)
+     Each section below is a self-contained module with its own anchor id,
+     so it can later be moved to a dedicated page unchanged.
+     Links are set in data/config.js. A button whose link is not set yet is
+     hidden automatically, or falls back to an on-page target (data-fallback-*).
+     ====================================================================== -->
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- 0. HEADER ============================================================ -->
+<header class="site-header" id="top">
+  <div class="container site-header__inner">
+    <a class="brand" href="#home" aria-label="Queen's Gambit Zürich, back to top">
+      <img class="brand__crown" src="assets/brand/qgz-crown.png" alt="" width="69" height="33">
+      <img class="brand__wordmark" src="assets/brand/qgz-wordmark-line.png" alt="Queen's Gambit Zürich" width="277" height="21">
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
+        <span class="site-nav__toggle-bars" aria-hidden="true"></span>
+        <span class="site-nav__toggle-label">Menu</span>
+      </button>
+      <ul class="site-nav__list" id="site-nav-list">
+        <li><a href="#upcoming">Upcoming</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#kids">Kids</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#collaborations">Collaborations</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary btn--sm site-header__join" data-link="whatsapp" data-fallback-href="#join" href="#join">Join</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- 1. HERO ============================================================ -->
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow">Women's chess community · Zürich</p>
+        <h1 class="hero__title" id="hero-title">
+          <span class="hero__title-line">Queen's</span>
+          <span class="hero__title-line">Gambit</span>
+          <span class="hero__title-line hero__title-line--city">Zürich</span>
+        </h1>
+        <p class="hero__tagline">A place for women to play chess.</p>
+        <p class="hero__intro">Whether you want to learn or just play, join us in a welcoming environment. We help women start playing, keep playing and grow within the wider chess community.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-link="whatsapp" data-fallback-href="#join" data-fallback-label="Get in touch" href="#join">Join the community</a>
+          <a class="btn btn--ghost" href="#upcoming">See upcoming dates</a>
+        </div>
+        <p class="hero__next" data-next-meetup hidden></p>
+      </div>
+
+      <figure class="hero__media">
+        <div class="hero__frame">
+          <img src="assets/photos/community-club-evening-2025-11.jpg" alt="A group of women playing chess together around a café table" width="1200" height="1600">
+        </div>
+        <figcaption class="caption">Club evening, November 2025</figcaption>
+      </figure>
+    </div>
+    <div class="container">
+      <p class="hero__notation" aria-label="The Queen's Gambit opening: 1. d4 d5 2. c4">
+        <span>1.</span> d4 d5 <span>2.</span> c4 <em>The Queen's Gambit</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. UPCOMING ======================================================== -->
+  <section class="section" id="upcoming" aria-labelledby="upcoming-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">What's on</p>
+          <h2 id="upcoming-title">Upcoming at Queen's Gambit</h2>
+        </div>
+        <p class="section-head__aside">Dates for our regular chess club and programmes.</p>
+      </header>
+
+      <ol class="event-list" data-event-list aria-live="polite"></ol>
+
+      <p class="event-empty" data-event-empty hidden>
+        There are no upcoming dates right now. Please check back soon or get in touch.
+      </p>
+
+      <div class="event-more">
+        <button class="btn btn--ghost" type="button" data-event-more hidden aria-controls="upcoming-title"></button>
+      </div>
+
+      <noscript>
+        <p class="event-empty">Event dates need JavaScript to display. Winter Schedule 2026/27 at Robins Caffè, Stampfenbachstrasse 38, 8006 Zürich.</p>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- 3. COMMUNITY ======================================================= -->
+  <section class="section section--sand" id="community" aria-labelledby="community-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Community</p>
+        <h2 id="community-title">Our Community</h2>
+        <p class="lead">Queen's Gambit Zürich is a women-oriented chess community. It offers a supportive way into chess: a place to start, keep playing and improve.</p>
+      </header>
+
+      <div class="community">
+        <ul class="feature-grid" role="list">
+          <li class="feature">
+            <div class="feature__head">
+              <h3>Regular chess meetings</h3>
+              <span class="status status--active">Active</span>
+            </div>
+            <p>Our chess club meets regularly through the season, alternating Fridays and Sundays. The winter season 2026/27 takes place at Robins Caffè in Zürich. All levels welcome.</p>
+          </li>
+          <li class="feature">
+            <div class="feature__head">
+              <h3>Social chess</h3>
+            </div>
+            <p>Relaxed games, conversation and the chance to meet new people. You don't need to know anyone to join.</p>
+          </li>
+          <li class="feature">
+            <div class="feature__head">
+              <h3>An inclusive community</h3>
+            </div>
+            <p>QGZ is primarily designed for women. We also welcome transgender and non-binary members, and everyone who shares our values and mission.</p>
+          </li>
+        </ul>
+
+        <div class="community__media">
+          <figure>
+            <img src="assets/photos/community-summer-terrace-2026-06.jpg" alt="Women playing chess on a café terrace in summer" width="1200" height="1600" loading="lazy">
+            <figcaption class="caption">June 2026</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/photos/community-game-2026-03.jpg" alt="Four women concentrating on a game of chess" width="1200" height="1600" loading="lazy">
+            <figcaption class="caption">March 2026</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <p class="pull">We see QGZ as a bridge into the wider chess world, and we encourage members to take part in tournaments, clubs and chess activities beyond QGZ.</p>
+    </div>
+  </section>
+
+  <!-- 4. KIDS CHESS ====================================================== -->
+  <section class="section" id="kids" aria-labelledby="kids-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Kids Chess</p>
+        <h2 id="kids-title">Chess for the Next Generation</h2>
+        <p class="lead">Kids Chess is our new programme for children. It begins with a three-morning pilot in Zollikon, from the first move to the first tournament.</p>
+      </header>
+
+      <div class="kids">
+        <article class="pilot" aria-labelledby="pilot-title">
+          <div class="pilot__head">
+            <span class="status status--pilot">Upcoming pilot</span>
+            <h3 id="pilot-title">Zollikon Kids Chess</h3>
+            <p class="pilot__sub">October 2026 · Combi Face, Zollikon</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="sessions">
+              <caption class="visually-hidden">Pilot sessions</caption>
+              <thead>
+                <tr><th scope="col">Date</th><th scope="col">Time</th><th scope="col">Session</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Sat 24 Oct</td><td>09:30–11:30</td><td>Learn &amp; Discover</td></tr>
+                <tr><td>Sun 25 Oct</td><td>09:30–11:30</td><td>Practice &amp; Challenge</td></tr>
+                <tr><td>Sat 31 Oct</td><td>09:00–12:00</td><td>Tournament &amp; Awards</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <dl class="facts">
+            <div><dt>Ages</dt><dd>5–13 years</dd></div>
+            <div><dt>Group size</dt><dd>Maximum 18 children</dd></div>
+            <div><dt>Price</dt><dd>CHF 199, complete pilot</dd></div>
+            <div><dt>Language</dt><dd>German, with English when needed</dd></div>
+            <div><dt>Venue</dt><dd>Combi Face, Oberdorfstrasse 37, 8702 Zollikon</dd></div>
+            <div><dt>Coaches</dt><dd>Adela &amp; Noe</dd></div>
+          </dl>
+
+          <div class="pilot__levels">
+            <div>
+              <h4>For beginners</h4>
+              <p>From the first move to the first checkmate, through interactive games, challenges and original learning materials.</p>
+            </div>
+            <div>
+              <h4>For intermediate players</h4>
+              <p>Sharpen tactics and decision-making, then put them into practice in a friendly, unrated tournament.</p>
+            </div>
+          </div>
+
+          <p class="pilot__included"><strong>Included:</strong> original learning materials, a personal Chess Passport workbook, healthy snacks, the final tournament and a certificate of participation.</p>
+
+          <div class="pilot__cta">
+            <a class="btn btn--primary" data-link="kidsRegistration" data-fallback-href="#join" data-fallback-label="Ask about registration" href="#join">Register</a>
+            <p class="small">Places are limited. Parents are welcome to join from 11:30 on 31 October for the award ceremony.</p>
+          </div>
+        </article>
+
+        <div class="kids__side">
+          <figure class="kids__media">
+            <img src="assets/photos/chessboard-2026-09.jpg" alt="A wooden chessboard with pieces mid-game on a table with flowers" width="1600" height="1200" loading="lazy">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SOCIAL IMPACT =================================================== -->
+  <section class="section section--sand" id="impact" aria-labelledby="impact-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Social Impact</p>
+        <h2 id="impact-title">Chess with Social Impact</h2>
+      </header>
+
+      <div class="impact">
+        <div class="impact__statement">
+          <p class="statement">We believe chess can be an educational and social tool.</p>
+        </div>
+
+        <article class="card card--ivory impact__project">
+          <span class="status status--dev">In development</span>
+          <h3>Youth center collaboration</h3>
+          <p>We are developing a collaboration with a local youth center to bring chess to young people.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. COLLABORATIONS ================================================== -->
+  <section class="section" id="collaborations" aria-labelledby="collab-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Network</p>
+          <h2 id="collab-title">Collaborations &amp; Projects</h2>
+        </div>
+        <p class="section-head__aside">QGZ is not an isolated club. We want to connect with chess clubs, schools, universities and organisations across Zürich.</p>
+      </header>
+
+      <ul class="collab-grid" role="list">
+        <li class="collab">
+          <p class="collab__type">Social impact</p>
+          <h3>Local youth center</h3>
+          <p>A collaboration to bring chess to young people.</p>
+          <span class="status status--dev">In development</span>
+        </li>
+        <li class="collab">
+          <p class="collab__type">Collaboration</p>
+          <h3>WINZ</h3>
+          <p>A shared event connecting chess and technology, two fields where women are still a minority.</p>
+        </li>
+        <li class="collab">
+          <p class="collab__type">Venue</p>
+          <h3>Robins Caffè</h3>
+          <p>Home of our Winter Schedule 2026/27. Stampfenbachstrasse 38, 8006 Zürich.</p>
+        </li>
+        <li class="collab">
+          <p class="collab__type">Venue</p>
+          <h3>Combi Face</h3>
+          <p>Venue of the Zollikon Kids Chess pilot. Oberdorfstrasse 37, 8702 Zollikon.</p>
+        </li>
+        <li class="collab">
+          <p class="collab__type">Venue</p>
+          <h3>Café du Bonheur</h3>
+          <p>Venue of our Summer Schedule 2026. Bullingerplatz, Zypressenstrasse 115, 8004 Zürich.</p>
+        </li>
+        <li class="collab collab--open">
+          <p class="collab__type">Future partners</p>
+          <h3>Work with us</h3>
+          <p>Clubs, schools, universities and organisations who share our values are welcome to get in touch.</p>
+          <a class="text-link" href="#join">Contact us</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. WHO WE ARE ====================================================== -->
+  <section class="section section--sand" id="about" aria-labelledby="about-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">About</p>
+        <h2 id="about-title">Who We Are</h2>
+      </header>
+
+      <div class="about">
+        <div class="about__mission">
+          <blockquote class="mission">
+            <p>Queen's Gambit Zürich exists to help women enter, grow and fully integrate into the chess community.</p>
+          </blockquote>
+          <p>Our role is not to replace the existing chess community. Our role is to help more women become part of it. We aim to become the leading reference point for women interested in chess in Zürich.</p>
+        </div>
+
+        <div class="about__values">
+          <h3 class="h-small">What guides us</h3>
+          <ul class="values" role="list">
+            <li>Competence</li>
+            <li>Commitment</li>
+            <li>Collaboration</li>
+            <li>Mutual respect</li>
+          </ul>
+          <p>QGZ is primarily designed for women and welcomes everyone who shares these values.</p>
+        </div>
+        <!-- "The people behind QGZ" (names, roles, photos) will be added here once confirmed. -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. JOIN ============================================================ -->
+  <section class="section section--charcoal" id="join" aria-labelledby="join-title">
+    <div class="container join">
+      <div class="join__intro">
+        <img class="join__crown" src="assets/brand/qgz-crown-ivory.png" alt="" width="69" height="33">
+        <h2 id="join-title">Join Queen's Gambit</h2>
+        <p class="lead">Come along to one of our chess club meet-ups, or get in touch. We look forward to meeting you.</p>
+      </div>
+
+      <ul class="join__actions" role="list">
+        <li class="join-card" data-link-group>
+          <h3>WhatsApp community</h3>
+          <p>Our main channel for dates and updates.</p>
+          <a class="btn btn--primary" data-link="whatsapp" href="#join">Join the community</a>
+        </li>
+        <li class="join-card" data-link-group>
+          <h3>Instagram</h3>
+          <p>Photos and news from the club.</p>
+          <a class="btn btn--light" data-link="instagram" href="#join">Follow on Instagram</a>
+        </li>
+        <li class="join-card">
+          <h3>Email</h3>
+          <p class="join-card__email" data-contact-email>info@queensgambitzurich.ch</p>
+          <button class="btn btn--light" type="button" data-copy-email>Copy email address</button>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- 9. FOOTER ============================================================ -->
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <img src="assets/brand/qgz-logo-stacked.png" alt="Queen's Gambit Zürich" width="300" height="148">
+      <p>A place for women to play chess.</p>
+    </div>
+
+    <nav class="site-footer__col" aria-label="Footer">
+      <h2 class="site-footer__title">Explore</h2>
+      <ul role="list">
+        <li><a href="#upcoming">Upcoming</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#kids">Kids Chess</a></li>
+        <li><a href="#impact">Social Impact</a></li>
+        <li><a href="#collaborations">Collaborations</a></li>
+        <li><a href="#about">Who We Are</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__col">
+      <h2 class="site-footer__title">Contact</h2>
+      <ul role="list">
+        <li data-contact-email>info@queensgambitzurich.ch</li>
+        <li data-link-group><a data-link="instagram" href="#join">Instagram</a></li>
+        <li data-link-group><a data-link="whatsapp" href="#join">WhatsApp community</a></li>
+        <li>Zürich, Switzerland</li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col" data-hide-if-empty>
+      <h2 class="site-footer__title">Legal</h2>
+      <ul role="list">
+        <li data-link-group><a data-link="impressum" href="#top">Impressum</a></li>
+        <li data-link-group><a data-link="privacy" href="#top">Privacy policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container site-footer__base">
+    <div class="site-footer__base-inner">
+      <p>© 2026 QGZ | Queen's Gambit Zürich</p>
+      <a class="text-link" href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" role="status" aria-live="polite" data-toast hidden></div>
+
+<script src="data/config.js"></script>
+<script src="data/events.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>
