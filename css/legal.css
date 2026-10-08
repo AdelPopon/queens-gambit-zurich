@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Queen's Gambit Zürich · Legal pages (Impressum, Privacy Policy)
+   Uses the site's existing tokens; text set in a readable glass panel.
+   ========================================================================== */
+.legal { padding-block: clamp(3rem, 7vw, 6rem); }
+.legal__title { font-size: var(--fs-h2); }
+.legal__body {
+  max-width: 46rem;
+  display: grid; gap: .9rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  background: var(--glass-bg-strong, rgba(255, 255, 255, .78));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, .8));
+  border-radius: var(--g-radius, 20px);
+  box-shadow: var(--glass-shadow, 0 10px 30px rgba(32, 35, 52, .06));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 16px)); backdrop-filter: blur(var(--glass-blur, 16px));
+}
+.legal__body h2 { font-size: clamp(1.1rem, 1vw + .85rem, 1.35rem); text-transform: none; letter-spacing: -0.01em; line-height: 1.2; margin-top: .9rem; }
+.legal__body h2:first-child { margin-top: 0; }
+.legal__body p { max-width: 65ch; }
+.legal__body a { color: var(--g-blue, #0070B4); }
+.legal__email { font-weight: 600; user-select: all; overflow-wrap: anywhere; }
+.legal__updated { margin-top: .75rem; font-size: var(--fs-small); color: var(--muted); }

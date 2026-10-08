@@ -21,8 +21,8 @@ window.QGZ_CONFIG = {
     kidsRegistration: null,
 
     // Legal pages (to be written)
-    impressum: null,
-    privacy: null
+    impressum: "/impressum/",
+    privacy: "/privacy/"
   },
 
   contact: {

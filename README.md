@@ -48,6 +48,13 @@ Edit `data/events.js`. Dates use `YYYY-MM-DD`. Events are sorted automatically, 
 **Change text**
 Edit `index.html`. Each section starts with a comment such as `<!-- 3. COMMUNITY -->`.
 
+## Legal pages and SEO
+
+- `impressum/index.html` and `privacy/index.html` are separate pages that reuse the home page's header and footer, linked from the footer through `data/config.js`.
+- `robots.txt` and `sitemap.xml` sit in the repository root. When adding pages, add them to the sitemap.
+- Search metadata (title, description, canonical URL, Open Graph sharing image) is in the `<head>` of each page. Organisation data is in `index.html`; event data for search engines is generated automatically from `data/events.js`.
+- Sharing image: `assets/brand/qgz-social-1200x630.jpg`.
+
 ## Design system
 
 - Colours: Warm Ivory `#FDFBF7`, Neutral Sand `#EFECE6`, Natural Charcoal `#2B2A27`, Zurich Blue `#0070B4` (accent only)
