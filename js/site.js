@@ -195,6 +195,12 @@
     if (!multi && ev.sessions[0].time) {   // time is shown only when confirmed
       meta.appendChild(el("b", null, ev.sessions[0].time));   // e.g. "From 19:00"
     }
+    if (ev.coach) {
+      var c = el("span");
+      c.appendChild(el("b", null, "Coach "));
+      c.appendChild(document.createTextNode(ev.coach));
+      meta.appendChild(c);
+    }
     var v = el("span");
     v.appendChild(el("b", null, ev.venue + " "));
     v.appendChild(document.createTextNode(ev.address || ""));
@@ -295,7 +301,7 @@
       var parts = (ev.address || "").match(/^(.*),\s*(\d{4})\s+(.*)$/) || [];
       var obj = {
         "@type": "Event",
-        "name": ev.title === "Chess Club meet-up" ? "Queen's Gambit Zürich chess club meet-up" : ev.title,
+        "name": ev.programme === "community" ? "Queen's Gambit Zürich: " + ev.title : ev.title,
         "description": ev.summary || "",
         "startDate": t0.length ? isoAt(first.date, t0[0]) : first.date,
         "eventStatus": "https://schema.org/EventScheduled",
@@ -306,6 +312,7 @@
         "url": "https://queensgambitzurich.ch/#" + (ev.programme === "kids" ? "kids" : "upcoming")
       };
       if (t1.length > 1) obj.endDate = isoAt(last.date, t1[1]);
+      if (ev.coach) obj.performer = { "@type": "Person", "name": ev.coach };
       if (ev.programme === "kids") obj.image = "https://queensgambitzurich.ch/assets/photos/kids-chess-illustration.jpg";
       if (ev.price) obj.offers = { "@type": "Offer", "price": ev.price, "priceCurrency": "CHF", "url": obj.url, "availability": "https://schema.org/InStock" };
       return obj;
@@ -316,6 +323,22 @@
     document.head.appendChild(s);
   }
   addEventSchema();
+
+  /* ---------- 4c. Floating back-to-top button ----------
+     Hidden near the top; appears after scrolling down one screen. */
+  var toTop = document.querySelector("[data-to-top]");
+  if (toTop) {
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var setToTop = function () { toTop.classList.toggle("is-visible", window.scrollY > Math.max(600, window.innerHeight * 0.8)); };
+    window.addEventListener("scroll", setToTop, { passive: true });
+    window.addEventListener("resize", setToTop);
+    setToTop();
+    toTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+      var target = document.querySelector(".brand") || document.body;
+      if (target.focus) target.focus({ preventScroll: true });
+    });
+  }
 
   /* ---------- 5. Copy email ---------- */
   document.querySelectorAll("[data-copy-email]").forEach(function (btn) {
