@@ -20,6 +20,7 @@
      summary     optional short description
      linkKey     optional key from config.js links (e.g. "kidsRegistration")
      linkLabel   optional button text
+     coach       optional coach name, shown on the event card
      price       optional price in CHF (search-engine event data only)
 
    Sources: Winter Schedule 2026/27 flyer (W26QGflzers.pdf, InstaW26QGZ.png)
@@ -41,15 +42,28 @@
     "2027-03-12", "2027-03-28", "2027-04-09", "2027-04-25"
   ];
 
+  // Formats: Fridays are Free Play (informal social chess); Sundays are
+  // Coaching Sessions led by Sinan Deveci. Special dates are listed below.
+  var FORMATS = {
+    5: { title: "Free Play", summary: "Informal social chess. Winter Schedule 2026/27. All levels welcome." },
+    0: { title: "Coaching Session", coach: "Sinan Deveci", summary: "Guided chess session with our coach. Winter Schedule 2026/27. All levels welcome." }
+  };
+  var SPECIAL = {
+    "2026-11-29": { title: "QGZ × WINZ", summary: "Programme to be announced." }
+  };
+  function weekday(iso) { var p = iso.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).getDay(); }
+
   var communityMeetups = winterDates.map(function (date) {
+    var f = SPECIAL[date] || FORMATS[weekday(date)] || { title: "Chess Club meet-up", summary: "Winter Schedule 2026/27. All levels welcome." };
     return {
       id: "chess-club-" + date,
       programme: "community",
-      title: "Chess Club meet-up",
+      title: f.title,
+      coach: f.coach || null,
       sessions: [{ date: date, time: startTime(date), label: null }],
       venue: "Robins Caffè",
       address: "Stampfenbachstrasse 38, 8006 Zürich",
-      summary: "Winter Schedule 2026/27. All levels welcome."
+      summary: f.summary
     };
   });
 
