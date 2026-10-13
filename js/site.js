@@ -317,7 +317,34 @@
         row.appendChild(el("span", null, L(s.label) || ""));
         list.appendChild(row);
       });
-      body.appendChild(list);
+      // Phones: the dates fold away behind a toggle (css/features.css); always open on larger screens
+      var foldId = "event-dates-" + ev.id;
+      var more = el("div", "event__more");
+      var tgl = el("button", "btn btn--ghost btn--sm event__dates-toggle");
+      tgl.type = "button";
+      tgl.setAttribute("aria-expanded", "false");
+      tgl.setAttribute("aria-controls", foldId);
+      var tglLabel = el("span", null, T("viewDates"));
+      tgl.appendChild(tglLabel);
+      var chev2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      chev2.setAttribute("viewBox", "0 0 24 24"); chev2.setAttribute("width", "16"); chev2.setAttribute("height", "16");
+      chev2.setAttribute("aria-hidden", "true"); chev2.setAttribute("class", "event__chevron");
+      chev2.innerHTML = '<path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+      tgl.appendChild(chev2);
+      var fold = el("div", "event__fold");
+      fold.id = foldId;
+      var foldInner = el("div", "event__fold-inner");
+      foldInner.appendChild(list);
+      fold.appendChild(foldInner);
+      tgl.addEventListener("click", function () {
+        var open = tgl.getAttribute("aria-expanded") !== "true";
+        tgl.setAttribute("aria-expanded", String(open));
+        fold.classList.toggle("is-open", open);
+        tglLabel.textContent = open ? T("hideDates") : T("viewDates");
+      });
+      more.appendChild(tgl);
+      more.appendChild(fold);
+      body.appendChild(more);
     }
     if (ev.schedule || (canRegister(ev) && !(opts && opts.noRegister))) body.appendChild(eventExtras(ev, opts));
     li.appendChild(body);
