@@ -423,6 +423,25 @@
   }
   addEventSchema();
 
+  /* ---------- 4d. Kids workshop details: fold away on phones ----------
+     On small screens the sessions, facts and levels of a workshop card are
+     collapsed behind a "View details" button; larger screens always show them.
+     Without JavaScript everything stays visible. */
+  document.querySelectorAll(".pilot__toggle").forEach(function (btn) {
+    var card = btn.closest(".pilot");
+    var panel = document.getElementById(btn.getAttribute("aria-controls"));
+    var label = btn.querySelector("[data-pilot-toggle-label]");
+    if (!card || !panel) return;
+    card.classList.add("is-collapsible");
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", String(open));
+      panel.classList.toggle("is-open", open);
+      if (label) label.textContent = open ? T("hideDetails") : T("viewDetails");
+    });
+  });
+
   /* ---------- 4c. Floating back-to-top button ----------
      Hidden near the top; appears after scrolling down one screen. */
   var toTop = document.querySelector("[data-to-top]");
