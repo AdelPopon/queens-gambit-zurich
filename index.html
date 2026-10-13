@@ -7,6 +7,9 @@
 <meta name="description" content="Queen's Gambit Zürich is a women's chess community in Zürich: regular chess club meet-ups for all levels, plus Kids Chess mornings for children in Zollikon.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://queensgambitzurich.ch/">
+<link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/">
+<link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/">
+<link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/">
 
 <!-- Social sharing (Open Graph / Twitter) -->
 <meta property="og:type" content="website">
@@ -19,6 +22,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Queen's Gambit Zürich logo with the tagline: A place for women to play chess.">
 <meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="de_CH">
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- Structured data: organisation and website (events are added by js/site.js from data/events.js) -->
@@ -53,12 +57,13 @@
 </script>
 <meta name="theme-color" content="#EAF3FF">
 <link rel="icon" type="image/png" href="assets/brand/qgz-favicon.png">
-<link rel="preload" href="assets/fonts/archivo-black-latin-400-normal.woff2?v=20261013-1225" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=20261013-1225">
-<link rel="stylesheet" href="css/site.css?v=20261013-1225">
-<link rel="stylesheet" href="css/glass.css?v=20261013-1225">
-<link rel="stylesheet" href="css/atmosphere.css?v=20261013-1225">
-<link rel="stylesheet" href="css/type.css?v=20261013-1225">
+<link rel="preload" href="assets/fonts/archivo-black-latin-400-normal.woff2?v=20261013-1730" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css?v=20261013-1730">
+<link rel="stylesheet" href="css/site.css?v=20261013-1730">
+<link rel="stylesheet" href="css/glass.css?v=20261013-1730">
+<link rel="stylesheet" href="css/atmosphere.css?v=20261013-1730">
+<link rel="stylesheet" href="css/features.css?v=20261013-1730">
+<link rel="stylesheet" href="css/type.css?v=20261013-1730">
 </head>
 <body>
 
@@ -106,7 +111,18 @@
         <li><a href="#impact">Impact</a></li>
         <li><a href="#collaborations">Collaborations</a></li>
         <li><a href="#about">About</a></li>
+        <li class="site-nav__lang">
+          <nav class="lang-switch lang-switch--menu" aria-label="Language">
+            <a class="lang-switch__link" data-lang-link="en" href="/" hreflang="en" lang="en" aria-current="page">EN</a>
+            <a class="lang-switch__link" data-lang-link="de" href="/de/" hreflang="de" lang="de">DE</a>
+          </nav>
+        </li>
       </ul>
+    </nav>
+
+    <nav class="lang-switch" aria-label="Language">
+      <a class="lang-switch__link" data-lang-link="en" href="/" hreflang="en" lang="en" aria-current="page">EN</a>
+      <a class="lang-switch__link" data-lang-link="de" href="/de/" hreflang="de" lang="de">DE</a>
     </nav>
 
     <a class="site-header__ig" data-link="instagram" href="#join" aria-label="Queen's Gambit Zürich on Instagram (opens in a new tab)">
@@ -478,10 +494,90 @@
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
+<!-- Event registration form (opened from an event card; see js/site.js, section 7).
+     Shown only when a registration endpoint is configured in data/config.js. -->
+<dialog class="reg-dialog" aria-labelledby="reg-title" data-reg-dialog>
+  <div class="reg-dialog__panel">
+    <button class="reg-dialog__close" type="button" aria-label="Close" data-reg-close>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <p class="eyebrow">Free registration</p>
+    <h2 class="reg-dialog__title" id="reg-title" data-reg-event-title></h2>
+    <p class="reg-dialog__meta" data-reg-event-meta></p>
+    <p class="reg-dialog__free"><strong>Free event.</strong> Participation is completely free of charge.</p>
+
+    <form class="reg-form" data-reg-form novalidate>
+      <div class="reg-field">
+        <label for="reg-name">Full name <span class="reg-req" aria-hidden="true">*</span></label>
+        <input id="reg-name" name="name" type="text" autocomplete="name" maxlength="100" required aria-describedby="reg-name-error">
+        <p class="reg-field__error" id="reg-name-error" data-error-for="name" hidden></p>
+      </div>
+      <div class="reg-field">
+        <label for="reg-email">Email address <span class="reg-req" aria-hidden="true">*</span></label>
+        <input id="reg-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="reg-email-error">
+        <p class="reg-field__error" id="reg-email-error" data-error-for="email" hidden></p>
+      </div>
+      <div class="reg-field">
+        <label for="reg-type">Participation type <span class="reg-req" aria-hidden="true">*</span></label>
+        <select id="reg-type" name="type" required aria-describedby="reg-type-error">
+          <option value="">Please choose</option>
+          <option value="general">General attendance</option>
+          <option value="blitz">Blitz tournament</option>
+          <option value="both">Both</option>
+        </select>
+        <p class="reg-field__error" id="reg-type-error" data-error-for="type" hidden></p>
+      </div>
+      <div class="reg-field">
+        <label for="reg-elo">Elo rating <span class="reg-optional">(optional)</span></label>
+        <input id="reg-elo" name="elo" type="number" inputmode="numeric" min="100" max="3500" step="1" aria-describedby="reg-elo-error">
+        <p class="reg-field__error" id="reg-elo-error" data-error-for="elo" hidden></p>
+      </div>
+
+      <!-- Spam protection: real visitors never see or fill this field -->
+      <div class="reg-form__hp" aria-hidden="true">
+        <label for="reg-website">Website</label>
+        <input id="reg-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <p class="reg-form__privacy">We use your details only to manage your registration for this event and to email you about it. They are stored in Google Sheets and deleted no later than three months after the event.</p>
+      <div class="reg-field reg-field--check">
+        <input id="reg-consent" name="consent" type="checkbox" required aria-describedby="reg-consent-error">
+        <label for="reg-consent">I agree to the processing of my details as described in the <a data-link="privacy" href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. <span class="reg-req" aria-hidden="true">*</span></label>
+        <p class="reg-field__error" id="reg-consent-error" data-error-for="consent" hidden></p>
+      </div>
+
+      <p class="reg-form__alert" role="alert" tabindex="-1" data-reg-alert hidden></p>
+      <button class="btn btn--primary reg-form__submit" type="submit" data-reg-submit>Register for free</button>
+      <p class="reg-form__note"><span aria-hidden="true">*</span> Required field</p>
+    </form>
+
+    <div class="reg-done" tabindex="-1" data-reg-success hidden>
+      <h3>You are registered!</h3>
+      <p>Thank you. We have received your registration and sent a confirmation to <strong data-reg-email></strong>. If it does not arrive within a few minutes, please check your spam folder.</p>
+      <button class="btn btn--primary" type="button" data-reg-close>Close</button>
+    </div>
+
+    <template data-reg-messages>
+      <span data-msg="name">Please enter your full name.</span>
+      <span data-msg="email">Please enter a valid email address.</span>
+      <span data-msg="type">Please choose how you would like to take part.</span>
+      <span data-msg="elo">Please enter a rating between 100 and 3500, or leave the field empty.</span>
+      <span data-msg="consent">Please agree to the Privacy Policy to register.</span>
+      <span data-msg="sending">Sending…</span>
+      <span data-msg="duplicate">This email address is already registered for this event. If you need to change your registration, please email info@queensgambitzurich.ch.</span>
+      <span data-msg="closed">Registration for this event is closed.</span>
+      <span data-msg="rate">Too many attempts. Please wait a few minutes and try again.</span>
+      <span data-msg="server">Your registration could not be saved. Please try again later or email info@queensgambitzurich.ch.</span>
+      <span data-msg="network">We could not reach the registration service. Please check your connection and try again, or email info@queensgambitzurich.ch.</span>
+    </template>
+  </div>
+</dialog>
+
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="data/config.js?v=20261013-1225"></script>
-<script src="data/events.js?v=20261013-1225"></script>
-<script src="js/site.js?v=20261013-1225"></script>
+<script src="data/config.js?v=20261013-1730"></script>
+<script src="js/i18n.js?v=20261013-1730"></script>
+<script src="data/events.js?v=20261013-1730"></script>
+<script src="js/site.js?v=20261013-1730"></script>
 </body>
 </html>

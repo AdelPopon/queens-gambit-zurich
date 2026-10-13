@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://queensgambitzurich.ch/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://queensgambitzurich.ch/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/"/>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://queensgambitzurich.ch/impressum/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/impressum/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://queensgambitzurich.ch/de/impressum/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/impressum/"/>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://queensgambitzurich.ch/privacy/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/datenschutz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/privacy/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://queensgambitzurich.ch/de/datenschutz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/datenschutz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/privacy/"/>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
