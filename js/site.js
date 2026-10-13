@@ -191,7 +191,7 @@
   function canRegister(ev) {
     return !!(ev.registration && CONFIG.registration && CONFIG.registration.endpoint && window.HTMLDialogElement);
   }
-  function eventExtras(ev) {
+  function eventExtras(ev, opts) {
     var wrap = el("div", "event__extras");
     var buttons = el("div", "event__buttons");
     wrap.appendChild(buttons);
@@ -247,7 +247,7 @@
       });
     }
 
-    if (canRegister(ev)) {
+    if (canRegister(ev) && !(opts && opts.noRegister)) {
       var reg = el("button", "btn btn--primary btn--sm", T("registerFree"));
       reg.type = "button";
       reg.addEventListener("click", function () { openRegistration(ev, reg); });
@@ -256,7 +256,7 @@
     return wrap;
   }
 
-  function renderEvent(item, today) {
+  function renderEvent(item, today, opts) {
     var ev = item.ev;
     var multi = ev.sessions.length > 1;
     var first = parseDate(ev.sessions[0].date);
@@ -318,7 +318,7 @@
       });
       body.appendChild(list);
     }
-    if (ev.schedule || canRegister(ev)) body.appendChild(eventExtras(ev));
+    if (ev.schedule || (canRegister(ev) && !(opts && opts.noRegister))) body.appendChild(eventExtras(ev, opts));
     li.appendChild(body);
 
     // Action
@@ -486,18 +486,52 @@
     form.dataset.eventId = ev.id;
     form.dataset.openedAt = String(Date.now());
     dlg._opener = opener;
-    dlg.showModal();
-    var first = form.querySelector("input:not([type=hidden]):not([tabindex='-1'])");
-    if (first) first.focus();
+    var inline = dlg.hasAttribute("data-reg-inline");   // registration page: form is part of the page
+    if (!inline) {
+      dlg.showModal();
+      var first = form.querySelector("input:not([type=hidden]):not([tabindex='-1'])");
+      if (first) first.focus();
+    }
 
     if (!dlg._wired) {
       dlg._wired = true;
+      form.addEventListener("submit", function (e) { e.preventDefault(); submitRegistration(dlg, form, done, msgs); });
+      if (inline) return;
       dlg.querySelectorAll("[data-reg-close]").forEach(function (b) { b.addEventListener("click", function () { dlg.close(); }); });
       dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });   // click on backdrop
       dlg.addEventListener("close", function () { if (dlg._opener) dlg._opener.focus(); });
-      form.addEventListener("submit", function (e) { e.preventDefault(); submitRegistration(dlg, form, done, msgs); });
     }
   }
+
+  /* ---------- 7b. Registration page (/winz/, /de/winz/) ----------
+     A shareable page that shows the registration form straight away, followed
+     by the event card (programme, WINZ link). The event comes from
+     data/events.js (id in data-event-id). After the event, or while no
+     endpoint is configured, the form is replaced by the "closed" message. */
+  function initRegistrationPage() {
+    var page = document.querySelector("[data-reg-page]");
+    if (!page) return;
+    var id = page.getAttribute("data-event-id");
+    var ev = EVENTS.filter(function (e) { return e.id === id; })[0];
+    var dlg = page.querySelector("[data-reg-dialog]");
+    var today = startOfToday();
+    var item = ev ? prepare([ev], today)[0] : null;   // undefined once the event is over
+    var open = !!(item && ev.registration && CONFIG.registration && CONFIG.registration.endpoint);
+
+    var cardList = page.querySelector("[data-reg-event-card]");
+    if (item && cardList) cardList.appendChild(renderEvent(item, today, { noRegister: true }));
+
+    if (open) { openRegistration(ev, null); return; }
+    var form = dlg.querySelector("[data-reg-form]");
+    var msg = dlg.querySelector('[data-reg-messages]');
+    var closed = msg && msg.content ? msg.content.querySelector('[data-msg="closed"]') : null;
+    form.hidden = true;
+    var note = el("p", "reg-form__alert", closed ? closed.textContent.trim() : "");
+    form.parentNode.insertBefore(note, form);
+    var free = dlg.querySelector(".reg-dialog__free");
+    if (free) free.hidden = true;
+  }
+  initRegistrationPage();
 
   function clearErrors(form) {
     form.querySelectorAll("[data-error-for]").forEach(function (p) { p.hidden = true; p.textContent = ""; });

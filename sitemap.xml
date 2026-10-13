@@ -54,4 +54,22 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  <url>
+    <loc>https://queensgambitzurich.ch/winz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/winz/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/winz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/winz/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://queensgambitzurich.ch/de/winz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/winz/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/de/winz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://queensgambitzurich.ch/winz/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

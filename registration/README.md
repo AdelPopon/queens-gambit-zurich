@@ -68,6 +68,7 @@ emails (ideally a QGZ account rather than a personal one).
   script, with replies going to `REPLY_TO`.
 - **Close registration:** set `open: false` for the event in `EVENTS`, or
   remove `registration: true` from the event in `data/events.js`.
+- **Shareable link:** `https://queensgambitzurich.ch/winz/` (EN, switches to DE for German browsers) and `/de/winz/` open the form directly. For a new event, add an entry to `REG_PAGES` in `tools/build.py` and run the build.
 - **New event:** add an entry to `EVENTS` (key = event id shown in
   `data/events.js`, e.g. `chess-club-2027-01-31`) and set `registration: true`
   on that event in `data/events.js`.
