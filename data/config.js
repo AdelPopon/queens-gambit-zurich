@@ -31,7 +31,7 @@ window.QGZ_CONFIG = {
   // "Register for free" button stays hidden, so no form is shown that
   // cannot store registrations. Setup: registration/README.md
   registration: {
-    endpoint: null
+    endpoint: "https://script.google.com/macros/s/AKfycbyZVFaN3BAbUFEfRiGaCsAm0Nff1_6liDWFZa2aYx-9jTgwcTwWoAs0lFFPi-E61mMcbQ/exec"
   },
 
   contact: {
