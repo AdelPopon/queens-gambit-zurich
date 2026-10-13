@@ -20,9 +20,18 @@ window.QGZ_CONFIG = {
     // Kids Chess / Zollikon pilot registration form URL
     kidsRegistration: null,
 
-    // Legal pages (to be written)
-    impressum: "/impressum/",
-    privacy: "/privacy/"
+    // Legal pages (English / German)
+    impressum: { en: "/impressum/", de: "/de/impressum/" },
+    privacy: { en: "/privacy/", de: "/de/datenschutz/" }
+  },
+
+  // Event registration (QGZ × WINZ). The URL of the deployed Google Apps
+  // Script web app ("…/exec"). It is not a secret: it only accepts new
+  // registrations and never returns stored data. While it is null, the
+  // "Register for free" button stays hidden, so no form is shown that
+  // cannot store registrations. Setup: registration/README.md
+  registration: {
+    endpoint: null
   },
 
   contact: {

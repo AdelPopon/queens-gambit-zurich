@@ -1,0 +1,385 @@
+"""
+Queen's Gambit Zürich · build the German site and the legal pages.
+
+    python3 tools/build.py
+
+English is the source: edit index.html (and the legal texts in this file),
+then run the build. It writes:
+
+    de/index.html              German home page (index.html + i18n/de.json)
+    impressum/index.html       Impressum (EN)        de/impressum/index.html    (DE)
+    privacy/index.html         Privacy Policy (EN)   de/datenschutz/index.html  (DE)
+    sitemap.xml                all pages with hreflang alternates
+
+The build stops if any English text in index.html has no German translation.
+"""
+import json, pathlib, re, sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+from i18n_text import TOKEN, ATTR_RE, TRANSLATABLE_META, norm, has_words  # noqa: E402
+
+SITE = "https://queensgambitzurich.ch"
+EMAIL = "info@queensgambitzurich.ch"
+
+# --------------------------------------------------------------------------
+# 1. German home page
+# --------------------------------------------------------------------------
+def translate_html(html, strings, keep):
+    missing = []
+
+    def tr_text(raw):
+        n = norm(raw)
+        if not has_words(n) or n in keep:
+            return raw
+        if n not in strings:
+            missing.append(n)
+            return raw
+        lead = raw[: len(raw) - len(raw.lstrip())]
+        trail = raw[len(raw.rstrip()):]
+        return lead + strings[n] + trail
+
+    def tr_tag(tag):
+        def sub(m):
+            name, val = m.group(1), m.group(2)
+            if name == "content":
+                meta = re.search(r'\b(?:name|property)="([^"]+)"', tag)
+                if not meta or meta.group(1) not in TRANSLATABLE_META:
+                    return m.group(0)
+            if not has_words(val) or val in keep:
+                return m.group(0)
+            if val not in strings:
+                missing.append(val)
+                return m.group(0)
+            return f'{name}="{strings[val]}"'
+        return ATTR_RE.sub(sub, tag)
+
+    out = []
+    for part in TOKEN.split(html):
+        if not part:
+            continue
+        if part.startswith("<!--") or part.lower().startswith(("<script", "<style")):
+            out.append(part)
+        elif part.startswith("<"):
+            out.append(tr_tag(part))
+        else:
+            out.append(tr_text(part))
+    return "".join(out), sorted(set(missing))
+
+
+def set_lang_switch(html, current, en_href, de_href):
+    def fix(m):
+        lang = m.group(1)
+        tag = m.group(0)
+        tag = re.sub(r'\shref="[^"]*"', f' href="{en_href if lang == "en" else de_href}"', tag)
+        tag = tag.replace(' aria-current="page"', "")
+        if lang == current:
+            tag = tag.replace(f'data-lang-link="{lang}"', f'data-lang-link="{lang}" aria-current="page"')
+        return tag
+    return re.sub(r'<a class="lang-switch__link" data-lang-link="(en|de)"[^>]*>', fix, html)
+
+
+def build_home_de():
+    src = (ROOT / "index.html").read_text()
+    data = json.loads((ROOT / "i18n" / "de.json").read_text())
+    html, missing = translate_html(src, data["strings"], set(data["_keep"]))
+    if missing:
+        sys.exit("Missing German translations in i18n/de.json:\n  - " + "\n  - ".join(missing))
+
+    html = html.replace('<html lang="en">', '<html lang="de">', 1)
+    # assets are shared with the English site
+    html = re.sub(r'\b(src|href)="(assets|css|data|js)/', r'\1="/\2/', html)
+    html = html.replace('<link rel="canonical" href="https://queensgambitzurich.ch/">',
+                        '<link rel="canonical" href="https://queensgambitzurich.ch/de/">')
+    html = html.replace('<meta property="og:url" content="https://queensgambitzurich.ch/">',
+                        '<meta property="og:url" content="https://queensgambitzurich.ch/de/">')
+    html = html.replace('<meta property="og:locale" content="en_GB">\n<meta property="og:locale:alternate" content="de_CH">',
+                        '<meta property="og:locale" content="de_CH">\n<meta property="og:locale:alternate" content="en_GB">')
+    html = html.replace('"inLanguage": "en"', '"inLanguage": "de"')
+    html = html.replace('"url": "https://queensgambitzurich.ch/",\n      "name"', '"url": "https://queensgambitzurich.ch/de/",\n      "name"')
+    html = html.replace(
+        '"description": "A women\'s chess community in Zürich, Switzerland. A place for women to play chess, with regular meet-ups for all levels and Kids Chess for children."',
+        '"description": "Eine Schach-Community für Frauen in Zürich. Ein Ort, an dem Frauen Schach spielen, mit regelmässigen Treffs für alle Spielstärken und Kinderschach."')
+    html = html.replace('href="/privacy/"', 'href="/de/datenschutz/"')
+    html = set_lang_switch(html, "de", "/", "/de/")
+    html = html.replace("<!-- ======================================================================\n     Queen's Gambit Zürich · Website v1",
+                        "<!-- GENERATED by tools/build.py from index.html + i18n/de.json. Do not edit this file directly. -->\n"
+                        "<!-- ======================================================================\n     Queen's Gambit Zürich · Website v1", 1)
+    out = ROOT / "de" / "index.html"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(html)
+    return html
+
+
+# --------------------------------------------------------------------------
+# 2. Legal pages (EN + DE)
+# --------------------------------------------------------------------------
+LEGAL = {
+    "en": {
+        "impressum": {"slug": "impressum", "title": "Impressum", "lead": "Information about the operator of this website.",
+                      "description": "Impressum of Queen's Gambit Zürich, a community project and women's chess community in Zürich, Switzerland."},
+        "privacy": {"slug": "privacy", "title": "Privacy Policy", "lead": "How we handle data on this website.",
+                    "description": "Privacy policy of Queen's Gambit Zürich: no cookies, no tracking; how event registrations are handled under the Swiss FADP."},
+        "eyebrow": "Legal", "updated": "Last updated", "home": "/",
+    },
+    "de": {
+        "impressum": {"slug": "de/impressum", "title": "Impressum", "lead": "Angaben zur Betreiberin dieser Website.",
+                      "description": "Impressum von Queen's Gambit Zürich, einem Community-Projekt und einer Schach-Community für Frauen in Zürich."},
+        "privacy": {"slug": "de/datenschutz", "title": "Datenschutzerklärung", "lead": "Wie wir mit Daten auf dieser Website umgehen.",
+                    "description": "Datenschutzerklärung von Queen's Gambit Zürich: keine Cookies, kein Tracking; wie Anmeldungen für Anlässe gemäss DSG bearbeitet werden."},
+        "eyebrow": "Rechtliches", "updated": "Zuletzt aktualisiert", "home": "/de/",
+    },
+}
+
+IMPRESSUM = {
+    "en": f"""
+        <h2>Website operator</h2>
+        <p>Queen's Gambit Zürich<br>A community project based in Zürich, Switzerland</p>
+
+        <h2>Responsible person</h2>
+        <p>Adela Ioana Popon</p>
+
+        <h2>Contact</h2>
+        <p>Email: <span class="legal__email">{EMAIL}</span><br>
+        Instagram: <a href="https://www.instagram.com/queensgambitzurich/" target="_blank" rel="noopener">@queensgambitzurich</a></p>
+
+        <h2>Participation and fees</h2>
+        <p>Queen's Gambit Zürich is a community offering free chess gatherings. Participation in regular community events is free of charge. Certain special events, workshops, tournaments or educational programmes may require a participation fee.</p>
+
+        <h2>Liability for content</h2>
+        <p>We prepare the information on this website with care. However, we cannot guarantee that it is always complete, accurate or up to date. Event details may change; if in doubt, please contact us.</p>
+
+        <h2>External links</h2>
+        <p>This website contains links to external websites, such as Instagram. We have no influence over their content, and their operators are responsible for it.</p>
+
+        <h2>Copyright</h2>
+        <p>The texts, photographs, logos and illustrations on this website belong to Queen's Gambit Zürich unless stated otherwise. Please ask us before reusing them. The fonts Archivo Black, Inter and League Spartan are used under the SIL Open Font License, Version 1.1.</p>
+
+        <p class="legal__updated">Last updated: 8 October 2026</p>
+""",
+    "de": f"""
+        <h2>Betreiberin der Website</h2>
+        <p>Queen's Gambit Zürich<br>Ein Community-Projekt mit Sitz in Zürich, Schweiz</p>
+
+        <h2>Verantwortliche Person</h2>
+        <p>Adela Ioana Popon</p>
+
+        <h2>Kontakt</h2>
+        <p>E-Mail: <span class="legal__email">{EMAIL}</span><br>
+        Instagram: <a href="https://www.instagram.com/queensgambitzurich/" target="_blank" rel="noopener">@queensgambitzurich</a></p>
+
+        <h2>Teilnahme und Kosten</h2>
+        <p>Queen's Gambit Zürich ist eine Community, die kostenlose Schachtreffen anbietet. Die Teilnahme an den regelmässigen Community-Anlässen ist kostenlos. Für bestimmte Spezialanlässe, Workshops, Turniere oder Bildungsprogramme kann ein Teilnahmebeitrag erhoben werden.</p>
+
+        <h2>Haftung für Inhalte</h2>
+        <p>Wir erstellen die Informationen auf dieser Website mit Sorgfalt. Wir können jedoch nicht garantieren, dass sie jederzeit vollständig, richtig und aktuell sind. Angaben zu Anlässen können sich ändern; im Zweifelsfall kontaktiere uns bitte.</p>
+
+        <h2>Externe Links</h2>
+        <p>Diese Website enthält Links zu externen Websites, zum Beispiel zu Instagram. Auf deren Inhalte haben wir keinen Einfluss; dafür sind die jeweiligen Betreiber verantwortlich.</p>
+
+        <h2>Urheberrecht</h2>
+        <p>Die Texte, Fotos, Logos und Illustrationen auf dieser Website gehören Queen's Gambit Zürich, sofern nicht anders angegeben. Bitte frag uns, bevor du sie weiterverwendest. Die Schriften Archivo Black, Inter und League Spartan werden unter der SIL Open Font License, Version 1.1, verwendet.</p>
+
+        <p class="legal__updated">Zuletzt aktualisiert: 8. Oktober 2026</p>
+""",
+}
+
+PRIVACY = {
+    "en": f"""
+        <p>This privacy policy explains how personal data is processed when you visit this website, register for an event or contact us. It follows the Swiss Federal Act on Data Protection (FADP).</p>
+
+        <h2>1. Who is responsible</h2>
+        <p>Queen's Gambit Zürich, a community project based in Zürich, Switzerland.<br>
+        Responsible person: Adela Ioana Popon<br>
+        Email: <span class="legal__email">{EMAIL}</span></p>
+
+        <h2>2. In short</h2>
+        <p>This website is mainly informational. It has no user accounts and no newsletter. The only personal data we ask for is in the registration form for selected events (section 5), which you use voluntarily. The website uses no cookies and no analytics or tracking tools, and it does not embed content from social networks. Fonts, images and scripts are delivered from this website itself.</p>
+
+        <h2>3. Hosting and technical data</h2>
+        <p>This website is hosted on GitHub Pages, a service of GitHub, Inc., USA. When you visit the website, your browser connects to GitHub's servers, which necessarily process technical data such as your IP address, the date and time of the request and your browser type in order to deliver the pages. According to GitHub, visitors' IP addresses are logged and stored for security purposes. We do not receive or analyse this data ourselves.</p>
+        <p>GitHub processes this data in the USA. GitHub participates in the Swiss-U.S. Data Privacy Framework, under which Switzerland recognises an adequate level of data protection for certified US companies. For details, see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub General Privacy Statement</a>.</p>
+
+        <h2>4. Contacting us by email</h2>
+        <p>You can contact us at <span class="legal__email">{EMAIL}</span>. This mailbox is provided by GoDaddy (GoDaddy Operating Company, LLC, USA). We also use <span class="legal__email">queensgambitzurich@gmail.com</span>, a Gmail account provided by Google; we may reply from this address.</p>
+        <p>When you email us, we process your email address, your name if you give it, the content of your message and any attachments, and the technical information that comes with every email, such as the date and time. We use this information only to answer your message and to deal with your request, for example a question about one of our events. We do not use it for advertising or newsletters, and we do not pass it on to anyone else.</p>
+        <p>Your messages are stored on the servers of GoDaddy and Google, which may process them in the USA and other countries. Both GoDaddy and Google participate in the Swiss-U.S. Data Privacy Framework. We delete emails when they are no longer needed for the purpose for which you sent them.</p>
+
+        <h2>5. Registering for an event</h2>
+        <p>For selected events, such as QGZ × WINZ, you can register on this website. We then process your full name, your email address, your participation type, your Elo rating if you choose to give it, the language of the form and the date and time of your registration.</p>
+        <p>We use this data only to manage your registration: to confirm it, to plan the event (for example the blitz tournament pairings) and to email you about this event. We do not use it for advertising or newsletters, and we do not pass it on to anyone else. Only the QGZ organisers have access.</p>
+        <p>The form sends your details to a Google Apps Script service in our Google account. Your registration is stored in a private Google Sheets spreadsheet, and the confirmation emails are sent via Google. When you submit the form, your browser connects to Google's servers, which also process your IP address. Google LLC may process this data in the USA and participates in the Swiss-U.S. Data Privacy Framework. To protect the form against spam, we use a hidden check field and a timing check; no cookies or tracking are involved.</p>
+        <p>You register by ticking the consent box. You can withdraw your consent and cancel your registration at any time by emailing <span class="legal__email">{EMAIL}</span>; we then delete your registration. Otherwise we delete registrations no later than three months after the event.</p>
+
+        <h2>6. Links to other websites</h2>
+        <p>Our website links to our Instagram profile, partner websites such as WINZ and other external websites. No data is sent to these services when you visit our website; it is only when you follow a link that you leave our website, and the privacy policy of that provider applies, for Instagram that of Meta Platforms.</p>
+
+        <h2>7. Your rights</h2>
+        <p>Under the FADP you can ask us for information about personal data we process about you, and you can request its correction or deletion. Please write to <span class="legal__email">{EMAIL}</span>. You can also contact the Swiss Federal Data Protection and Information Commissioner (FDPIC) at <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener">edoeb.admin.ch</a>.</p>
+
+        <h2>8. Changes</h2>
+        <p>We will update this privacy policy if the website or the way we process data changes. The current version is always published on this page.</p>
+
+        <p class="legal__updated">Last updated: 13 October 2026</p>
+""",
+    "de": f"""
+        <p>Diese Datenschutzerklärung erklärt, wie Personendaten bearbeitet werden, wenn du diese Website besuchst, dich für einen Anlass anmeldest oder uns kontaktierst. Sie richtet sich nach dem Schweizer Bundesgesetz über den Datenschutz (DSG).</p>
+
+        <h2>1. Verantwortlich</h2>
+        <p>Queen's Gambit Zürich, ein Community-Projekt mit Sitz in Zürich, Schweiz.<br>
+        Verantwortliche Person: Adela Ioana Popon<br>
+        E-Mail: <span class="legal__email">{EMAIL}</span></p>
+
+        <h2>2. Kurz zusammengefasst</h2>
+        <p>Diese Website dient hauptsächlich der Information. Es gibt keine Benutzerkonten und keinen Newsletter. Personendaten erfragen wir nur im Anmeldeformular für ausgewählte Anlässe (Abschnitt 5), das du freiwillig nutzt. Die Website verwendet keine Cookies und keine Analyse- oder Tracking-Tools und bindet keine Inhalte sozialer Netzwerke ein. Schriften, Bilder und Skripte werden direkt von dieser Website geladen.</p>
+
+        <h2>3. Hosting und technische Daten</h2>
+        <p>Diese Website wird bei GitHub Pages gehostet, einem Dienst der GitHub, Inc., USA. Wenn du die Website besuchst, verbindet sich dein Browser mit den Servern von GitHub. Dabei werden zwangsläufig technische Daten wie deine IP-Adresse, Datum und Uhrzeit der Anfrage und dein Browsertyp bearbeitet, damit die Seiten ausgeliefert werden können. Gemäss GitHub werden die IP-Adressen der Besucherinnen und Besucher aus Sicherheitsgründen protokolliert und gespeichert. Wir selbst erhalten und analysieren diese Daten nicht.</p>
+        <p>GitHub bearbeitet diese Daten in den USA. GitHub nimmt am Swiss-U.S. Data Privacy Framework teil, unter dem die Schweiz für zertifizierte US-Unternehmen ein angemessenes Datenschutzniveau anerkennt. Weitere Informationen findest du im <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub General Privacy Statement</a>.</p>
+
+        <h2>4. Kontakt per E-Mail</h2>
+        <p>Du erreichst uns unter <span class="legal__email">{EMAIL}</span>. Dieses Postfach wird von GoDaddy (GoDaddy Operating Company, LLC, USA) bereitgestellt. Zudem verwenden wir <span class="legal__email">queensgambitzurich@gmail.com</span>, ein Gmail-Konto von Google; es kann sein, dass wir von dieser Adresse aus antworten.</p>
+        <p>Wenn du uns schreibst, bearbeiten wir deine E-Mail-Adresse, deinen Namen, sofern du ihn angibst, den Inhalt deiner Nachricht und allfällige Anhänge sowie die technischen Angaben, die jede E-Mail enthält, etwa Datum und Uhrzeit. Wir verwenden diese Angaben nur, um deine Nachricht zu beantworten und dein Anliegen zu bearbeiten, zum Beispiel eine Frage zu einem unserer Anlässe. Wir verwenden sie weder für Werbung noch für Newsletter und geben sie nicht an Dritte weiter.</p>
+        <p>Deine Nachrichten werden auf den Servern von GoDaddy und Google gespeichert, die sie in den USA und in anderen Ländern bearbeiten können. GoDaddy und Google nehmen beide am Swiss-U.S. Data Privacy Framework teil. Wir löschen E-Mails, sobald sie für den Zweck, zu dem du sie geschickt hast, nicht mehr benötigt werden.</p>
+
+        <h2>5. Anmeldung für einen Anlass</h2>
+        <p>Für ausgewählte Anlässe wie QGZ × WINZ kannst du dich auf dieser Website anmelden. Dabei bearbeiten wir deinen Vor- und Nachnamen, deine E-Mail-Adresse, die Art deiner Teilnahme, deine Elo-Zahl, sofern du sie angibst, die Sprache des Formulars sowie Datum und Uhrzeit deiner Anmeldung.</p>
+        <p>Wir verwenden diese Daten nur, um deine Anmeldung zu verwalten: um sie zu bestätigen, den Anlass zu planen (zum Beispiel die Paarungen des Blitzturniers) und dich per E-Mail über diesen Anlass zu informieren. Wir verwenden sie weder für Werbung noch für Newsletter und geben sie nicht an Dritte weiter. Zugriff haben nur die Organisatorinnen und Organisatoren von QGZ.</p>
+        <p>Das Formular übermittelt deine Angaben an einen Google-Apps-Script-Dienst in unserem Google-Konto. Deine Anmeldung wird in einer privaten Google-Sheets-Tabelle gespeichert, und die Bestätigungs-E-Mails werden über Google versendet. Beim Absenden verbindet sich dein Browser mit den Servern von Google, die dabei auch deine IP-Adresse bearbeiten. Google LLC kann diese Daten in den USA bearbeiten und nimmt am Swiss-U.S. Data Privacy Framework teil. Zum Schutz vor Spam verwenden wir ein verstecktes Prüffeld und eine Zeitprüfung; Cookies oder Tracking kommen dabei nicht zum Einsatz.</p>
+        <p>Du meldest dich an, indem du das Einwilligungsfeld ankreuzt. Du kannst deine Einwilligung jederzeit widerrufen und deine Anmeldung stornieren, indem du an <span class="legal__email">{EMAIL}</span> schreibst; wir löschen deine Anmeldung dann. Andernfalls löschen wir Anmeldungen spätestens drei Monate nach dem Anlass.</p>
+
+        <h2>6. Links zu anderen Websites</h2>
+        <p>Unsere Website verlinkt auf unser Instagram-Profil, auf Websites von Partnern wie WINZ und auf weitere externe Websites. Beim Besuch unserer Website werden keine Daten an diese Dienste übermittelt. Erst wenn du einem Link folgst, verlässt du unsere Website; dann gilt die Datenschutzerklärung des jeweiligen Anbieters, bei Instagram diejenige von Meta Platforms.</p>
+
+        <h2>7. Deine Rechte</h2>
+        <p>Gemäss DSG kannst du Auskunft über die Personendaten verlangen, die wir über dich bearbeiten, und deren Berichtigung oder Löschung verlangen. Schreib uns dazu an <span class="legal__email">{EMAIL}</span>. Du kannst dich auch an den Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) wenden: <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener">edoeb.admin.ch</a>.</p>
+
+        <h2>8. Änderungen</h2>
+        <p>Wir passen diese Datenschutzerklärung an, wenn sich die Website oder die Bearbeitung von Daten ändert. Die aktuelle Version ist jeweils auf dieser Seite veröffentlicht.</p>
+
+        <p class="legal__updated">Zuletzt aktualisiert: 13. Oktober 2026</p>
+""",
+}
+
+PAGE = """<!doctype html>
+<html lang="{lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{title} | Queen's Gambit Zürich</title>
+<meta name="description" content="{description}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{site}/{slug}/">
+<link rel="alternate" hreflang="en" href="{site}/{en_slug}/">
+<link rel="alternate" hreflang="de" href="{site}/{de_slug}/">
+<link rel="alternate" hreflang="x-default" href="{site}/{en_slug}/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Queen's Gambit Zürich">
+<meta property="og:title" content="{title} | Queen's Gambit Zürich">
+<meta property="og:description" content="{description}">
+<meta property="og:url" content="{site}/{slug}/">
+<meta property="og:locale" content="{og_locale}">
+<meta property="og:image" content="{site}/assets/brand/qgz-social-1200x630.jpg">
+<meta name="theme-color" content="#EAF3FF">
+<link rel="icon" type="image/png" href="/assets/brand/qgz-favicon.png">
+{styles}
+</head>
+<body>
+
+<!-- GENERATED by tools/build.py (legal page). Edit the text in tools/build.py, then run the build. -->
+{header}
+
+<main id="main">
+  <section class="section legal" id="top-of-page" aria-labelledby="legal-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1 id="legal-title" class="legal__title">{title}</h1>
+        <p class="lead">{lead}</p>
+      </header>
+      <article class="legal__body">
+{body}
+      </article>
+    </div>
+  </section>
+</main>
+
+{footer}
+
+<div class="toast" role="status" aria-live="polite" data-toast hidden></div>
+
+{scripts}
+</body>
+</html>
+"""
+
+
+def legal_pages(home_html, lang):
+    head = re.search(r"<head>(.*?)</head>", home_html, re.S).group(1)
+    v = re.search(r"\?v=([0-9-]+)", home_html).group(1)
+    styles = "\n".join(re.findall(r'<link rel="(?:preload|stylesheet)"[^>]*>', head))
+    styles = re.sub(r'href="(?!/|https?:)', 'href="/', styles) + f'\n<link rel="stylesheet" href="/css/legal.css?v={v}">'
+    scripts = "\n".join(s for s in re.findall(r'<script src="[^"]*"></script>', home_html))
+    scripts = re.sub(r'src="(?!/)', 'src="/', scripts)
+
+    header = re.search(r'(<a class="skip-link".*?</header>)', home_html, re.S).group(1)
+    footer = re.search(r"(<!-- 9\. FOOTER.*?</footer>)", home_html, re.S).group(1)
+    home = LEGAL[lang]["home"]
+
+    def absolutise(block):
+        block = re.sub(r'(href|data-fallback-href)="#(?!main")', r'\1="' + home + '#', block)
+        block = block.replace(f'href="{home}#home" aria-label', f'href="{home}" aria-label')
+        block = re.sub(r'src="(assets/)', r'src="/\1', block)
+        return block
+
+    header = absolutise(header)
+    footer = absolutise(footer)
+    footer = re.sub(r'href="' + re.escape(home) + r'#home">([^<]+)</a>', r'href="#top-of-page">\1</a>', footer)
+
+    for key in ("impressum", "privacy"):
+        meta = LEGAL[lang][key]
+        en_slug, de_slug = LEGAL["en"][key]["slug"], LEGAL["de"][key]["slug"]
+        hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
+        page = PAGE.format(
+            lang=lang, site=SITE, slug=meta["slug"], en_slug=en_slug, de_slug=de_slug,
+            title=meta["title"], description=meta["description"], lead=meta["lead"],
+            og_locale="de_CH" if lang == "de" else "en_GB", eyebrow=LEGAL[lang]["eyebrow"],
+            body=(IMPRESSUM if key == "impressum" else PRIVACY)[lang].rstrip(),
+            header=hdr, footer=footer, styles=styles, scripts=scripts)
+        out = ROOT / meta["slug"] / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page)
+
+
+# --------------------------------------------------------------------------
+# 3. Sitemap
+# --------------------------------------------------------------------------
+def sitemap(lastmod):
+    pairs = [("", "de/", "weekly", "1.0"),
+             ("impressum/", "de/impressum/", "yearly", "0.3"),
+             ("privacy/", "de/datenschutz/", "yearly", "0.3")]
+    rows = []
+    for en, de, freq, prio in pairs:
+        for loc in (en, de):
+            rows.append(f"""  <url>
+    <loc>{SITE}/{loc}</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="{SITE}/{en}"/>
+    <xhtml:link rel="alternate" hreflang="de" href="{SITE}/{de}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{SITE}/{en}"/>
+    <lastmod>{lastmod}</lastmod>
+    <changefreq>{freq}</changefreq>
+    <priority>{prio}</priority>
+  </url>""")
+    (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+        + "\n".join(rows) + "\n</urlset>\n")
+
+
+if __name__ == "__main__":
+    import datetime
+    en_html = (ROOT / "index.html").read_text()
+    de_html = build_home_de()
+    legal_pages(en_html, "en")
+    legal_pages(de_html, "de")
+    sitemap(datetime.date.today().isoformat())
+    print("Built: de/index.html, impressum/, privacy/, de/impressum/, de/datenschutz/, sitemap.xml")
