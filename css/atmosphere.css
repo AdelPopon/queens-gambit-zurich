@@ -196,3 +196,13 @@ body::before {
 @media (prefers-reduced-motion: reduce) { .to-top { transition: none; transform: none; } }
 /* Keep the floating button clear of the footer's own links at the very bottom */
 @media (max-width: 899px) { .site-footer { padding-bottom: calc(2rem + 68px + env(safe-area-inset-bottom, 0px)); } }
+
+/* ---------- Events: Special event badge and partner links (reusable) ---------- */
+.event__programme--special { background: var(--g-indigo); color: var(--g-white); }
+.event--featured .event__programme--special { background: var(--g-indigo); }
+.event__partner {
+  color: inherit; text-decoration: underline; text-decoration-thickness: 2px;
+  text-decoration-color: rgba(0, 112, 180, .45); text-underline-offset: .18em;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.event__partner:hover, .event__partner:focus-visible { color: var(--g-blue); text-decoration-color: var(--g-blue); }

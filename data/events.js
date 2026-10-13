@@ -21,6 +21,9 @@
      linkKey     optional key from config.js links (e.g. "kidsRegistration")
      linkLabel   optional button text
      coach       optional coach name, shown on the event card
+     special     optional true: shows the "Special event" badge instead of the programme
+     partners    optional list of { name, url }: each name in the title becomes a
+                 link to the partner's official website (opens in a new tab)
      price       optional price in CHF (search-engine event data only)
 
    Sources: Winter Schedule 2026/27 flyer (W26QGflzers.pdf, InstaW26QGZ.png)
@@ -49,7 +52,10 @@
     0: { title: "Coaching Session", coach: "Sinan Deveci", summary: "Guided chess session with our coach. Winter Schedule 2026/27. All levels welcome." }
   };
   var SPECIAL = {
-    "2026-11-29": { title: "QGZ × WINZ", summary: "Programme to be announced." }
+    "2026-11-29": {
+      title: "QGZ × WINZ", summary: "Programme to be announced.", special: true,
+      partners: [{ name: "WINZ", url: "https://www.ifi.uzh.ch/en/winz.html" }]
+    }
   };
   function weekday(iso) { var p = iso.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).getDay(); }
 
@@ -60,6 +66,8 @@
       programme: "community",
       title: f.title,
       coach: f.coach || null,
+      special: !!f.special,
+      partners: f.partners || null,
       sessions: [{ date: date, time: startTime(date), label: null }],
       venue: "Robins Caffè",
       address: "Stampfenbachstrasse 38, 8006 Zürich",

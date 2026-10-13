@@ -162,6 +162,25 @@
       .sort(function (a, b) { return a.next - b.next; });
   }
 
+  // Title with partner names linked to their official websites (new tab).
+  function eventTitle(ev) {
+    var h = el("h3", "event__title");
+    var rest = ev.title;
+    (ev.partners || []).forEach(function (pt) {
+      if (!pt.url) return;
+      var i = rest.indexOf(pt.name);
+      if (i < 0) return;
+      h.appendChild(document.createTextNode(rest.slice(0, i)));
+      var a = el("a", "event__partner", pt.name);
+      a.href = pt.url; a.target = "_blank"; a.rel = "noopener";
+      a.setAttribute("aria-label", pt.name + " (opens in a new tab)");
+      h.appendChild(a);
+      rest = rest.slice(i + pt.name.length);
+    });
+    h.appendChild(document.createTextNode(rest));
+    return h;
+  }
+
   function renderEvent(item, today) {
     var ev = item.ev;
     var multi = ev.sessions.length > 1;
@@ -184,12 +203,13 @@
     // Body
     var body = el("div", "event__body");
     var tags = el("div", "event__tags");
-    tags.appendChild(el("span", "event__programme", PROGRAMMES[ev.programme] || ev.programme));
+    if (ev.special) tags.appendChild(el("span", "event__programme event__programme--special", "Special event"));
+    else tags.appendChild(el("span", "event__programme", PROGRAMMES[ev.programme] || ev.programme));
     if (ev.status && STATUSES[ev.status]) {
       tags.appendChild(el("span", "status " + STATUSES[ev.status].cls, STATUSES[ev.status].label));
     }
     body.appendChild(tags);
-    body.appendChild(el("h3", "event__title", ev.title));
+    body.appendChild(eventTitle(ev));
 
     var meta = el("p", "event__meta");
     if (!multi && ev.sessions[0].time) {   // time is shown only when confirmed
