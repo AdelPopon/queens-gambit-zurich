@@ -210,6 +210,29 @@
   .pilot__details, .pilot__toggle .event__chevron { transition: none !important; }
 }
 
+/* ---------- Upcoming list: multi-session dates fold away on phones ---------- */
+.event__more { display: contents; }   /* larger screens: dates always shown, as before */
+.event__dates-toggle { display: none; justify-self: start; }
+.event__dates-toggle .event__chevron { transition: transform .3s ease; }
+.event__dates-toggle[aria-expanded="true"] .event__chevron { transform: rotate(180deg); }
+@media (max-width: 719px) {
+  .event__more { display: grid; justify-items: start; min-width: 0; }
+  .event__dates-toggle { display: inline-flex; }
+  .event__fold {
+    display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; width: 100%;
+    transition: grid-template-rows .35s ease, opacity .3s ease, visibility 0s linear .35s;
+  }
+  .event__fold.is-open {
+    grid-template-rows: 1fr; opacity: 1; visibility: visible;
+    transition: grid-template-rows .35s ease, opacity .3s ease, visibility 0s;
+  }
+  .event__fold-inner { overflow: hidden; min-height: 0; }
+  .event__fold-inner > .event__sessions { margin-top: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .event__fold, .event__dates-toggle .event__chevron { transition: none !important; }
+}
+
 /* ---------- Registration page (/winz/): the same form, shown in the page ---------- */
 .reg-page { padding-block: clamp(2rem, 6vw, 5rem); }
 .reg-page__inner { display: grid; gap: clamp(1.5rem, 4vw, 2.5rem); max-width: 720px; }
