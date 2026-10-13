@@ -407,7 +407,7 @@
         "location": { "@type": "Place", "name": ev.venue, "address": { "@type": "PostalAddress",
           "streetAddress": parts[1] || ev.address, "postalCode": parts[2], "addressLocality": parts[3], "addressCountry": "CH" } },
         "organizer": org,
-        "url": "https://queensgambitzurich.ch/" + (LANG === "de" ? "de/" : "") + "#" + (ev.programme === "kids" ? "kids" : "upcoming")
+        "url": "https://queensgambitzurich.ch/" + (LANG === "en" ? "en/" : "") + "#" + (ev.programme === "kids" ? "kids" : "upcoming")
       };
       if (t1.length > 1) obj.endDate = isoAt(last.date, t1[1]);
       if (ev.coach) obj.performer = { "@type": "Person", "name": ev.coach };
