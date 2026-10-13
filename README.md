@@ -24,3 +24,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-08.zip` | `backup-2026-10-08` | `a0277d9` | 2026-10-08 16:22 | Version 1 as published (PR #1) plus custom domain `CNAME` |
 | `QGZ_Website_Backup_2026-10-08_1628.zip` | `backup-2026-10-08_1628` | `a0277d9` | 2026-10-08 16:28 | Live site before the logo, photo-privacy and Kids image update. |
 | `QGZ_Website_Backup_PreGlass_2026-10-08.zip` | `backup-PreGlass-2026-10-08` | `b1ec49a` | 2026-10-08 17:21 | Live site before the Glassmorphism visual update (Blue, Indigo & Ice). |
+| `QGZ_Website_Backup_2026-10-13_1221.zip` | `backup-2026-10-13_1221` | `9d8659e` | 2026-10-13 12:21 | Live site before the WINZ partner link and Special Event badge update. |
