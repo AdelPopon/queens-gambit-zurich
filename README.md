@@ -31,3 +31,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-13_1838.zip` | `backup-2026-10-13_1838` | `0eb3826` | 2026-10-13 18:38 | Before the navigation, Kids Chess philosophy and Youth Programme update (PR #19) |
 | `QGZ_Website_Backup_2026-10-13_1854.zip` | `backup-2026-10-13_1854` | `f1804f7` | 2026-10-13 18:54 | Before the Kids Chess heading and closing statement update (PR #20) |
 | `QGZ_Website_Backup_2026-10-13_1932.zip` | `backup-2026-10-13_1932` | `9158dea` | 2026-10-13 19:32 | Before the Chess Club / Community terminology review (PR #22) |
+| `QGZ_Website_Backup_2026-10-13_2106.zip` | `backup-2026-10-13_2106` | `bbc054a` | 2026-10-13 21:06 | Before collapsing the Zollikon dates in the Upcoming list on phones (PR #24) |
