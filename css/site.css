@@ -280,6 +280,7 @@ a:hover { color: var(--blue); }
     font-family: var(--font-body); font-weight: 500; font-size: .9rem;
     text-transform: none; letter-spacing: 0;
   }
+  .site-nav__list { list-style: none; margin: 0; }
   .site-nav { margin-right: 1.25rem; }
 }
 
@@ -431,7 +432,7 @@ a:hover { color: var(--blue); }
   display: grid; gap: 1.75rem; border-radius: var(--radius); min-width: 0;
 }
 .pilot__head { display: grid; gap: .75rem; }
-.pilot__head h3 { font-size: clamp(1.9rem, 3vw + 1rem, 2.75rem); text-transform: uppercase; letter-spacing: var(--track-tight); line-height: .95; }
+.pilot__head h3, .pilot__title { font-size: clamp(1.9rem, 3vw + 1rem, 2.75rem); text-transform: uppercase; letter-spacing: var(--track-tight); line-height: .95; }
 .pilot__sub { color: var(--muted); }
 
 .table-wrap { overflow-x: auto; }

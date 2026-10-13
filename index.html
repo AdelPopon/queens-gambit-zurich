@@ -57,13 +57,13 @@
 </script>
 <meta name="theme-color" content="#EAF3FF">
 <link rel="icon" type="image/png" href="assets/brand/qgz-favicon.png">
-<link rel="preload" href="assets/fonts/archivo-black-latin-400-normal.woff2?v=20261013-1835" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=20261013-1835">
-<link rel="stylesheet" href="css/site.css?v=20261013-1835">
-<link rel="stylesheet" href="css/glass.css?v=20261013-1835">
-<link rel="stylesheet" href="css/atmosphere.css?v=20261013-1835">
-<link rel="stylesheet" href="css/features.css?v=20261013-1835">
-<link rel="stylesheet" href="css/type.css?v=20261013-1835">
+<link rel="preload" href="assets/fonts/archivo-black-latin-400-normal.woff2?v=20261013-1845" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css?v=20261013-1845">
+<link rel="stylesheet" href="css/site.css?v=20261013-1845">
+<link rel="stylesheet" href="css/glass.css?v=20261013-1845">
+<link rel="stylesheet" href="css/atmosphere.css?v=20261013-1845">
+<link rel="stylesheet" href="css/features.css?v=20261013-1845">
+<link rel="stylesheet" href="css/type.css?v=20261013-1845">
 </head>
 <body>
 
@@ -105,8 +105,8 @@
         <span class="site-nav__toggle-label">Menu</span>
       </button>
       <ul class="site-nav__list" id="site-nav-list">
-        <li><a href="#upcoming">Upcoming</a></li>
         <li><a href="#community">Community</a></li>
+        <li><a href="#upcoming">Upcoming</a></li>
         <li><a href="#kids">Kids</a></li>
         <li><a href="#impact">Impact</a></li>
         <li><a href="#collaborations">Collaborations</a></li>
@@ -167,35 +167,8 @@
     </div>
   </section>
 
-  <!-- 2. UPCOMING ======================================================== -->
-  <section class="section" id="upcoming" aria-labelledby="upcoming-title">
-    <div class="container">
-      <header class="section-head section-head--split">
-        <div>
-          <p class="eyebrow">What's on</p>
-          <h2 id="upcoming-title">Upcoming at Queen's Gambit</h2>
-        </div>
-        <p class="section-head__aside">Dates for our regular chess club and programmes.</p>
-      </header>
-
-      <ol class="event-list" data-event-list aria-live="polite"></ol>
-
-      <p class="event-empty" data-event-empty hidden>
-        There are no upcoming dates right now. Please check back soon or get in touch.
-      </p>
-
-      <div class="event-more">
-        <button class="btn btn--ghost" type="button" data-event-more hidden aria-controls="upcoming-title"></button>
-      </div>
-
-      <noscript>
-        <p class="event-empty">Event dates need JavaScript to display. Winter Schedule 2026/27 at Robins Caffè, Stampfenbachstrasse 38, 8006 Zürich.</p>
-      </noscript>
-    </div>
-  </section>
-
-  <!-- 3. COMMUNITY ======================================================= -->
-  <section class="section section--sand" id="community" aria-labelledby="community-title">
+  <!-- 2. COMMUNITY ======================================================= -->
+  <section class="section" id="community" aria-labelledby="community-title">
     <div class="container">
       <header class="section-head">
         <p class="eyebrow">Community</p>
@@ -248,20 +221,91 @@
     </div>
   </section>
 
+  <!-- 3. UPCOMING ======================================================== -->
+  <section class="section section--sand" id="upcoming" aria-labelledby="upcoming-title">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">What's on</p>
+          <h2 id="upcoming-title">Upcoming at Queen's Gambit</h2>
+        </div>
+        <p class="section-head__aside">Dates for our regular chess club and programmes.</p>
+      </header>
+
+      <ol class="event-list" data-event-list aria-live="polite"></ol>
+
+      <p class="event-empty" data-event-empty hidden>
+        There are no upcoming dates right now. Please check back soon or get in touch.
+      </p>
+
+      <div class="event-more">
+        <button class="btn btn--ghost" type="button" data-event-more hidden aria-controls="upcoming-title"></button>
+      </div>
+
+      <noscript>
+        <p class="event-empty">Event dates need JavaScript to display. Winter Schedule 2026/27 at Robins Caffè, Stampfenbachstrasse 38, 8006 Zürich.</p>
+      </noscript>
+    </div>
+  </section>
+
   <!-- 4. KIDS CHESS ====================================================== -->
   <section class="section" id="kids" aria-labelledby="kids-title">
     <div class="container">
       <header class="section-head">
         <p class="eyebrow">Kids Chess</p>
-        <h2 id="kids-title">Chess for the Next Generation</h2>
-        <p class="lead">Kids Chess is our new programme for children. It begins with three mornings in Zollikon, from the first move to the first tournament.</p>
+        <h2 id="kids-title">Beyond Champions. Inspiring a Lifelong Love for Chess.</h2>
+        <p class="lead">We believe every child deserves the opportunity to discover their potential through chess. Some may become champions, others may simply enjoy playing for years to come. Both are success stories.</p>
+        <p class="kids__approach">Our approach combines learning, encouragement and individual development, keeping curiosity and enthusiasm at the heart of the experience.</p>
       </header>
 
+      <ul class="principles" role="list">
+        <li class="principle">
+          <span class="principle__num" aria-hidden="true">01</span>
+          <h3>Passion First</h3>
+          <p>We foster curiosity, enjoyment and enthusiasm in both students and educators.</p>
+        </li>
+        <li class="principle">
+          <span class="principle__num" aria-hidden="true">02</span>
+          <h3>Every Child Can Grow</h3>
+          <p>We support individual abilities, learning speeds and ambitions, including advanced development for exceptionally talented children.</p>
+        </li>
+        <li class="principle">
+          <span class="principle__num" aria-hidden="true">03</span>
+          <h3>A Lifelong Connection to Chess</h3>
+          <p>We encourage lasting participation, regardless of competitive achievements.</p>
+        </li>
+      </ul>
+
+      <p class="pull kids__pull">We are not against competition or excellence. Competitive success deserves recognition, but it should not be the only measure of educational success.</p>
+
+      <div class="pathway" aria-labelledby="pathway-title">
+        <h3 class="pathway__title" id="pathway-title">Chess for life</h3>
+        <ol class="pathway__steps">
+          <li class="pathway__step">
+            <p class="pathway__type">Educational programme</p>
+            <h4>Kids Chess</h4>
+            <p>Learning, encouragement and individual development for children.</p>
+          </li>
+          <li class="pathway__step">
+            <span class="status status--dev">In development</span>
+            <h4>Youth Chess</h4>
+            <p>We are developing a programme for young players, as the next step after Kids Chess.</p>
+          </li>
+          <li class="pathway__step">
+            <p class="pathway__type">Community</p>
+            <h4>Adult Community</h4>
+            <p>Our women-oriented chess community, with regular meetings, coaching and social chess.</p>
+            <a class="text-link" href="#community">Our Community</a>
+          </li>
+        </ol>
+      </div>
+
+      <h3 class="kids__subhead">Upcoming workshop</h3>
       <div class="kids">
         <article class="pilot" aria-labelledby="pilot-title">
           <div class="pilot__head">
-            <span class="status status--pilot">Upcoming event</span>
-            <h3 id="pilot-title">Zollikon Kids Chess</h3>
+            <span class="status status--pilot">Workshop</span>
+            <h4 class="pilot__title" id="pilot-title">Zollikon Kids Chess</h4>
             <p class="pilot__sub">October 2026 · Combi Face, Zollikon</p>
           </div>
 
@@ -356,6 +400,7 @@
           <p class="collab__type">Collaboration</p>
           <h3>WINZ</h3>
           <p>A shared event connecting chess and technology, two fields where women are still a minority.</p>
+          <a class="text-link" href="https://www.ifi.uzh.ch/en/winz.html" target="_blank" rel="noopener" aria-label="WINZ website (opens in a new tab)">WINZ website</a>
         </li>
         <li class="collab">
           <p class="collab__type">Venue</p>
@@ -365,7 +410,7 @@
         <li class="collab">
           <p class="collab__type">Venue</p>
           <h3>Combi Face</h3>
-          <p>Venue of the Zollikon Kids Chess pilot. Oberdorfstrasse 37, 8702 Zollikon.</p>
+          <p>Venue of the Zollikon Kids Chess workshop. Oberdorfstrasse 37, 8702 Zollikon.</p>
         </li>
         <li class="collab">
           <p class="collab__type">Venue</p>
@@ -455,8 +500,8 @@
     <nav class="site-footer__col" aria-label="Footer">
       <h2 class="site-footer__title">Explore</h2>
       <ul role="list">
-        <li><a href="#upcoming">Upcoming</a></li>
         <li><a href="#community">Community</a></li>
+        <li><a href="#upcoming">Upcoming</a></li>
         <li><a href="#kids">Kids Chess</a></li>
         <li><a href="#impact">Social Impact</a></li>
         <li><a href="#collaborations">Collaborations</a></li>
@@ -575,9 +620,9 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="data/config.js?v=20261013-1835"></script>
-<script src="js/i18n.js?v=20261013-1835"></script>
-<script src="data/events.js?v=20261013-1835"></script>
-<script src="js/site.js?v=20261013-1835"></script>
+<script src="data/config.js?v=20261013-1845"></script>
+<script src="js/i18n.js?v=20261013-1845"></script>
+<script src="data/events.js?v=20261013-1845"></script>
+<script src="js/site.js?v=20261013-1845"></script>
 </body>
 </html>

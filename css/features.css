@@ -141,6 +141,45 @@
 .reg-done h3 { font-size: 1.3rem; }
 .reg-done:focus, .reg-form__alert:focus { outline: none; }
 
+/* ---------- Kids Chess: philosophy, pathway, workshop ---------- */
+.kids__approach { max-width: 40rem; color: var(--muted); }
+.principles { display: grid; gap: 1rem; margin: 0; padding: 0; }
+.principle {
+  display: grid; gap: .55rem; align-content: start;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius); box-shadow: var(--glass-shadow);
+}
+.principle__num { font-family: var(--font-display); font-size: 1.6rem; line-height: 1; color: var(--g-blue); }
+.principle h3 { font-size: clamp(1.15rem, 1vw + .9rem, 1.35rem); }
+.kids__pull { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+.pathway { margin-top: clamp(3rem, 7vw, 5rem); display: grid; gap: 1.25rem; }
+.pathway__title, .kids__subhead { font-size: clamp(1.3rem, 1.5vw + .9rem, 1.75rem); }
+.pathway__steps { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.pathway__step {
+  position: relative; display: grid; gap: .5rem; align-content: start; justify-items: start;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: rgba(255, 255, 255, .5); border: 1px solid var(--glass-border); border-radius: var(--g-radius);
+}
+.pathway__step h4 { font-size: 1.2rem; }
+.pathway__type { font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--g-indigo); }
+/* Arrow between steps: down on phones, right on wider screens */
+.pathway__step + .pathway__step::before {
+  content: ""; position: absolute; left: 50%; top: -1rem; width: 1rem; height: 1rem;
+  transform: translate(-50%, -10%);
+  background: var(--g-indigo);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4v14m-6-6 6 6 6-6' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4v14m-6-6 6 6 6-6' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.kids__subhead { margin: clamp(3rem, 7vw, 5rem) 0 1.25rem; }
+
+@media (min-width: 720px) {
+  .principles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pathway__steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .pathway__step + .pathway__step::before { left: -1.5rem; top: 50%; width: 1.5rem; height: 1.25rem; transform: translateY(-50%) rotate(-90deg); }
+}
+
 /* ---------- Registration page (/winz/): the same form, shown in the page ---------- */
 .reg-page { padding-block: clamp(2rem, 6vw, 5rem); }
 .reg-page__inner { display: grid; gap: clamp(1.5rem, 4vw, 2.5rem); max-width: 720px; }

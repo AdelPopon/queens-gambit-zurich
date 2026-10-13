@@ -12,7 +12,7 @@
    Fields
      id          unique text id
      programme   "community" | "kids" | "impact"
-     status      optional: "upcoming-pilot" | "in-development" | "planned"
+     status      optional: "workshop" | "upcoming-pilot" | "in-development" | "planned"
      Any text field can be one string (same in both languages) or
      { en: "…", de: "…" } for English and German.
 
@@ -129,8 +129,8 @@
   var kidsPilot = {
     id: "zollikon-kids-chess-pilot-2026",
     programme: "kids",
-    status: "upcoming-pilot",
-    title: "Zollikon Kids Chess Pilot",
+    status: "workshop",
+    title: "Zollikon Kids Chess Workshop",
     sessions: [
       { date: "2026-10-24", time: "09:30–11:30", label: { en: "Learn & Discover", de: "Lernen & Entdecken" } },
       { date: "2026-10-25", time: "09:30–11:30", label: { en: "Practice & Challenge", de: "Üben & Herausfordern" } },
