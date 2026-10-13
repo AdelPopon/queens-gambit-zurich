@@ -30,3 +30,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-13_1830.zip` | `backup-2026-10-13_1830` | `578f4b1` | 2026-10-13 18:30 | Before the shareable registration page /winz/ (PR #18) |
 | `QGZ_Website_Backup_2026-10-13_1838.zip` | `backup-2026-10-13_1838` | `0eb3826` | 2026-10-13 18:38 | Before the navigation, Kids Chess philosophy and Youth Programme update (PR #19) |
 | `QGZ_Website_Backup_2026-10-13_1854.zip` | `backup-2026-10-13_1854` | `f1804f7` | 2026-10-13 18:54 | Before the Kids Chess heading and closing statement update (PR #20) |
+| `QGZ_Website_Backup_2026-10-13_1932.zip` | `backup-2026-10-13_1932` | `9158dea` | 2026-10-13 19:32 | Before the Chess Club / Community terminology review (PR #22) |
