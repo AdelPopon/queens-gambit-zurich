@@ -132,6 +132,7 @@
 
   /* ---------- 4. Upcoming events ---------- */
   var STATUSES = {
+    "workshop": { cls: "status--pilot" },
     "upcoming-pilot": { cls: "status--pilot" },
     "in-development": { cls: "status--dev" },
     "planned": { cls: "status--planned" }
