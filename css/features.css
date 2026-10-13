@@ -152,7 +152,13 @@
 }
 .principle__num { font-family: var(--font-display); font-size: 1.6rem; line-height: 1; color: var(--g-blue); }
 .principle h3 { font-size: clamp(1.15rem, 1vw + .9rem, 1.35rem); }
-.kids__pull { margin-top: clamp(2.5rem, 6vw, 4rem); }
+.kids__subtitle {
+  font-family: var(--font-body); font-weight: 600; font-size: clamp(1.15rem, 1.2vw + .85rem, 1.5rem);
+  line-height: 1.2; color: var(--g-indigo); max-width: 36ch; text-wrap: balance;
+}
+.kids__closing { margin-top: clamp(2.5rem, 6vw, 4rem); display: grid; gap: 1rem; }
+.kids__closing-title { font-size: clamp(1.3rem, 1.5vw + .9rem, 1.75rem); }
+.kids__pull { margin-top: 0; max-width: 34ch; }
 
 .pathway { margin-top: clamp(3rem, 7vw, 5rem); display: grid; gap: 1.25rem; }
 .pathway__title, .kids__subhead { font-size: clamp(1.3rem, 1.5vw + .9rem, 1.75rem); }
