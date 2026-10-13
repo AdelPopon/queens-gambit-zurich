@@ -28,3 +28,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-13_1711.zip` | `backup-2026-10-13_1711` | `50259dc` | 2026-10-13 17:11 | Live site before German language, WINZ programme and registration system. |
 | `QGZ_Website_Backup_2026-10-13_1810.zip` | `backup-2026-10-13_1810` | `74108c2` | 2026-10-13 18:10 | Before activating event registration (PR #17) |
 | `QGZ_Website_Backup_2026-10-13_1830.zip` | `backup-2026-10-13_1830` | `578f4b1` | 2026-10-13 18:30 | Before the shareable registration page /winz/ (PR #18) |
+| `QGZ_Website_Backup_2026-10-13_1838.zip` | `backup-2026-10-13_1838` | `0eb3826` | 2026-10-13 18:38 | Before the navigation, Kids Chess philosophy and Youth Programme update (PR #19) |
