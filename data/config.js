@@ -21,8 +21,8 @@ window.QGZ_CONFIG = {
     kidsRegistration: null,
 
     // Legal pages (English / German)
-    impressum: { en: "/impressum/", de: "/de/impressum/" },
-    privacy: { en: "/privacy/", de: "/de/datenschutz/" }
+    impressum: { en: "/en/impressum/", de: "/impressum/" },
+    privacy: { en: "/en/privacy/", de: "/datenschutz/" }
   },
 
   // Event registration (QGZ × WINZ). The URL of the deployed Google Apps

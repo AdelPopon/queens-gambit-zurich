@@ -235,7 +235,7 @@ function sendConfirmation_(r) {
     '',
     'Wir freuen uns auf dich!',
     "Queen's Gambit Zürich",
-    'https://queensgambitzurich.ch/de/'
+    'https://queensgambitzurich.ch/'
   ] : [
     'Hello ' + r.name,
     '',
@@ -253,7 +253,7 @@ function sendConfirmation_(r) {
     '',
     'We look forward to seeing you!',
     "Queen's Gambit Zürich",
-    'https://queensgambitzurich.ch/'
+    'https://queensgambitzurich.ch/en/'
   ];
   MailApp.sendEmail({
     to: r.email,
