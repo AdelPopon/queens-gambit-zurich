@@ -97,8 +97,8 @@ def build_home_de():
                         '<meta property="og:locale" content="de_CH">\n<meta property="og:locale:alternate" content="en_GB">')
     html = html.replace('"inLanguage": "en"', '"inLanguage": "de"')
     html = html.replace(
-        '"description": "A women\'s chess community in Zürich, Switzerland. A place for women to play chess, with regular meet-ups for all levels and Kids Chess for children."',
-        '"description": "Eine Schach-Community für Frauen in Zürich. Ein Ort, an dem Frauen Schach spielen, mit regelmässigen Treffs für alle Spielstärken und Kinderschach."')
+        '"description": "A women\'s chess club and community in Zürich, Switzerland. A place for women to play chess, with regular meet-ups for all levels and Kids Chess for children."',
+        '"description": "Ein Schachclub und eine Community für Frauen in Zürich. Ein Ort, an dem Frauen Schach spielen, mit regelmässigen Treffs für alle Spielstärken und Kinderschach."')
     html = html.replace('href="/en/privacy/"', 'href="/datenschutz/"')
     html = set_lang_switch(html, "de", "/en/", "/")
     html = html.replace("<!-- ======================================================================\n     Queen's Gambit Zürich · Website v1",
@@ -114,14 +114,14 @@ def build_home_de():
 LEGAL = {
     "en": {
         "impressum": {"slug": "en/impressum", "title": "Impressum", "lead": "Information about the operator of this website.",
-                      "description": "Impressum of Queen's Gambit Zürich, a community project and women's chess community in Zürich, Switzerland."},
+                      "description": "Impressum of Queen's Gambit Zürich, a community project and women's chess club in Zürich, Switzerland."},
         "privacy": {"slug": "en/privacy", "title": "Privacy Policy", "lead": "How we handle data on this website.",
                     "description": "Privacy policy of Queen's Gambit Zürich: no cookies, no tracking; how event registrations are handled under the Swiss FADP."},
         "eyebrow": "Legal", "updated": "Last updated", "home": "/en/",
     },
     "de": {
         "impressum": {"slug": "impressum", "title": "Impressum", "lead": "Angaben zur Betreiberin dieser Website.",
-                      "description": "Impressum von Queen's Gambit Zürich, einem Community-Projekt und einer Schach-Community für Frauen in Zürich."},
+                      "description": "Impressum von Queen's Gambit Zürich, einem Community-Projekt und Schachclub für Frauen in Zürich."},
         "privacy": {"slug": "datenschutz", "title": "Datenschutzerklärung", "lead": "Wie wir mit Daten auf dieser Website umgehen.",
                     "description": "Datenschutzerklärung von Queen's Gambit Zürich: keine Cookies, kein Tracking; wie Anmeldungen für Anlässe gemäss DSG bearbeitet werden."},
         "eyebrow": "Rechtliches", "updated": "Zuletzt aktualisiert", "home": "/",
