@@ -239,7 +239,7 @@ IMPRESSUM = {
 
 PRIVACY = {
     "en": f"""
-        <p>This privacy policy explains how personal data is processed when you visit this website, register for an event or contact us. It follows the Swiss Federal Act on Data Protection (FADP).</p>
+        <p>This privacy policy explains how personal data is processed when you visit this website, register for an event, subscribe to our newsletter or contact us. It follows the Swiss Federal Act on Data Protection (FADP).</p>
 
         <h2>1. Who is responsible</h2>
         <p>Queen's Gambit Zürich, a community project based in Zürich, Switzerland.<br>
@@ -247,7 +247,7 @@ PRIVACY = {
         Email: <span class="legal__email">{EMAIL}</span></p>
 
         <h2>2. In short</h2>
-        <p>This website is mainly informational. It has no user accounts and no newsletter. The only personal data we ask for is in the registration form for selected events (section 5), which you use voluntarily. The website uses no cookies and no analytics or tracking tools, and it does not embed content from social networks. Fonts, images and scripts are delivered from this website itself.</p>
+        <p>This website is mainly informational. It has no user accounts. The only personal data we ask for is in the registration form for selected events (section 5) and in the newsletter form (section 6), both of which you use voluntarily. The website uses no cookies and no analytics or tracking tools, and it does not embed content from social networks. Fonts, images and scripts are delivered from this website itself.</p>
 
         <h2>3. Hosting and technical data</h2>
         <p>This website is hosted on GitHub Pages, a service of GitHub, Inc., USA. When you visit the website, your browser connects to GitHub's servers, which necessarily process technical data such as your IP address, the date and time of the request and your browser type in order to deliver the pages. According to GitHub, visitors' IP addresses are logged and stored for security purposes. We do not receive or analyse this data ourselves.</p>
@@ -264,19 +264,25 @@ PRIVACY = {
         <p>The form sends your details to a Google Apps Script service in our Google account. Your registration is stored in a private Google Sheets spreadsheet, and the confirmation emails are sent via Google. When you submit the form, your browser connects to Google's servers, which also process your IP address. Google LLC may process this data in the USA and participates in the Swiss-U.S. Data Privacy Framework. To protect the form against spam, we use a hidden check field and a timing check; no cookies or tracking are involved.</p>
         <p>You register by ticking the consent box. You can withdraw your consent and cancel your registration at any time by emailing <span class="legal__email">{EMAIL}</span>; we then delete your registration. Otherwise we delete registrations no later than three months after the event.</p>
 
-        <h2>6. Links to other websites</h2>
+        <h2>6. Newsletter</h2>
+        <p>You can subscribe to our newsletter on this website. We then process your email address, the topics you choose (Women's Chess Club &amp; Community, Kids Chess, General QGZ news and events), the language of the form, and the date, time and IP address of your subscription and confirmation, which serve as proof of your consent.</p>
+        <p>We send the newsletter with Mailchimp, a service of The Rocket Science Group LLC d/b/a Mailchimp (Intuit), USA. Your data is stored in our Mailchimp account and may be processed in the USA. Mailchimp participates in the Swiss-U.S. Data Privacy Framework. The form sends your details to Mailchimp only when you submit it; no Mailchimp script is loaded with this website and no cookies are set on it.</p>
+        <p>We use double opt-in: after subscribing, you receive an email with a confirmation link, and you are subscribed only once you click it. We use your data only to send you the newsletter on the topics you chose. Mailchimp shows us whether a newsletter was opened and which links were clicked, so that we can improve our emails. We do not pass your data on to anyone else for their own purposes.</p>
+        <p>Subscribing is voluntary and based on your consent. You can unsubscribe at any time with the link at the bottom of every newsletter, change your topics there, or write to <span class="legal__email">{EMAIL}</span>. We then stop sending you newsletters. Registering for an event does not subscribe you to the newsletter.</p>
+
+        <h2>7. Links to other websites</h2>
         <p>Our website links to our Instagram profile, partner websites such as WINZ and other external websites. No data is sent to these services when you visit our website; it is only when you follow a link that you leave our website, and the privacy policy of that provider applies, for Instagram that of Meta Platforms.</p>
 
-        <h2>7. Your rights</h2>
+        <h2>8. Your rights</h2>
         <p>Under the FADP you can ask us for information about personal data we process about you, and you can request its correction or deletion. Please write to <span class="legal__email">{EMAIL}</span>. You can also contact the Swiss Federal Data Protection and Information Commissioner (FDPIC) at <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener">edoeb.admin.ch</a>.</p>
 
-        <h2>8. Changes</h2>
+        <h2>9. Changes</h2>
         <p>We will update this privacy policy if the website or the way we process data changes. The current version is always published on this page.</p>
 
-        <p class="legal__updated">Last updated: 13 October 2026</p>
+        <p class="legal__updated">Last updated: 14 October 2026</p>
 """,
     "de": f"""
-        <p>Diese Datenschutzerklärung erklärt, wie Personendaten bearbeitet werden, wenn du diese Website besuchst, dich für einen Anlass anmeldest oder uns kontaktierst. Sie richtet sich nach dem Schweizer Bundesgesetz über den Datenschutz (DSG).</p>
+        <p>Diese Datenschutzerklärung erklärt, wie Personendaten bearbeitet werden, wenn du diese Website besuchst, dich für einen Anlass anmeldest, unseren Newsletter abonnierst oder uns kontaktierst. Sie richtet sich nach dem Schweizer Bundesgesetz über den Datenschutz (DSG).</p>
 
         <h2>1. Verantwortlich</h2>
         <p>Queen's Gambit Zürich, ein Community-Projekt mit Sitz in Zürich, Schweiz.<br>
@@ -284,7 +290,7 @@ PRIVACY = {
         E-Mail: <span class="legal__email">{EMAIL}</span></p>
 
         <h2>2. Kurz zusammengefasst</h2>
-        <p>Diese Website dient hauptsächlich der Information. Es gibt keine Benutzerkonten und keinen Newsletter. Personendaten erfragen wir nur im Anmeldeformular für ausgewählte Anlässe (Abschnitt 5), das du freiwillig nutzt. Die Website verwendet keine Cookies und keine Analyse- oder Tracking-Tools und bindet keine Inhalte sozialer Netzwerke ein. Schriften, Bilder und Skripte werden direkt von dieser Website geladen.</p>
+        <p>Diese Website dient hauptsächlich der Information. Es gibt keine Benutzerkonten. Personendaten erfragen wir nur im Anmeldeformular für ausgewählte Anlässe (Abschnitt 5) und im Newsletter-Formular (Abschnitt 6), die du beide freiwillig nutzt. Die Website verwendet keine Cookies und keine Analyse- oder Tracking-Tools und bindet keine Inhalte sozialer Netzwerke ein. Schriften, Bilder und Skripte werden direkt von dieser Website geladen.</p>
 
         <h2>3. Hosting und technische Daten</h2>
         <p>Diese Website wird bei GitHub Pages gehostet, einem Dienst der GitHub, Inc., USA. Wenn du die Website besuchst, verbindet sich dein Browser mit den Servern von GitHub. Dabei werden zwangsläufig technische Daten wie deine IP-Adresse, Datum und Uhrzeit der Anfrage und dein Browsertyp bearbeitet, damit die Seiten ausgeliefert werden können. Gemäss GitHub werden die IP-Adressen der Besucherinnen und Besucher aus Sicherheitsgründen protokolliert und gespeichert. Wir selbst erhalten und analysieren diese Daten nicht.</p>
@@ -301,16 +307,22 @@ PRIVACY = {
         <p>Das Formular übermittelt deine Angaben an einen Google-Apps-Script-Dienst in unserem Google-Konto. Deine Anmeldung wird in einer privaten Google-Sheets-Tabelle gespeichert, und die Bestätigungs-E-Mails werden über Google versendet. Beim Absenden verbindet sich dein Browser mit den Servern von Google, die dabei auch deine IP-Adresse bearbeiten. Google LLC kann diese Daten in den USA bearbeiten und nimmt am Swiss-U.S. Data Privacy Framework teil. Zum Schutz vor Spam verwenden wir ein verstecktes Prüffeld und eine Zeitprüfung; Cookies oder Tracking kommen dabei nicht zum Einsatz.</p>
         <p>Du meldest dich an, indem du das Einwilligungsfeld ankreuzt. Du kannst deine Einwilligung jederzeit widerrufen und deine Anmeldung stornieren, indem du an <span class="legal__email">{EMAIL}</span> schreibst; wir löschen deine Anmeldung dann. Andernfalls löschen wir Anmeldungen spätestens drei Monate nach dem Anlass.</p>
 
-        <h2>6. Links zu anderen Websites</h2>
+        <h2>6. Newsletter</h2>
+        <p>Auf dieser Website kannst du unseren Newsletter abonnieren. Dabei bearbeiten wir deine E-Mail-Adresse, die von dir gewählten Themen (Schachclub &amp; Community für Frauen, Kids Chess, Allgemeine QGZ-News und Anlässe), die Sprache des Formulars sowie Datum, Uhrzeit und IP-Adresse deiner Anmeldung und Bestätigung, die als Nachweis deiner Einwilligung dienen.</p>
+        <p>Wir versenden den Newsletter mit Mailchimp, einem Dienst der The Rocket Science Group LLC d/b/a Mailchimp (Intuit), USA. Deine Daten werden in unserem Mailchimp-Konto gespeichert und können in den USA bearbeitet werden. Mailchimp nimmt am Swiss-U.S. Data Privacy Framework teil. Das Formular übermittelt deine Angaben erst beim Absenden an Mailchimp; mit dieser Website wird kein Mailchimp-Skript geladen und es werden keine Cookies gesetzt.</p>
+        <p>Wir verwenden das Double-Opt-in-Verfahren: Nach der Anmeldung erhältst du eine E-Mail mit einem Bestätigungslink, und erst wenn du darauf klickst, ist dein Abo aktiv. Wir verwenden deine Daten nur, um dir den Newsletter zu den gewählten Themen zu schicken. Mailchimp zeigt uns, ob ein Newsletter geöffnet und welche Links angeklickt wurden, damit wir unsere E-Mails verbessern können. Wir geben deine Daten nicht an Dritte für deren eigene Zwecke weiter.</p>
+        <p>Das Abo ist freiwillig und beruht auf deiner Einwilligung. Du kannst dich jederzeit über den Link am Ende jedes Newsletters abmelden, dort deine Themen ändern oder an <span class="legal__email">{EMAIL}</span> schreiben. Wir schicken dir dann keine Newsletter mehr. Eine Anmeldung für einen Anlass meldet dich nicht für den Newsletter an.</p>
+
+        <h2>7. Links zu anderen Websites</h2>
         <p>Unsere Website verlinkt auf unser Instagram-Profil, auf Websites von Partnern wie WINZ und auf weitere externe Websites. Beim Besuch unserer Website werden keine Daten an diese Dienste übermittelt. Erst wenn du einem Link folgst, verlässt du unsere Website; dann gilt die Datenschutzerklärung des jeweiligen Anbieters, bei Instagram diejenige von Meta Platforms.</p>
 
-        <h2>7. Deine Rechte</h2>
+        <h2>8. Deine Rechte</h2>
         <p>Gemäss DSG kannst du Auskunft über die Personendaten verlangen, die wir über dich bearbeiten, und deren Berichtigung oder Löschung verlangen. Schreib uns dazu an <span class="legal__email">{EMAIL}</span>. Du kannst dich auch an den Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) wenden: <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener">edoeb.admin.ch</a>.</p>
 
-        <h2>8. Änderungen</h2>
+        <h2>9. Änderungen</h2>
         <p>Wir passen diese Datenschutzerklärung an, wenn sich die Website oder die Bearbeitung von Daten ändert. Die aktuelle Version ist jeweils auf dieser Seite veröffentlicht.</p>
 
-        <p class="legal__updated">Zuletzt aktualisiert: 13. Oktober 2026</p>
+        <p class="legal__updated">Zuletzt aktualisiert: 14. Oktober 2026</p>
 """,
 }
 

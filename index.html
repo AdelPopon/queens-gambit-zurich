@@ -531,13 +531,13 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1330" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/fonts.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/site.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/glass.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/features.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/type.css?v=20261014-1330">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1500" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/site.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/glass.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/features.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/type.css?v=20261014-1500">
 </head>
 <body>
 
@@ -995,6 +995,72 @@
           <button class="btn btn--light" type="button" data-copy-email>E-Mail-Adresse kopieren</button>
         </li>
       </ul>
+
+      <!-- Newsletter signup (js/newsletter.js). Posts directly to Mailchimp only
+           when a visitor submits it: no Mailchimp script, no cookies on this site.
+           Mailchimp sends a confirmation email (double opt-in). Settings: data/config.js -->
+      <div class="newsletter" id="newsletter" aria-labelledby="newsletter-title" data-newsletter hidden>
+        <div class="newsletter__intro">
+          <h3 id="newsletter-title">Newsletter</h3>
+          <p>Neuigkeiten, Termine und Programme von Queen's Gambit Zürich per E-Mail. Wähle die Themen, die dich interessieren.</p>
+        </div>
+
+        <form class="newsletter__form reg-form" method="post" target="_blank" novalidate data-newsletter-form>
+          <div class="reg-field">
+            <label for="nl-email">E-Mail-Adresse <span class="reg-req" aria-hidden="true">*</span></label>
+            <input id="nl-email" name="EMAIL" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="nl-email-error">
+            <p class="reg-field__error" id="nl-email-error" data-nl-error-for="email" hidden></p>
+          </div>
+
+          <fieldset class="newsletter__topics" aria-describedby="nl-topics-error">
+            <legend>Themen <span class="reg-req" aria-hidden="true">*</span></legend>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-community" type="checkbox" data-nl-topic="community">
+              <label for="nl-topic-community">Schachclub &amp; Community für Frauen</label>
+            </div>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-kids" type="checkbox" data-nl-topic="kids">
+              <label for="nl-topic-kids">Kids Chess</label>
+            </div>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-news" type="checkbox" data-nl-topic="news">
+              <label for="nl-topic-news">Allgemeine QGZ-News und Anlässe</label>
+            </div>
+            <p class="reg-field__error" id="nl-topics-error" data-nl-error-for="topics" hidden></p>
+          </fieldset>
+
+          <div class="reg-field reg-field--check">
+            <input id="nl-consent" type="checkbox" required aria-describedby="nl-consent-error">
+            <label for="nl-consent">Ich möchte den Newsletter von Queen's Gambit Zürich per E-Mail erhalten. Ich kann mich jederzeit abmelden. Details: <a data-link="privacy" href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>. <span class="reg-req" aria-hidden="true">*</span></label>
+            <p class="reg-field__error" id="nl-consent-error" data-nl-error-for="consent" hidden></p>
+          </div>
+
+          <!-- Spam protection: real visitors never see or fill this field -->
+          <div class="reg-form__hp" aria-hidden="true">
+            <input type="text" tabindex="-1" autocomplete="off" value="" data-nl-honeypot>
+          </div>
+
+          <p class="reg-form__alert" role="alert" tabindex="-1" data-nl-alert hidden></p>
+          <button class="btn btn--primary reg-form__submit" type="submit">Abonnieren</button>
+          <p class="newsletter__note">Nach dem Abonnieren erhältst du eine E-Mail, um deine Adresse zu bestätigen. Deine Adresse wird bei unserem Newsletter-Dienst Mailchimp gespeichert.</p>
+        </form>
+
+        <div class="newsletter__done" tabindex="-1" data-nl-success hidden>
+          <h3>Bitte prüfe deinen Posteingang</h3>
+          <p>Wir haben dir eine E-Mail geschickt. Klicke auf den Bestätigungslink darin, um dein Abo abzuschliessen.</p>
+        </div>
+
+        <div hidden data-nl-messages>
+          <span data-nl-msg="email">Bitte gib eine gültige E-Mail-Adresse ein.</span>
+          <span data-nl-msg="topics">Bitte wähle mindestens ein Thema.</span>
+          <span data-nl-msg="consent">Bitte bestätige, dass du den Newsletter erhalten möchtest.</span>
+          <span data-nl-msg="sending">Wird gesendet …</span>
+          <span data-nl-msg="already">Diese E-Mail-Adresse ist bereits angemeldet. Deine Themen kannst du über den Link am Ende jedes Newsletters ändern.</span>
+          <span data-nl-msg="rate">Zu viele Versuche. Bitte warte einige Minuten und versuche es dann erneut.</span>
+          <span data-nl-msg="error">Dein Abo konnte nicht abgeschlossen werden. Bitte prüfe deine E-Mail-Adresse und versuche es erneut, oder schreib an info@queensgambitzurich.ch.</span>
+          <span data-nl-msg="network">Der Newsletter-Dienst ist nicht erreichbar. Bitte prüfe deine Internetverbindung und versuche es erneut, oder schreib an info@queensgambitzurich.ch.</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1131,10 +1197,11 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="/data/config.js?v=20261014-1330"></script>
-<script src="/js/i18n.js?v=20261014-1330"></script>
-<script src="/data/events.js?v=20261014-1330"></script>
-<script src="/js/event-schema.js?v=20261014-1330"></script>
-<script src="/js/site.js?v=20261014-1330"></script>
+<script src="/data/config.js?v=20261014-1500"></script>
+<script src="/js/i18n.js?v=20261014-1500"></script>
+<script src="/data/events.js?v=20261014-1500"></script>
+<script src="/js/event-schema.js?v=20261014-1500"></script>
+<script src="/js/site.js?v=20261014-1500"></script>
+<script src="/js/newsletter.js?v=20261014-1500"></script>
 </body>
 </html>

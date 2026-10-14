@@ -34,6 +34,24 @@ window.QGZ_CONFIG = {
     endpoint: "https://script.google.com/macros/s/AKfycbyZVFaN3BAbUFEfRiGaCsAm0Nff1_6liDWFZa2aYx-9jTgwcTwWoAs0lFFPi-E61mMcbQ/exec"
   },
 
+  // Newsletter (Mailchimp audience "Queen's Gambit Zürich", double opt-in).
+  // These are the public identifiers of Mailchimp's own signup endpoint (the
+  // same values that appear in any Mailchimp signup form). They are not API
+  // keys and give no access to the audience. The form posts to Mailchimp only
+  // when a visitor submits it. While "action" is null, the form stays hidden.
+  // groups: Mailchimp group "Newsletter topics" (interest IDs).
+  newsletter: {
+    action: "https://queensgambitzurich.us12.list-manage.com/subscribe/post",
+    u: "ed48e3ae905866bc59a68cb85",
+    id: "309936e8c9",
+    groups: {
+      community: "group[59269][1]",   // Women's Chess Club & Community
+      kids: "group[59269][2]",        // Kids Chess
+      news: "group[59269][4]"         // General QGZ News & Events
+    },
+    languageField: "LANG"             // audience field "Language" (de / en)
+  },
+
   contact: {
     // Source: Kinder Schach banner, October 2026
     email: "info@queensgambitzurich.ch"
