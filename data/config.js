@@ -43,7 +43,7 @@ window.QGZ_CONFIG = {
   // registration page shows no form and the Kids Chess "Register" button
   // keeps its fallback. Setup: registration/kids-chess/README.md
   kidsChess: {
-    endpoint: null,
+    endpoint: "https://script.google.com/macros/s/AKfycbx6P4P_y_yHfGL5wGcaEjloJhFeifZsG_-OL1BXsmbYlqFBGk5rZOfVUz3WwWRLDLev/exec",
     page: { en: "/en/kids/zollikon/", de: "/kids/zollikon/" }
   },
 

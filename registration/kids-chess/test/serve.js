@@ -59,7 +59,7 @@ http.createServer((req, res) => {
   if (!fs.existsSync(file)) { res.writeHead(404); return res.end("not found"); }
   let data = fs.readFileSync(file);
   if (url.pathname === "/data/config.js") {
-    data = data.toString().replace(/kidsChess: \{\n    endpoint: null/, `kidsChess: {\n    endpoint: "http://localhost:${PORT}/__kids-backend"`);
+    data = data.toString().replace(/kidsChess: \{\n    endpoint: (null|"[^"]*")/, `kidsChess: {\n    endpoint: "http://localhost:${PORT}/__kids-backend"`);
   }
   res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" });
   res.end(data);
