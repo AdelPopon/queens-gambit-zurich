@@ -257,3 +257,34 @@ p.reg-dialog__title {
 
 /* Upcoming dates for visitors without JavaScript (written by tools/build.py) */
 .event-noscript { list-style: none; margin: .75rem 0 0; padding: 0; display: grid; gap: .5rem; }
+
+/* ---------- Newsletter signup (inside the Join panel; js/newsletter.js) ---------- */
+.newsletter {
+  display: grid; gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: rgba(255, 255, 255, .12);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: var(--g-radius);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25);
+}
+.newsletter[hidden] { display: none; }
+.newsletter__intro { display: grid; gap: .4rem; max-width: 40rem; }
+.newsletter__intro p, .newsletter__done p { color: var(--g-lavender); }
+.newsletter__form { max-width: 34rem; margin-top: 0; }
+.newsletter__form[hidden] { display: none; }
+.newsletter .reg-req { color: var(--g-lavender); }
+.newsletter__topics { display: grid; gap: .55rem; margin: 0; padding: 0; border: 0; min-width: 0; }
+.newsletter__topics legend { padding: 0; margin-bottom: .45rem; font-weight: 600; font-size: .9rem; }
+.newsletter .reg-field--check input { accent-color: var(--g-electric); }
+.newsletter .reg-field--check a { color: var(--g-white); text-decoration: underline; text-underline-offset: 2px; }
+.newsletter .reg-field__error { color: #FFD7D3; }
+.newsletter .reg-field [aria-invalid="true"] { border-color: #FFB4AB; box-shadow: 0 0 0 3px rgba(255, 180, 171, .35); }
+.newsletter .reg-form__alert { background: rgba(255, 255, 255, .92); color: #8C1D18; border-color: rgba(179, 38, 30, .35); }
+.newsletter__note { font-size: var(--fs-small); color: var(--g-lavender); }
+.newsletter__done { display: grid; gap: .5rem; }
+.newsletter__done[hidden] { display: none; }
+.newsletter__done:focus { outline: none; }
+@media (min-width: 900px) {
+  .newsletter { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); column-gap: 2.5rem; align-items: start; }
+}

@@ -531,13 +531,13 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1330" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/fonts.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/site.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/glass.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/features.css?v=20261014-1330">
-<link rel="stylesheet" href="/css/type.css?v=20261014-1330">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1500" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/site.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/glass.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/features.css?v=20261014-1500">
+<link rel="stylesheet" href="/css/type.css?v=20261014-1500">
 </head>
 <body>
 
@@ -994,6 +994,72 @@
           <button class="btn btn--light" type="button" data-copy-email>Copy email address</button>
         </li>
       </ul>
+
+      <!-- Newsletter signup (js/newsletter.js). Posts directly to Mailchimp only
+           when a visitor submits it: no Mailchimp script, no cookies on this site.
+           Mailchimp sends a confirmation email (double opt-in). Settings: data/config.js -->
+      <div class="newsletter" id="newsletter" aria-labelledby="newsletter-title" data-newsletter hidden>
+        <div class="newsletter__intro">
+          <h3 id="newsletter-title">Newsletter</h3>
+          <p>News, dates and programmes from Queen's Gambit Zürich by email. Choose the topics that interest you.</p>
+        </div>
+
+        <form class="newsletter__form reg-form" method="post" target="_blank" novalidate data-newsletter-form>
+          <div class="reg-field">
+            <label for="nl-email">Email address <span class="reg-req" aria-hidden="true">*</span></label>
+            <input id="nl-email" name="EMAIL" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="nl-email-error">
+            <p class="reg-field__error" id="nl-email-error" data-nl-error-for="email" hidden></p>
+          </div>
+
+          <fieldset class="newsletter__topics" aria-describedby="nl-topics-error">
+            <legend>Topics <span class="reg-req" aria-hidden="true">*</span></legend>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-community" type="checkbox" data-nl-topic="community">
+              <label for="nl-topic-community">Women's Chess Club &amp; Community</label>
+            </div>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-kids" type="checkbox" data-nl-topic="kids">
+              <label for="nl-topic-kids">Kids Chess</label>
+            </div>
+            <div class="reg-field reg-field--check">
+              <input id="nl-topic-news" type="checkbox" data-nl-topic="news">
+              <label for="nl-topic-news">General QGZ news and events</label>
+            </div>
+            <p class="reg-field__error" id="nl-topics-error" data-nl-error-for="topics" hidden></p>
+          </fieldset>
+
+          <div class="reg-field reg-field--check">
+            <input id="nl-consent" type="checkbox" required aria-describedby="nl-consent-error">
+            <label for="nl-consent">I would like to receive the Queen's Gambit Zürich newsletter by email. I can unsubscribe at any time. Details: <a data-link="privacy" href="/en/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. <span class="reg-req" aria-hidden="true">*</span></label>
+            <p class="reg-field__error" id="nl-consent-error" data-nl-error-for="consent" hidden></p>
+          </div>
+
+          <!-- Spam protection: real visitors never see or fill this field -->
+          <div class="reg-form__hp" aria-hidden="true">
+            <input type="text" tabindex="-1" autocomplete="off" value="" data-nl-honeypot>
+          </div>
+
+          <p class="reg-form__alert" role="alert" tabindex="-1" data-nl-alert hidden></p>
+          <button class="btn btn--primary reg-form__submit" type="submit">Subscribe</button>
+          <p class="newsletter__note">After subscribing, you will receive an email to confirm your address. Your address is stored with our newsletter service Mailchimp.</p>
+        </form>
+
+        <div class="newsletter__done" tabindex="-1" data-nl-success hidden>
+          <h3>Please check your inbox</h3>
+          <p>We have sent you an email. Click the confirmation link in it to complete your subscription.</p>
+        </div>
+
+        <div hidden data-nl-messages>
+          <span data-nl-msg="email">Please enter a valid email address.</span>
+          <span data-nl-msg="topics">Please choose at least one topic.</span>
+          <span data-nl-msg="consent">Please confirm that you would like to receive the newsletter.</span>
+          <span data-nl-msg="sending">Sending…</span>
+          <span data-nl-msg="already">This email address is already subscribed. To change your topics, use the link at the bottom of any newsletter.</span>
+          <span data-nl-msg="rate">Too many attempts. Please wait a few minutes and try again.</span>
+          <span data-nl-msg="error">Your subscription could not be completed. Please check your email address and try again, or email info@queensgambitzurich.ch.</span>
+          <span data-nl-msg="network">We could not reach the newsletter service. Please check your connection and try again, or email info@queensgambitzurich.ch.</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1130,10 +1196,11 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="/data/config.js?v=20261014-1330"></script>
-<script src="/js/i18n.js?v=20261014-1330"></script>
-<script src="/data/events.js?v=20261014-1330"></script>
-<script src="/js/event-schema.js?v=20261014-1330"></script>
-<script src="/js/site.js?v=20261014-1330"></script>
+<script src="/data/config.js?v=20261014-1500"></script>
+<script src="/js/i18n.js?v=20261014-1500"></script>
+<script src="/data/events.js?v=20261014-1500"></script>
+<script src="/js/event-schema.js?v=20261014-1500"></script>
+<script src="/js/site.js?v=20261014-1500"></script>
+<script src="/js/newsletter.js?v=20261014-1500"></script>
 </body>
 </html>
