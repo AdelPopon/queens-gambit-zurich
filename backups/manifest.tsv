@@ -15,3 +15,4 @@ backup-2026-10-14_1422	QGZ_Website_Backup_2026-10-14_1422.zip	dc10805d9264f56d15
 backup-2026-10-14_1554	QGZ_Website_Backup_2026-10-14_1554.zip	de7997ec66fb8e0d6b2736d90eefbdb305743ba4	Before hiding the newsletter form (Mailchimp JSONP endpoint removed)
 backup-2026-10-14_1615	QGZ_Website_Backup_2026-10-14_1615.zip	de7997ec66fb8e0d6b2736d90eefbdb305743ba4	Before the Kids Chess Zollikon registration page and backend
 backup-2026-10-14_1640	QGZ_Website_Backup_2026-10-14_1640.zip	45d060d958ed096a87d57ac53f0070857b8318ed	Before connecting the newsletter form to the Apps Script backend (PR #28)
+backup-2026-10-14_1656	QGZ_Website_Backup_2026-10-14_1656.zip	9a0e17546099deed814a5bb668bc40d2928244dc	Before removing stray Python wheel files from the site root
