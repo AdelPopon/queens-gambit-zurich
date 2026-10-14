@@ -44,7 +44,11 @@ function makeEnv() {
         // Tick boxes: real Sheets store FALSE in every cell, so the rows count as used
         setDataValidation: (rule) => { if (rule && rule.checkbox) for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (cell(r + i, c + j) === "") put(r + i, c + j, false); return rg; },
         setValue: (v) => { put(r, c, v); return rg; },
-        setFormula: (f) => { put(r, c, f); return rg; },
+        setFormula: (f) => {
+          // Like the live sheet (Italian locale): a comma outside quotes breaks the formula
+          if (/,/.test(f.replace(/"[^"]*"/g, ""))) throw new Error("locale: comma in formula " + f);
+          put(r, c, f); return rg;
+        },
         clearContent: () => { for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (data[r - 1 + i]) data[r - 1 + i][c - 1 + j] = ""; return rg; },
         createFilter: () => { filter = { remove: () => { filter = null; } }; return filter; }
       }, { get: (t, k) => (k in t ? t[k] : () => rg) });

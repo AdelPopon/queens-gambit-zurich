@@ -88,7 +88,7 @@ test("rows are written from row 2 down, despite the tick boxes", () => {
 
 test("dashboard formulas are written with setFormula (locale-safe)", () => {
   const d = env.ss._sheets.Dashboard._data;
-  assert(d.flat().some((v) => v && v.formula && v.formula.includes("MAX(0,")));
+  assert(d.flat().some((v) => v && v.formula && v.formula.includes(">B")));
   assert(!env.ss._sheets.Sheet1, "default empty tab removed");
 });
 
@@ -336,9 +336,9 @@ test("dashboard formulas reference the right columns", () => {
   assert(/="Waiting list"/.test(row("Sat 24 Oct")[4]), "waiting list column");
   const sat = row("Sat 24 Oct");
   assert(/'Settings'!C5/.test(sat[2]), "capacity from Settings C5: " + sat[2]);
-  assert(/MAX\(0,C(\d+)-B\1\)/.test(sat[3]), sat[3]);
+  assert(/\(C(\d+)-B\1\)\*\(C\1>B\1\)/.test(sat[3]), sat[3]);
   assert(row("Sat 31 Oct")[2].includes("'Settings'!C7"));
-  assert(row("Expected revenue")[2].includes("IFERROR(1*"));
+  assert(!/,/.test(row("Expected revenue")[2].replace(/"[^"]*"/g, "")), "no commas");
 });
 
 test("German email uses the formal Sie form and the event name", () => {

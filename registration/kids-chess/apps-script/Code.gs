@@ -936,7 +936,7 @@ function buildDashboard_(ss, H, firstSessionRow) {
   var has = '(' + id + '<>"")';
   var reg = '(' + has + '*((' + status + '="' + STATUS.registered + '")+(' + status + '="Confirmed")))';
   var wait = '(' + has + '*(' + status + '="' + STATUS.waitlist + '"))';
-  var amount = 'IFERROR(1*' + price + ',0)';
+  var amount = price;   // numbers or empty cells (empty counts as 0)
   var W = 5, blank = function () { var r = []; for (var i = 0; i < W; i++) r.push(''); return r; };
   var line = function (a) { while (a.length < W) a.push(''); return a; };
 
@@ -959,7 +959,7 @@ function buildDashboard_(ss, H, firstSessionRow) {
     var r = rows.length + 1;
     rows.push([s.column + ' · ' + s.time + ' · ' + s.en.label,
       '=SUMPRODUCT(' + reg + '*(' + col(s.column) + '=TRUE))', '=' + S + 'C' + (firstSessionRow + i),
-      '=MAX(0,C' + r + '-B' + r + ')', '=SUMPRODUCT(' + wait + '*(' + col(s.column) + '=TRUE))']);
+      '=(C' + r + '-B' + r + ')*(C' + r + '>B' + r + ')', '=SUMPRODUCT(' + wait + '*(' + col(s.column) + '=TRUE))']);
   });
   var lastS = rows.length;
   rows.push(blank());
@@ -970,8 +970,8 @@ function buildDashboard_(ss, H, firstSessionRow) {
   rows.push(line(['Open (not yet paid)', '=SUMPRODUCT(' + reg + '*(' + pay + '="Open"))', '=SUMPRODUCT(' + reg + '*(' + pay + '="Open")*' + amount + ')']));
   rows.push(line(['Refunded', '=SUMPRODUCT(' + has + '*(' + pay + '="Refunded"))', '=SUMPRODUCT(' + has + '*(' + pay + '="Refunded")*' + amount + ')']));
   rows.push(line(['Registered without a price', '=SUMPRODUCT(' + reg + '*(' + price + '=""))', 'Use Kids Chess ▸ Fill in missing prices once prices are set.']));
-  // Formulas via setFormula, so they work in any spreadsheet locale (with
-  // setValues a comma-separated formula fails where ";" is the separator).
+  // No commas in these formulas: in a spreadsheet with an Italian or German
+  // locale ";" is the separator and a comma makes the formula invalid.
   d.getRange(1, 1, rows.length, W).setValues(rows.map(function (r) {
     return r.map(function (v) { return typeof v === 'string' && v.charAt(0) === '=' ? '' : v; });
   }));
