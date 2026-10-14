@@ -404,51 +404,19 @@
   renderEvents();
 
   /* ---------- 4b. Event structured data (schema.org) for search engines ----------
-     Built from data/events.js, so events only need to be edited in one place. */
-  function zurichOffset(d) {           // CET/CEST: last Sunday of March to last Sunday of October
-    var y = d.getFullYear();
-    var lastSunday = function (m) { var x = new Date(y, m + 1, 0); x.setDate(x.getDate() - x.getDay()); return x; };
-    return (d >= lastSunday(2) && d < lastSunday(9)) ? "+02:00" : "+01:00";
-  }
-  function isoAt(dateStr, hhmm) {
-    var d = parseDate(dateStr);
-    return dateStr + "T" + hhmm + ":00" + zurichOffset(d);
-  }
-  function times(t) { return (L(t) || "").match(/\d{1,2}:\d{2}/g) || []; }
-
-  function addEventSchema() {
-    var org = { "@id": "https://queensgambitzurich.ch/#organization" };
-    var upcoming = prepare(EVENTS, startOfToday());
-    if (!upcoming.length) return;
-    var graph = upcoming.map(function (item) {
-      var ev = item.ev, first = ev.sessions[0], last = ev.sessions[ev.sessions.length - 1];
-      var t0 = times(first.time), t1 = times(last.time);
-      var parts = (ev.address || "").match(/^(.*),\s*(\d{4})\s+(.*)$/) || [];
-      var obj = {
-        "@type": "Event",
-        "name": ev.programme === "community" ? "Queen's Gambit Zürich: " + L(ev.title) : L(ev.title),
-        "description": L(ev.summary) || "",
-        "startDate": t0.length ? isoAt(first.date, t0[0]) : first.date,
-        "eventStatus": "https://schema.org/EventScheduled",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "location": { "@type": "Place", "name": ev.venue, "address": { "@type": "PostalAddress",
-          "streetAddress": parts[1] || ev.address, "postalCode": parts[2], "addressLocality": parts[3], "addressCountry": "CH" } },
-        "organizer": org,
-        "url": "https://queensgambitzurich.ch/" + (LANG === "en" ? "en/" : "") + "#" + (ev.programme === "kids" ? "kids" : "upcoming")
-      };
-      if (t1.length > 1) obj.endDate = isoAt(last.date, t1[1]);
-      if (ev.coach) obj.performer = { "@type": "Person", "name": ev.coach };
-      if (ev.programme === "kids") obj.image = "https://queensgambitzurich.ch/assets/photos/kids-chess-illustration.jpg";
-      if (ev.admission) obj.isAccessibleForFree = true;
-      if (ev.price) obj.offers = { "@type": "Offer", "price": ev.price, "priceCurrency": "CHF", "url": obj.url, "availability": "https://schema.org/InStock" };
-      return obj;
-    });
-    var s = document.createElement("script");
-    s.type = "application/ld+json";
+     The build (tools/build.py) writes the event data into the page as
+     <script id="qgz-events-ld"> so it is readable without JavaScript. Here it is
+     refreshed with the visitor's date (past events drop out), using the same
+     function (js/event-schema.js). Pages without that element get none. */
+  function updateEventSchema() {
+    var s = document.getElementById("qgz-events-ld");
+    if (!s || !window.QGZ_buildEventSchema) return;
+    if (s.getAttribute("data-scope") === "event") return;   // single event page: static data stays
+    var graph = window.QGZ_buildEventSchema(EVENTS, { lang: LANG, today: startOfToday() });
+    if (!graph.length) { s.parentNode.removeChild(s); return; }
     s.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
-    document.head.appendChild(s);
   }
-  addEventSchema();
+  updateEventSchema();
 
   /* ---------- 4d. Kids workshop details: fold away on phones ----------
      On small screens the sessions, facts and levels of a workshop card are

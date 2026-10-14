@@ -100,6 +100,17 @@
   background: transparent; border: 0; border-radius: 10px; color: var(--g-ink); cursor: pointer;
 }
 .reg-dialog__close:hover { background: var(--g-lavender); }
+/* Dialog title is a <p role="heading"> (filled in by JavaScript): same look as the h2 it replaces */
+p.reg-dialog__title {
+  margin: 0; color: var(--charcoal); text-wrap: balance;
+  font-family: var(--font-heading); font-weight: 900; font-synthesis: none; letter-spacing: -0.03em;
+}
+/* Workshop levels are h5 (below the workshop title): same look as before */
+.pilot__levels h5 {
+  margin: 0; color: var(--charcoal); text-wrap: balance;
+  font-family: var(--font-heading); font-weight: 900; font-synthesis: none;
+  line-height: 1.25; letter-spacing: -0.02em;
+}
 .reg-dialog__title { font-size: clamp(1.25rem, 2vw + .8rem, 1.6rem); line-height: 1.15; padding-right: 2.5rem; text-transform: none; }
 .reg-dialog__meta { color: var(--muted); font-size: var(--fs-small); }
 .reg-dialog__free {
@@ -243,3 +254,6 @@
 @media (prefers-reduced-motion: reduce) {
   .event__panel, .event__programme-toggle .event__chevron { transition: none; }
 }
+
+/* Upcoming dates for visitors without JavaScript (written by tools/build.py) */
+.event-noscript { list-style: none; margin: .75rem 0 0; padding: 0; display: grid; gap: .5rem; }

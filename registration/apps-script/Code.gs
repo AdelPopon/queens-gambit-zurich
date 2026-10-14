@@ -37,13 +37,13 @@ var EVENTS = {
       title: "QGZ × WINZ | Beyond the Chessboard",
       date: 'Sunday, 29 November 2026',
       time: 'from 13:00',
-      location: "ROBIN’S, Stampfenbachstrasse 38, 8006 Zürich"
+      location: "ROBIN’S, Zähringerstrasse 33, 8001 Zürich"
     },
     de: {
       title: "QGZ × WINZ | Beyond the Chessboard",
       date: 'Sonntag, 29. November 2026',
       time: 'ab 13:00 Uhr',
-      location: "ROBIN’S, Stampfenbachstrasse 38, 8006 Zürich"
+      location: "ROBIN’S, Zähringerstrasse 33, 8001 Zürich"
     }
   }
 };

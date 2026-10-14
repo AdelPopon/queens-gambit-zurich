@@ -3,15 +3,17 @@ Queen's Gambit Zürich · build the German site and the legal pages.
 
     python3 tools/build.py
 
-English is the source: edit index.html (and the legal texts in this file),
-then run the build. It writes:
+English is the source: edit en/index.html (and the legal texts in this file),
+then run the build. It needs Python 3 and Node.js (for the event data). It writes:
 
-    de/index.html              German home page (index.html + i18n/de.json)
-    impressum/index.html       Impressum (EN)        de/impressum/index.html    (DE)
-    privacy/index.html         Privacy Policy (EN)   de/datenschutz/index.html  (DE)
+    index.html                 German home page (en/index.html + i18n/de.json)
+    impressum/, datenschutz/   legal pages (DE)   en/impressum/, en/privacy/ (EN)
+    winz/, en/winz/            registration pages
     sitemap.xml                all pages with hreflang alternates
+    and, in en/index.html and the pages above, the upcoming events for search
+    engines and visitors without JavaScript (between the @events markers).
 
-The build stops if any English text in index.html has no German translation.
+The build stops if any English text in en/index.html has no German translation.
 """
 import json, pathlib, re, sys
 
@@ -21,6 +23,57 @@ from i18n_text import TOKEN, ATTR_RE, TRANSLATABLE_META, norm, has_words  # noqa
 
 SITE = "https://queensgambitzurich.ch"
 EMAIL = "info@queensgambitzurich.ch"
+
+
+# --------------------------------------------------------------------------
+# 0. Upcoming events written into the HTML (search engines, AI tools and
+#    visitors without JavaScript). Same data and function as the website
+#    (data/events.js, js/event-schema.js), run with Node.js.
+# --------------------------------------------------------------------------
+import html as _html, subprocess, datetime  # noqa: E402
+
+def zurich_today():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.datetime.now(ZoneInfo("Europe/Zurich")).date().isoformat()
+    except Exception:
+        return datetime.date.today().isoformat()
+
+TODAY = zurich_today()
+
+def event_data(lang, only=None, page_url=None):
+    args = ["node", str(ROOT / "tools" / "events_data.js"), lang, TODAY] + ([only, page_url] if only else [])
+    try:
+        return json.loads(subprocess.run(args, check=True, capture_output=True, text=True).stdout)
+    except FileNotFoundError:
+        sys.exit("Node.js is needed for the event data: install it from https://nodejs.org/ and run the build again.")
+
+def ld_script(graph, scope):
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, indent=1)
+    return f'<script type="application/ld+json" id="qgz-events-ld" data-scope="{scope}">\n{data}\n</script>'
+
+NOSCRIPT_INTRO = {"en": "Upcoming dates:", "de": "Nächste Termine:"}
+
+def noscript_list(items, lang):
+    rows = "\n".join(
+        f'          <li><strong>{_html.escape(i["date"])}{" · " + _html.escape(i["time"]) if i["time"] else ""}</strong> · '
+        f'{_html.escape(i["title"])} · {_html.escape(i["place"])}</li>' for i in items)
+    return (f'<noscript>\n        <p class="event-empty">{NOSCRIPT_INTRO[lang]}</p>\n'
+            f'        <ul class="event-noscript">\n{rows}\n        </ul>\n      </noscript>')
+
+def strip_regions(html):
+    """Generated regions back to plain markers (before translating)."""
+    return re.sub(r"<!-- @(events-[a-z]+):start -->.*?<!-- @\1:end -->", r"<!-- @\1 -->", html, flags=re.S)
+
+def fill_regions(html, lang):
+    data = event_data(lang)
+    parts = {"events-ld": ld_script(data["schema"], "list") if data["schema"] else "",
+             "events-noscript": noscript_list(data["list"], lang) if data["list"] else ""}
+    def sub(m):
+        key = m.group(1)
+        return f"<!-- @{key}:start -->{parts[key]}<!-- @{key}:end -->"
+    html = strip_regions(html)
+    return re.sub(r"<!-- @(events-[a-z]+)(?:: [^>]*)? -->", sub, html)
 
 # --------------------------------------------------------------------------
 # 1. German home page
@@ -80,7 +133,7 @@ def set_lang_switch(html, current, en_href, de_href):
 
 
 def build_home_de():
-    src = (ROOT / "en" / "index.html").read_text()
+    src = strip_regions((ROOT / "en" / "index.html").read_text())
     data = json.loads((ROOT / "i18n" / "de.json").read_text())
     html, missing = translate_html(src, data["strings"], set(data["_keep"]))
     if missing:
@@ -97,13 +150,16 @@ def build_home_de():
                         '<meta property="og:locale" content="de_CH">\n<meta property="og:locale:alternate" content="en_GB">')
     html = html.replace('"inLanguage": "en"', '"inLanguage": "de"')
     html = html.replace(
-        '"description": "A women\'s chess club and community in Zürich, Switzerland. A place for women to play chess, with regular meet-ups for all levels and Kids Chess for children."',
-        '"description": "Ein Schachclub und eine Community für Frauen in Zürich. Ein Ort, an dem Frauen Schach spielen, mit regelmässigen Treffs für alle Spielstärken und Kinderschach."')
+        '"description": "Women\'s chess club and community in Zürich: regular meetings and coaching for all levels, plus Kids Chess, our educational programme for children."',
+        '"description": "Schachclub und Community für Frauen in Zürich: regelmässige Treffs und Coaching für alle Spielstärken, dazu Kids Chess, unser Bildungsprogramm für Kinder."')
+    html = html.replace('"slogan": "A place for women to play chess."', '"slogan": "Ein Ort, an dem Frauen Schach spielen."')
     html = html.replace('href="/en/privacy/"', 'href="/datenschutz/"')
+    html = html.replace('href="/en/impressum/"', 'href="/impressum/"')
     html = set_lang_switch(html, "de", "/en/", "/")
     html = html.replace("<!-- ======================================================================\n     Queen's Gambit Zürich · Website v1",
                         "<!-- GENERATED by tools/build.py from en/index.html + i18n/de.json. Do not edit this file directly. -->\n"
                         "<!-- ======================================================================\n     Queen's Gambit Zürich · Website v1", 1)
+    html = fill_regions(html, "de")
     (ROOT / "index.html").write_text(html)
     return html
 
@@ -114,14 +170,14 @@ def build_home_de():
 LEGAL = {
     "en": {
         "impressum": {"slug": "en/impressum", "title": "Impressum", "lead": "Information about the operator of this website.",
-                      "description": "Impressum of Queen's Gambit Zürich, a community project and women's chess club in Zürich, Switzerland."},
+                      "description": "Impressum of Queen's Gambit Zürich, a women's chess club and community in Zürich, Switzerland."},
         "privacy": {"slug": "en/privacy", "title": "Privacy Policy", "lead": "How we handle data on this website.",
                     "description": "Privacy policy of Queen's Gambit Zürich: no cookies, no tracking; how event registrations are handled under the Swiss FADP."},
         "eyebrow": "Legal", "updated": "Last updated", "home": "/en/",
     },
     "de": {
         "impressum": {"slug": "impressum", "title": "Impressum", "lead": "Angaben zur Betreiberin dieser Website.",
-                      "description": "Impressum von Queen's Gambit Zürich, einem Community-Projekt und Schachclub für Frauen in Zürich."},
+                      "description": "Impressum von Queen's Gambit Zürich, Schachclub und Community für Frauen in Zürich."},
         "privacy": {"slug": "datenschutz", "title": "Datenschutzerklärung", "lead": "Wie wir mit Daten auf dieser Website umgehen.",
                     "description": "Datenschutzerklärung von Queen's Gambit Zürich: keine Cookies, kein Tracking; wie Anmeldungen für Anlässe gemäss DSG bearbeitet werden."},
         "eyebrow": "Rechtliches", "updated": "Zuletzt aktualisiert", "home": "/",
@@ -278,7 +334,10 @@ PAGE = """<!doctype html>
 <meta property="og:locale" content="{og_locale}">
 <meta property="og:image" content="{site}/assets/brand/qgz-social-1200x630.jpg">
 <meta name="theme-color" content="#EAF3FF">
-<link rel="icon" type="image/png" href="/assets/brand/qgz-favicon.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 {styles}
 </head>
 <body>
@@ -393,7 +452,11 @@ REG_PAGE = """<!doctype html>
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#EAF3FF">
-<link rel="icon" type="image/png" href="/assets/brand/qgz-favicon.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+{event_ld}
 {styles}
 </head>
 <body>
@@ -429,7 +492,7 @@ def registration_pages(home_html, lang):
     for key, cfg in REG_PAGES.items():
         meta = cfg[lang]
         en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
-        panel = dialog.replace('<h2 class="reg-dialog__title" id="reg-title" data-reg-event-title></h2>',
+        panel = dialog.replace('<p class="reg-dialog__title" id="reg-title" role="heading" aria-level="2" data-reg-event-title></p>',
                                f'<h1 class="reg-dialog__title" id="reg-title" data-reg-event-title>{cfg["event_title"]}</h1>')
         panel = f'      <div class="reg-inline" aria-labelledby="reg-title" data-reg-dialog data-reg-inline>\n{panel}\n      </div>'
         hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
@@ -437,6 +500,7 @@ def registration_pages(home_html, lang):
             lang=lang, site=SITE, slug=meta["slug"], en_slug=en_slug, de_slug=de_slug,
             title=meta["title"], description=meta["description"], event_id=cfg["event_id"],
             og_locale="de_CH" if lang == "de" else "en_GB",
+            event_ld=ld_script(event_data(lang, cfg["event_id"], f"{SITE}/{meta['slug']}/")["schema"], "event"),
             panel=panel, header=hdr, footer=footer, styles=styles, scripts=scripts)
         out = ROOT / meta["slug"] / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -503,13 +567,14 @@ def redirect_pages():
 
 
 if __name__ == "__main__":
-    import datetime
-    en_html = (ROOT / "en" / "index.html").read_text()
+    en_path = ROOT / "en" / "index.html"
+    en_html = fill_regions(en_path.read_text(), "en")
+    en_path.write_text(en_html)
     de_html = build_home_de()
     legal_pages(en_html, "en")
     legal_pages(de_html, "de")
     registration_pages(en_html, "en")
     registration_pages(de_html, "de")
     redirect_pages()
-    sitemap(datetime.date.today().isoformat())
+    sitemap(TODAY)
     print("Built: index.html (DE), impressum/, datenschutz/, winz/, en/impressum/, en/privacy/, en/winz/, redirects, sitemap.xml")
