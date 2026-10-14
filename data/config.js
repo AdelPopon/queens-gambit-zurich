@@ -41,7 +41,10 @@ window.QGZ_CONFIG = {
   // when a visitor submits it. While "action" is null, the form stays hidden.
   // groups: Mailchimp group "Newsletter topics" (interest IDs).
   newsletter: {
-    action: "https://queensgambitzurich.us12.list-manage.com/subscribe/post",
+    // Hidden 14 Oct 2026: Mailchimp no longer serves the JSONP endpoint (post-json
+    // returns 404), so the form could not subscribe anyone. Re-enabled once the
+    // Apps Script backend is in place.
+    action: null,
     u: "ed48e3ae905866bc59a68cb85",
     id: "309936e8c9",
     groups: {
