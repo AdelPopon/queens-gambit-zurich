@@ -1,6 +1,6 @@
 # Kids Chess workshop registration (Google Sheets + Apps Script)
 
-Registration for **Kids Chess Zollikon** (24, 25 and 31 October 2026), built on
+Registration for **Zollikon Kids Chess** (24, 25 and 31 October 2026), built on
 the same design as the QGZ × WINZ registration (`registration/apps-script`) but
 completely separate from it: its own Google Sheet, its own script, its own
 web-app URL. Nothing here changes WINZ or the newsletter.
@@ -27,7 +27,7 @@ Use the Google account that owns the WINZ registration Sheet (it sends the
 emails). Do **not** use the WINZ Sheet itself.
 
 1. **Create the Sheet.** Go to <https://sheets.new> and name it
-   `QGZ Kids Chess Zollikon Registrations`.
+   `QGZ Zollikon Kids Chess Registrations`.
 2. **Open Apps Script.** In the Sheet: *Extensions ▸ Apps Script*. Name the
    project `QGZ Kids Chess registration`.
 3. **Paste the code.** Replace everything in `Code.gs` with
@@ -39,9 +39,10 @@ emails). Do **not** use the WINZ Sheet itself.
 5. **Run setup.** Choose `setup` in the function dropdown and click *Run*.
    Allow the permissions (*Advanced ▸ Go to … (unsafe) ▸ Allow*; "unsafe" only
    means the script is your own, not published by Google). It asks for: this
-   one spreadsheet, sending email as you, showing a menu in the Sheet, and your
-   email address. The Sheet now has the tabs **Dashboard, Registrations,
-   Settings, Log**.
+   one spreadsheet, sending email as you, showing a menu in the Sheet, running
+   a daily data-retention check, and your email address. The Sheet now has the
+   tabs **Dashboard, Registrations, Settings, Marketing Contacts, Log**, and a
+   daily trigger for the data retention is installed (see *Data protection*).
 6. *(Optional)* **Test the emails.** Reload the Sheet; a **Kids Chess** menu
    appears. *Kids Chess ▸ Send test emails to me* sends you the parent
    confirmation in English and German. No row is added, no organiser email.
@@ -70,6 +71,9 @@ emails). Do **not** use the WINZ Sheet itself.
 - **Settings** – capacity and price per session, optional package prices for
   2 or 3 sessions, currency, *Publish prices* (Yes/No), *Registration open*
   (Yes/No). Changes take effect immediately, without redeploying.
+- **Marketing Contacts** – filled automatically on the deletion date (see
+  *Data protection*): name and email address of parents who gave marketing
+  consent, nothing else.
 - **Log** – technical events (rejected spam, duplicates, full sessions, email
   problems) with masked email addresses.
 
@@ -127,8 +131,39 @@ the copy as a new web app, and add the page to `KIDS_PAGES` in
 *Deploy ▸ Manage deployments ▸* pencil ▸ *Version: New version ▸ Deploy*. The
 URL stays the same.
 
-## Data protection
+## Data protection (automatic retention)
 
-The Privacy Policy (section 5) covers these registrations. Delete the rows (or
-the Sheet) no later than three months after the workshop; keep only the names
-and email addresses of parents who gave marketing consent, for that purpose.
+The Privacy Policy (section 5) promises that registrations are deleted three
+months after the workshop, except the names and email addresses of parents
+who consented to marketing emails, which are kept until consent is withdrawn.
+The script does this itself:
+
+- **Deletion date:** three months after the last session, i.e. **31 January
+  2027** for Zollikon Kids Chess (shown in the Settings tab and via
+  *Kids Chess ▸ Data retention: show deletion date*).
+- **Reminder:** 7 days before (24 January 2027) the organisers
+  (info@queensgambitzurich.ch) get an email, so anything needed for accounting,
+  such as the payment overview, can be exported first (*File ▸ Download*).
+- **On the deletion date** a daily trigger (installed by `setup`, runs around
+  03:00): copies first name, last name, email address, language and consent
+  date of every parent with marketing consent to **Marketing Contacts** (one
+  row per email address), deletes all rows in **Registrations**, empties the
+  **Log**, sets *Registration open* to *No*, and emails the organisers a short
+  summary. It runs only once.
+- **Check it is active:** Apps Script ▸ *Triggers* (clock icon) shows
+  `retentionCheck`, daily. If it is missing, run `setup` again.
+
+**Administrative actions that remain manual (organisers):**
+
+1. When a parent withdraws marketing consent (reply, email or unsubscribe
+   request), delete their row in **Marketing Contacts** straight away.
+2. When a parent asks for deletion before the deletion date, delete their row
+   in **Registrations**.
+3. Before the deletion date, export what is needed for accounting.
+4. Do not copy registration data elsewhere (downloads, other sheets, email
+   forwards) without deleting those copies on the same schedule; the script
+   can only delete data in this Sheet. The registration and organiser emails
+   in the info@ mailbox fall under the Privacy Policy's email rule (section 4):
+   delete them once no longer needed.
+5. Marketing contacts are not added to Mailchimp automatically. Using them for
+   a campaign is a separate decision.

@@ -36,6 +36,7 @@ function makeEnv() {
         setValues: (vals) => { vals.forEach((row, i) => row.forEach((v, j) => put(r + i, c + j, v))); return rg; },
         setValue: (v) => { put(r, c, v); return rg; },
         setFormula: (f) => { put(r, c, f); return rg; },
+        clearContent: () => { for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (data[r - 1 + i]) data[r - 1 + i][c - 1 + j] = ""; return rg; },
         createFilter: () => { filter = {}; return filter; }
       }, { get: (t, k) => (k in t ? t[k] : () => rg) });
       return rg;
@@ -71,6 +72,8 @@ function makeEnv() {
     _sheets: sheets
   };
   const cache = {};
+  const props = {};
+  const triggers = [];
   const ctx = {
     console: { log() {}, error() {} },
     SpreadsheetApp: {
@@ -92,12 +95,17 @@ function makeEnv() {
       getUuid: () => Math.random().toString(16).slice(2) + "abcdef12345"
     },
     MailApp: { sendEmail: (m) => mails.push(m) },
-    Session: { getActiveUser: () => ({ getEmail: () => "owner@example.com" }) }
+    Session: { getActiveUser: () => ({ getEmail: () => "owner@example.com" }) },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => props[k] || null, setProperty: (k, v) => { props[k] = v; } }) },
+    ScriptApp: {
+      getProjectTriggers: () => triggers.map((h) => ({ getHandlerFunction: () => h })),
+      newTrigger: (h) => { const t = new Proxy({}, { get: (o, k) => (k === "create" ? () => triggers.push(h) : () => t) }); return t; }
+    }
   };
   vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../apps-script/Code.gs"), "utf8"), ctx);
   ctx._cache = cache;
-  return { ctx, ss, mails, cache };
+  return { ctx, ss, mails, cache, props, triggers };
 }
 
 module.exports = { makeEnv };

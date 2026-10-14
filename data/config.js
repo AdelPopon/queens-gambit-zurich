@@ -35,7 +35,7 @@ window.QGZ_CONFIG = {
     endpoint: "https://script.google.com/macros/s/AKfycbyZVFaN3BAbUFEfRiGaCsAm0Nff1_6liDWFZa2aYx-9jTgwcTwWoAs0lFFPi-E61mMcbQ/exec"
   },
 
-  // Kids Chess workshop registration (Kids Chess Zollikon, /kids/zollikon/).
+  // Kids Chess workshop registration (Zollikon Kids Chess, /kids/zollikon/).
   // The URL of the deployed Kids Chess Apps Script web app ("…/exec"), a
   // separate script and Sheet from the WINZ registration above. Like that
   // URL, it is not a secret: it accepts registrations and says which sessions

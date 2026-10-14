@@ -239,6 +239,52 @@ test("dashboard formulas reference the right columns", () => {
   assert(row("Expected revenue")[2].includes("IFERROR(1*"));
 });
 
+test("German email uses the formal Sie form and the event name", () => {
+  const e = makeEnv(); e.ctx.setup();
+  assert(post(e, base({ lang: "de", parentFirst: "Anna", parentLast: "Muster" })).ok);
+  const m = e.mails[0];
+  assert(/^Anmeldebestätigung: Zollikon Kids Chess$/.test(m.subject), m.subject);
+  assert(/Guten Tag Anna Muster/.test(m.body) && /dass Sie/.test(m.body) && /schreiben Sie an/.test(m.body));
+  assert(!/\b(du|dein|dich|dir|schreib|antworte)\b/.test(m.body), "no du-forms");
+  assert(/^Zollikon Kids Chess registration: Lina Muster \(1 session\)$/.test(e.mails[1].subject), e.mails[1].subject);
+});
+
+test("retention: trigger installed once; dates = last session + 3 months, reminder 7 days before", () => {
+  const e = makeEnv(); e.ctx.setup(); e.ctx.setup();
+  assert.strictEqual(e.triggers.filter((t) => t === "retentionCheck").length, 1);
+  assert.strictEqual(e.ctx.retentionDate_(), "2027-01-31");
+  assert.strictEqual(e.ctx.reminderDate_(), "2027-01-24");
+  assert(e.ss._sheets["Marketing Contacts"], "Marketing Contacts tab");
+});
+
+test("retention: nothing before the date; reminder once; deletion keeps only consenting contacts", () => {
+  const e = makeEnv(); e.ctx.setup();
+  assert(post(e, base({ email: "yes1@example.com", marketing: true, parentFirst: "Mara", parentLast: "Ja" })).ok);
+  assert(post(e, base({ email: "yes1@example.com", marketing: true, childFirst: "Sibling" })).ok);
+  assert(post(e, base({ email: "no@example.com", marketing: false })).ok);
+  const sent = e.mails.length;
+  e.ctx._today = "2027-01-10"; e.ctx.retentionCheck();
+  assert.strictEqual(regRows(e).filter((r) => r["Registration ID"]).length, 3, "kept before reminder date");
+  assert.strictEqual(e.mails.length, sent);
+  e.ctx._today = "2027-01-24"; e.ctx.retentionCheck(); e.ctx.retentionCheck();
+  assert.strictEqual(e.mails.length, sent + 1, "one reminder");
+  assert(/will be deleted on 2027-01-31/.test(e.mails[sent].subject));
+  e.ctx.applyRetentionFromMenu();
+  assert.strictEqual(regRows(e).filter((r) => r["Registration ID"]).length, 3, "menu refuses before the date");
+  e.ctx._today = "2027-01-31"; e.ctx.retentionCheck();
+  assert.strictEqual(regRows(e).filter((r) => Object.values(r).some((v) => v !== "" && v !== undefined)).length, 0, "registrations deleted");
+  const mk = e.ss._sheets["Marketing Contacts"]._data;
+  assert.strictEqual(mk.length, 2, "header + one contact (deduplicated)");
+  assert.deepStrictEqual(mk[1].slice(0, 3), ["Mara", "Ja", "yes1@example.com"]);
+  assert(!JSON.stringify(mk).includes("no@example.com") && !JSON.stringify(mk).includes("Lina"), "no child data, no non-consenting parent");
+  const log = e.ss._sheets.Log._data.filter((r) => r.some((v) => v !== "" && v !== undefined));
+  assert.strictEqual(log.length, 2, "log emptied except header + retention entry");
+  assert.strictEqual(e.ctx.readSettings_().open, false, "registration closed");
+  assert(/registration data deleted/.test(e.mails[e.mails.length - 1].subject));
+  const before = e.mails.length; e.ctx.retentionCheck();
+  assert.strictEqual(e.mails.length, before, "runs only once");
+});
+
 // ---------------------------------------------------------------------------
 results.forEach(([s, t]) => console.log(s + "  " + t));
 const failed = results.filter((r) => r[0] === "FAIL").length;

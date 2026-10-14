@@ -28,6 +28,9 @@ var SETTINGS = {
   DASHBOARD_SHEET: 'Dashboard',
   SETTINGS_SHEET: 'Settings',
   LOG_SHEET: 'Log',
+  MARKETING_SHEET: 'Marketing Contacts',
+  RETENTION_MONTHS: 3,        // registrations are deleted this long after the last session
+  REMINDER_DAYS: 7,           // organisers are reminded this many days before
   ADMIN_EMAIL: 'info@queensgambitzurich.ch',
   REPLY_TO: 'info@queensgambitzurich.ch',
   SENDER_NAME: "Queen's Gambit Zürich · Kids Chess",
@@ -48,7 +51,7 @@ var WORKSHOP = {
   open: true,
   minAge: 5,
   maxAge: 13,
-  title: { en: 'Kids Chess Zollikon', de: 'Kids Chess Zollikon' },
+  title: { en: 'Zollikon Kids Chess', de: 'Zollikon Kids Chess' },
   location: 'Combi Face, Oberdorfstrasse 37, 8702 Zollikon',
   sessions: [
     { id: '2026-10-24', column: 'Sat 24 Oct', time: '09:30–11:30',
@@ -413,6 +416,115 @@ function esc_(s) {
 }
 
 /* ---------------------------------------------------------------------- */
+/* Data retention (Privacy Policy, section 5)                             */
+/*
+ * Three months after the last session, all registrations are deleted.
+ * Before that, the name and email address of parents who gave marketing
+ * consent are copied to the "Marketing Contacts" tab, where they stay until
+ * the parent withdraws consent (then delete that row). The Log is emptied as
+ * well. A daily trigger (installed by setup) does this automatically and
+ * reminds the organisers by email REMINDER_DAYS before.
+ */
+
+var MARKETING_HEADERS = ['Parent First Name', 'Parent Last Name', 'Parent Email', 'Language', 'Consent Given', 'Source'];
+
+function lastSessionId_() { return WORKSHOP.sessions[WORKSHOP.sessions.length - 1].id; }
+
+function addDays_(iso, days, months) {
+  var p = iso.split('-').map(Number);
+  var d = new Date(Date.UTC(p[0], p[1] - 1 + (months || 0), p[2] + (days || 0)));
+  return d.toISOString().slice(0, 10);
+}
+function retentionDate_() { return addDays_(lastSessionId_(), 0, SETTINGS.RETENTION_MONTHS); }
+function reminderDate_() { return addDays_(retentionDate_(), -SETTINGS.REMINDER_DAYS); }
+function today_() { return Utilities.formatDate(new Date(), 'Europe/Zurich', 'yyyy-MM-dd'); }
+
+function installRetentionTrigger_() {
+  var exists = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'retentionCheck'; });
+  if (!exists) ScriptApp.newTrigger('retentionCheck').timeBased().everyDays(1).atHour(3).create();
+}
+
+// Daily (trigger): reminder, then deletion on the deletion date.
+function retentionCheck() {
+  var props = PropertiesService.getScriptProperties();
+  var today = today_();
+  if (today >= reminderDate_() && today < retentionDate_() && !props.getProperty('retentionReminderSent')) {
+    MailApp.sendEmail({
+      to: SETTINGS.ADMIN_EMAIL,
+      subject: WORKSHOP.title.en + ': registration data will be deleted on ' + retentionDate_(),
+      body: ['As stated in the Privacy Policy, the ' + WORKSHOP.title.en + ' registrations are deleted automatically on ' + retentionDate_() + ' (three months after the workshop).',
+        '', 'If anything is needed for accounting (for example the payment overview), export it before then: File > Download.',
+        'Names and email addresses of parents who gave marketing consent are kept in the "Marketing Contacts" tab.',
+        '', SpreadsheetApp.getActiveSpreadsheet().getUrl()].join('\n'),
+      name: 'QGZ Kids Chess registration'
+    });
+    props.setProperty('retentionReminderSent', today);
+  }
+  if (today >= retentionDate_() && !props.getProperty('retentionApplied')) applyRetention_();
+}
+
+function applyRetention_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = sheet_(), col = columnMap_(sheet), rows = dataRows_(sheet);
+
+  // 1. keep marketing contacts (one per email address)
+  var mk = ss.getSheetByName(SETTINGS.MARKETING_SHEET) || ss.insertSheet(SETTINGS.MARKETING_SHEET);
+  if (mk.getLastRow() === 0) mk.appendRow(MARKETING_HEADERS);
+  var known = {};
+  if (mk.getLastRow() > 1) mk.getRange(2, 3, mk.getLastRow() - 1, 1).getValues().forEach(function (r) { known[String(r[0]).toLowerCase()] = true; });
+  var kept = 0;
+  rows.forEach(function (row) {
+    if (!row[col['Registration ID'] - 1] || row[col['Marketing Consent'] - 1] !== 'Yes') return;
+    var email = String(row[col['Parent Email'] - 1]).trim();
+    if (known[email.toLowerCase()]) return;
+    known[email.toLowerCase()] = true;
+    mk.appendRow([safe_(row[col['Parent First Name'] - 1]), safe_(row[col['Parent Last Name'] - 1]), safe_(email),
+      row[col['Language'] - 1], row[col['Registration Date'] - 1], WORKSHOP.title.en]);
+    kept++;
+  });
+
+  // 2. delete all registrations (contents only; the tick boxes and formats stay)
+  var deleted = rows.filter(function (r) { return r[col['Registration ID'] - 1]; }).length;
+  if (sheet.getLastRow() > 1) sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).clearContent();
+
+  // 3. empty the Log, close registration
+  var log = ss.getSheetByName(SETTINGS.LOG_SHEET);
+  if (log && log.getLastRow() > 1) log.getRange(2, 1, log.getLastRow() - 1, 4).clearContent();
+  var set = ss.getSheetByName(SETTINGS.SETTINGS_SHEET);
+  if (set) set.getRange(1, 1, set.getLastRow(), 2).getValues().forEach(function (r, i) {
+    if (r[0] === 'Registration open') set.getRange(i + 1, 2).setValue('No');
+  });
+
+  PropertiesService.getScriptProperties().setProperty('retentionApplied', today_());
+  log_('retention', deleted + ' registration(s) deleted; ' + kept + ' marketing contact(s) kept', '');
+  MailApp.sendEmail({
+    to: SETTINGS.ADMIN_EMAIL,
+    subject: WORKSHOP.title.en + ': registration data deleted',
+    body: deleted + ' registration(s) were deleted on ' + today_() + ' as stated in the Privacy Policy. ' +
+      kept + ' marketing contact(s) were kept in the "Marketing Contacts" tab (delete a row there when a parent withdraws consent).\n\n' +
+      ss.getUrl(),
+    name: 'QGZ Kids Chess registration'
+  });
+  return { deleted: deleted, kept: kept };
+}
+
+function showRetention() {
+  var msg = 'Registrations are deleted automatically on ' + retentionDate_() + ' (reminder to the organisers on ' + reminderDate_() + '). ' +
+    'Names and email addresses of parents with marketing consent are kept in "' + SETTINGS.MARKETING_SHEET + '".' +
+    (PropertiesService.getScriptProperties().getProperty('retentionApplied') ? ' Already applied on ' + PropertiesService.getScriptProperties().getProperty('retentionApplied') + '.' : '');
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) { console.log(msg); }
+}
+
+function applyRetentionFromMenu() {
+  if (today_() < retentionDate_()) {
+    try { SpreadsheetApp.getUi().alert('Not yet: the deletion date is ' + retentionDate_() + '. To delete a single registration earlier (for example on request), delete its row.'); } catch (e) {}
+    return;
+  }
+  var r = applyRetention_();
+  try { SpreadsheetApp.getUi().alert(r.deleted + ' registration(s) deleted, ' + r.kept + ' marketing contact(s) kept.'); } catch (e) {}
+}
+
+/* ---------------------------------------------------------------------- */
 /* Emails                                                                  */
 
 var MAIL_TEXT = {
@@ -429,12 +541,12 @@ var MAIL_TEXT = {
   },
   de: {
     subject: 'Anmeldebestätigung: {title}',
-    hello: 'Hallo {name}',
-    intro: 'Vielen Dank, dass du {child} für {title} angemeldet hast. Mit dieser E-Mail bestätigen wir die Buchung.',
+    hello: 'Guten Tag {fullName}',
+    intro: 'Vielen Dank, dass Sie {child} für {title} angemeldet haben. Mit dieser E-Mail bestätigen wir die Buchung.',
     child: 'Kind', sessions: 'Termine', location: 'Ort', booking: 'Buchung',
     count: { 1: '1 Termin', n: '{n} Termine' }, total: 'Total',
     reference: 'Referenz',
-    change: 'Wenn du die Buchung ändern oder stornieren möchtest oder Fragen hast, antworte einfach auf diese E-Mail oder schreib an {email}.',
+    change: 'Möchten Sie die Buchung ändern oder stornieren, oder haben Sie Fragen? Antworten Sie einfach auf diese E-Mail oder schreiben Sie an {email}.',
     bye: 'Wir freuen uns auf {child}!',
     home: 'https://queensgambitzurich.ch/'
   }
@@ -448,7 +560,7 @@ function sendConfirmation_(r, conf) {
   var t = MAIL_TEXT[r.lang];
   var title = WORKSHOP.title[r.lang];
   var child = r.childFirst + ' ' + r.childLast;
-  var vars = { title: title, name: r.parentFirst, child: r.childFirst, email: SETTINGS.REPLY_TO, n: r.sessions.length };
+  var vars = { title: title, name: r.parentFirst, fullName: r.parentFirst + ' ' + r.parentLast, child: r.childFirst, email: SETTINGS.REPLY_TO, n: r.sessions.length };
   var sessions = r.sessions.map(function (id) {
     var s = sessionById_(id);
     return { when: s[r.lang].date + ', ' + s.time, what: s[r.lang].label };
@@ -529,7 +641,7 @@ function sendAdminNotice_(r, timestamp, conf) {
   ]);
   MailApp.sendEmail({
     to: SETTINGS.ADMIN_EMAIL,
-    subject: 'Kids Chess registration: ' + r.childFirst + ' ' + r.childLast + ' (' + r.sessions.length + ' session' + (r.sessions.length === 1 ? '' : 's') + ')',
+    subject: WORKSHOP.title.en + ' registration: ' + r.childFirst + ' ' + r.childLast + ' (' + r.sessions.length + ' session' + (r.sessions.length === 1 ? '' : 's') + ')',
     body: lines.join('\n'),
     name: 'QGZ Kids Chess registration'
   });
@@ -542,6 +654,8 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Kids Chess')
     .addItem('Fill in missing prices', 'fillMissingPrices')
     .addItem('Send test emails to me', 'testEmails')
+    .addItem('Data retention: show deletion date', 'showRetention')
+    .addItem('Data retention: apply now (only on or after the deletion date)', 'applyRetentionFromMenu')
     .addSeparator()
     .addItem('Repair sheets (setup)', 'setup')
     .addToUi();
@@ -626,6 +740,20 @@ function setup() {
   set.setFrozenRows(0);
 
   buildDashboard_(ss, H, first);
+
+  var mk = ss.getSheetByName(SETTINGS.MARKETING_SHEET) || ss.insertSheet(SETTINGS.MARKETING_SHEET);
+  if (mk.getLastRow() === 0) {
+    mk.appendRow(MARKETING_HEADERS);
+    mk.getRange(1, 1, 1, MARKETING_HEADERS.length).setFontWeight('bold').setBackground('#E4E9FF');
+    mk.setFrozenRows(1);
+    mk.setColumnWidths(1, MARKETING_HEADERS.length, 170);
+  }
+  set.getRange(layout.length + 2, 1, 2, 3).setValues([
+    ['Data deletion date', "'" + retentionDate_(), 'Registrations are deleted automatically on this date (Privacy Policy). Marketing contacts are kept.'],
+    ['Reminder to organisers', "'" + reminderDate_(), 'Email to the organisers, so that anything needed for accounting can be exported first.']
+  ]);
+  set.getRange(layout.length + 2, 1, 2, 3).setFontColor('#4E5470');
+  installRetentionTrigger_();
 
   var log = ss.getSheetByName(SETTINGS.LOG_SHEET) || ss.insertSheet(SETTINGS.LOG_SHEET);
   if (log.getLastRow() === 0) log.appendRow(['Time', 'Type', 'Detail', 'Email (masked)']);
