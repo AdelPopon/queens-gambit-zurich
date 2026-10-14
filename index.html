@@ -531,13 +531,13 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1600" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/fonts.css?v=20261014-1600">
-<link rel="stylesheet" href="/css/site.css?v=20261014-1600">
-<link rel="stylesheet" href="/css/glass.css?v=20261014-1600">
-<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1600">
-<link rel="stylesheet" href="/css/features.css?v=20261014-1600">
-<link rel="stylesheet" href="/css/type.css?v=20261014-1600">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1645" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css?v=20261014-1645">
+<link rel="stylesheet" href="/css/site.css?v=20261014-1645">
+<link rel="stylesheet" href="/css/glass.css?v=20261014-1645">
+<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1645">
+<link rel="stylesheet" href="/css/features.css?v=20261014-1645">
+<link rel="stylesheet" href="/css/type.css?v=20261014-1645">
 </head>
 <body>
 
@@ -996,16 +996,16 @@
         </li>
       </ul>
 
-      <!-- Newsletter signup (js/newsletter.js). Posts directly to Mailchimp only
-           when a visitor submits it: no Mailchimp script, no cookies on this site.
-           Mailchimp sends a confirmation email (double opt-in). Settings: data/config.js -->
+      <!-- Newsletter signup (js/newsletter.js). Sends the details to our Apps Script backend only
+           when a visitor submits it, which passes them to Mailchimp: no Mailchimp script, no cookies.
+           Mailchimp sends a confirmation email (double opt-in). Settings: data/config.js, backend: newsletter/ -->
       <div class="newsletter" id="newsletter" aria-labelledby="newsletter-title" data-newsletter hidden>
         <div class="newsletter__intro">
           <h3 id="newsletter-title">Newsletter</h3>
           <p>Neuigkeiten, Termine und Programme von Queen's Gambit Zürich per E-Mail. Wähle die Themen, die dich interessieren.</p>
         </div>
 
-        <form class="newsletter__form reg-form" method="post" target="_blank" novalidate data-newsletter-form>
+        <form class="newsletter__form reg-form" novalidate data-newsletter-form>
           <div class="reg-field">
             <label for="nl-email">E-Mail-Adresse <span class="reg-req" aria-hidden="true">*</span></label>
             <input id="nl-email" name="EMAIL" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="nl-email-error">
@@ -1055,6 +1055,8 @@
           <span data-nl-msg="topics">Bitte wähle mindestens ein Thema.</span>
           <span data-nl-msg="consent">Bitte bestätige, dass du den Newsletter erhalten möchtest.</span>
           <span data-nl-msg="sending">Wird gesendet …</span>
+          <span data-nl-msg="pending">Für diese E-Mail-Adresse wartet bereits eine Bestätigung. Bitte prüfe deinen Posteingang (und den Spam-Ordner) auf unsere E-Mail.</span>
+          <span data-nl-msg="existing">Wir konnten diese E-Mail-Adresse nicht automatisch hinzufügen. Bitte schreib an info@queensgambitzurich.ch, wir helfen dir gerne.</span>
           <span data-nl-msg="already">Diese E-Mail-Adresse ist bereits angemeldet. Deine Themen kannst du über den Link am Ende jedes Newsletters ändern.</span>
           <span data-nl-msg="rate">Zu viele Versuche. Bitte warte einige Minuten und versuche es dann erneut.</span>
           <span data-nl-msg="error">Dein Abo konnte nicht abgeschlossen werden. Bitte prüfe deine E-Mail-Adresse und versuche es erneut, oder schreib an info@queensgambitzurich.ch.</span>
@@ -1197,11 +1199,11 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="/data/config.js?v=20261014-1600"></script>
-<script src="/js/i18n.js?v=20261014-1600"></script>
-<script src="/data/events.js?v=20261014-1600"></script>
-<script src="/js/event-schema.js?v=20261014-1600"></script>
-<script src="/js/site.js?v=20261014-1600"></script>
-<script src="/js/newsletter.js?v=20261014-1600"></script>
+<script src="/data/config.js?v=20261014-1645"></script>
+<script src="/js/i18n.js?v=20261014-1645"></script>
+<script src="/data/events.js?v=20261014-1645"></script>
+<script src="/js/event-schema.js?v=20261014-1645"></script>
+<script src="/js/site.js?v=20261014-1645"></script>
+<script src="/js/newsletter.js?v=20261014-1645"></script>
 </body>
 </html>
