@@ -41,7 +41,7 @@ window.QGZ_CONFIG = {
   // API key lives only in that script. While "endpoint" is null, the form
   // stays hidden. Setup: newsletter/README.md
   newsletter: {
-    endpoint: null
+    endpoint: "https://script.google.com/macros/s/AKfycbxsVjO5oMMFWyY_-zlMf4mamnJbldoe3oRCeUiQsexRnECnObBCPRafPxKHN-MRd3W97w/exec"
   },
 
   contact: {
