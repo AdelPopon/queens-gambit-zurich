@@ -28,7 +28,7 @@ function base(over) {
 function regRows(env) {
   const sh = env.ss._sheets.Registrations;
   const head = sh._data[0];
-  return sh._data.slice(1).map((r) => Object.fromEntries(head.map((h, i) => [h, r[i]])));
+  return sh._data.slice(1).map((r) => Object.fromEntries(head.map((h, i) => [h, r[i]]))).filter((r) => r["Registration ID"]);
 }
 function setSetting(env, key, colIndex, value) {
   const d = env.ss._sheets.Settings._data;
@@ -52,7 +52,7 @@ test("setup creates Registrations, Settings, Dashboard, Log", () => {
   const head = env.ss._sheets.Registrations._data[0];
   ["Registration ID", "Parent Phone", "Sat 24 Oct", "Sun 25 Oct", "Sat 31 Oct", "Sessions", "Price", "Registration Status", "Payment Status", "Marketing Consent"]
     .forEach((h) => assert(head.includes(h), h));
-  assert.strictEqual(env.ss._sheets.Registrations.getLastRow(), 1, "no empty rows counted");
+  assert(env.ss._sheets.Registrations.getLastRow() > 900, "tick boxes make rows look used (like real Sheets)");
 });
 
 test("Settings: session ids stay text, capacity 18, prices empty, not published", () => {
@@ -60,6 +60,19 @@ test("Settings: session ids stay text, capacity 18, prices empty, not published"
   assert.strictEqual(JSON.stringify(c.capacity), JSON.stringify({ "2026-10-24": 18, "2026-10-25": 18, "2026-10-31": 18 }));
   assert.strictEqual(JSON.stringify(c.price), JSON.stringify({ "2026-10-24": null, "2026-10-25": null, "2026-10-31": null }));
   assert.strictEqual(c.publish, false); assert.strictEqual(c.open, true);
+});
+
+test("rows are written from row 2 down, despite the tick boxes", () => {
+  const e = makeEnv(); e.ctx.setup();
+  assert(post(e, base()).ok); assert(post(e, base()).ok);
+  const d = e.ss._sheets.Registrations._data;
+  assert(/^KC-/.test(d[1][0]) && /^KC-/.test(d[2][0]) && !d[3][0], "rows 2 and 3");
+});
+
+test("dashboard formulas are written with setFormula (locale-safe)", () => {
+  const d = env.ss._sheets.Dashboard._data;
+  assert(d.flat().some((v) => v && v.formula && v.formula.includes("COUNTIF(")));
+  assert(!env.ss._sheets.Sheet1, "default empty tab removed");
 });
 
 test("1. one session: stored, parent + organiser emails, no price", () => {
@@ -221,6 +234,7 @@ test("rate limit per email address", () => {
 
 test("test emails go only to the script owner, no rows", () => {
   const env7 = makeEnv(); env7.ctx.setup();
+  assert.strictEqual(regRows(env7).length, 0);
   env7.ctx.testEmails();
   assert.strictEqual(env7.mails.length, 2);
   assert(env7.mails.every((m) => m.to === "owner@example.com"));

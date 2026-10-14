@@ -135,9 +135,11 @@ function doPost(e) {
     }
 
     r.id = registrationId_(timestamp);
-    sheet.appendRow(rowFor_(sheet, col, r, timestamp));
+    // Not appendRow: the session tick boxes make every row look "used" to
+    // Sheets, so the next free row is found by the Registration ID column.
+    var last = nextFreeRow_(rows, col);
+    sheet.getRange(last, 1, 1, sheet.getLastColumn()).setValues([rowFor_(sheet, col, r, timestamp)]);
     SpreadsheetApp.flush();
-    var last = sheet.getLastRow();
     stored = String(sheet.getRange(last, col['Registration ID']).getValue()) === r.id;
   } catch (err) {
     log_('error', 'storage: ' + err, r.email);
@@ -262,6 +264,14 @@ function dataRows_(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return [];
   return sheet.getRange(2, 1, last - 1, sheet.getLastColumn()).getValues();
+}
+
+// First row (1-based, after the header) whose Registration ID is empty.
+function nextFreeRow_(rows, col) {
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i][col['Registration ID'] - 1]) === '') return i + 2;
+  }
+  return rows.length + 2;
 }
 
 function isActive_(row, col) {
@@ -681,7 +691,7 @@ function setup() {
   var rows = sheet.getMaxRows() - 1;
   sheet.getRange(2, c('Registration Date'), rows, 1).setNumberFormat('yyyy-mm-dd hh:mm');
   sheet.getRange(2, c('Price'), rows, 1).setNumberFormat('#,##0.00');
-  // Checkbox validation without values, so empty rows stay empty (appendRow
+  // Checkbox validation (rows are written by Registration ID, see doPost)
   // writes after the last row that has content).
   var tick = SpreadsheetApp.newDataValidation().requireCheckbox().build();
   WORKSHOP.sessions.forEach(function (s) { sheet.getRange(2, c(s.column), rows, 1).setDataValidation(tick); });
@@ -740,6 +750,12 @@ function setup() {
   set.setFrozenRows(0);
 
   buildDashboard_(ss, H, first);
+
+  // Remove the empty default tab of a new spreadsheet ("Sheet1", "Foglio1" …)
+  ss.getSheets().forEach(function (sh) {
+    var known = [SETTINGS.SHEET_NAME, SETTINGS.DASHBOARD_SHEET, SETTINGS.SETTINGS_SHEET, SETTINGS.LOG_SHEET, SETTINGS.MARKETING_SHEET];
+    if (known.indexOf(sh.getName()) < 0 && sh.getLastRow() === 0 && sh.getLastColumn() === 0 && ss.getSheets().length > 1) ss.deleteSheet(sh);
+  });
 
   var mk = ss.getSheetByName(SETTINGS.MARKETING_SHEET) || ss.insertSheet(SETTINGS.MARKETING_SHEET);
   if (mk.getLastRow() === 0) {
@@ -803,7 +819,14 @@ function buildDashboard_(ss, H, firstSessionRow) {
   rows.push(['Open (not yet paid)', '=SUMPRODUCT(' + active + '*(' + pay + '="Open"))', '=SUMPRODUCT(' + active + '*(' + pay + '="Open")*IFERROR(1*' + price + ',0))', '']);
   rows.push(['Refunded', '=COUNTIF(' + pay + ',"Refunded")', '=SUMIF(' + pay + ',"Refunded",' + price + ')', '']);
   rows.push(['Registrations without a price', '=SUMPRODUCT(' + active + '*(' + price + '=""))', 'Use Kids Chess ▸ Fill in missing prices once prices are set.', '']);
-  d.getRange(1, 1, rows.length, 4).setValues(rows);
+  // Formulas via setFormula, so they work in any spreadsheet locale (with
+  // setValues a comma-separated formula fails where ";" is the separator).
+  d.getRange(1, 1, rows.length, 4).setValues(rows.map(function (r) {
+    return r.map(function (v) { return typeof v === 'string' && v.charAt(0) === '=' ? '' : v; });
+  }));
+  rows.forEach(function (r, i) {
+    r.forEach(function (v, j) { if (typeof v === 'string' && v.charAt(0) === '=') d.getRange(i + 1, j + 1).setFormula(v); });
+  });
 
   d.getRange('A1').setFontWeight('bold').setFontSize(14).setFontColor('#0070B4');
   d.getRange('A2').setFontColor('#4E5470').setFontStyle('italic');

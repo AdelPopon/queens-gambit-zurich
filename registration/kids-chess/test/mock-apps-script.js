@@ -33,7 +33,16 @@ function makeEnv() {
       const rg = new Proxy({
         getValues: () => Array.from({ length: nr }, (_, i) => Array.from({ length: nc }, (_, j) => { const v = cell(r + i, c + j); return v && v.formula ? v.formula : v; })),
         getValue: () => { const v = cell(r, c); return v && v.formula ? v.formula : v; },
-        setValues: (vals) => { vals.forEach((row, i) => row.forEach((v, j) => put(r + i, c + j, v))); return rg; },
+        setValues: (vals) => {
+          vals.forEach((row, i) => row.forEach((v, j) => {
+            // Like a spreadsheet with ";" as separator: formulas with commas fail via setValues
+            if (typeof v === "string" && v.startsWith("=") && v.includes(",")) throw new Error("locale: use setFormula for " + v);
+            put(r + i, c + j, v);
+          }));
+          return rg;
+        },
+        // Tick boxes: real Sheets store FALSE in every cell, so the rows count as used
+        setDataValidation: (rule) => { if (rule && rule.checkbox) for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (cell(r + i, c + j) === "") put(r + i, c + j, false); return rg; },
         setValue: (v) => { put(r, c, v); return rg; },
         setFormula: (f) => { put(r, c, f); return rg; },
         clearContent: () => { for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (data[r - 1 + i]) data[r - 1 + i][c - 1 + j] = ""; return rg; },
@@ -69,8 +78,11 @@ function makeEnv() {
     insertSheet: (n) => (sheets[n] = Sheet(n)),
     setSpreadsheetTimeZone: () => {},
     getUrl: () => "https://docs.google.com/spreadsheets/d/TEST",
+    getSheets: () => Object.values(sheets),
+    deleteSheet: (sh) => { delete sheets[sh.getName()]; },
     _sheets: sheets
   };
+  ss.insertSheet("Sheet1");   // a new spreadsheet's empty default tab
   const cache = {};
   const props = {};
   const triggers = [];
@@ -79,7 +91,7 @@ function makeEnv() {
     SpreadsheetApp: {
       getActiveSpreadsheet: () => ss,
       flush: () => {},
-      newDataValidation: () => chain,
+      newDataValidation: () => new Proxy({}, { get: (t, k) => (k === "requireCheckbox" ? () => ({ build: () => ({ checkbox: true }) }) : () => chain) }),
       newConditionalFormatRule: () => chain,
       BorderStyle: { SOLID: 1 },
       getUi: () => ({ alert: (m) => { ctx._alert = m; }, createMenu: () => chain })
