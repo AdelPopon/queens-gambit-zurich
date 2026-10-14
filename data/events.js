@@ -18,8 +18,11 @@
 
      title       event name
      sessions    list of { date, time, label }  (one entry for single events)
-     venue       venue name
+     venue       venue name as shown on the website
      address     street address
+     place       optional { name, url }: official venue name and website, used
+                 in the search-engine data (the shown venue name is kept as
+                 alternate name)
      summary     optional short description
      linkKey     optional key from config.js links (e.g. "kidsRegistration")
      linkLabel   optional button text
@@ -28,9 +31,13 @@
      partners    optional list of { name, url }: each name in the title becomes a
                  link to the partner's official website (opens in a new tab)
      price       optional price in CHF (search-engine event data only)
+     free        optional true: participation is free (search-engine event data);
+                 regular club meetings are free, as stated in the Impressum
      admission   optional text shown on the card, e.g. free admission
      schedule    optional list of { time, item, duration }: the event programme,
                  shown in an expandable "View programme" panel
+     registrationPage optional path of the shareable registration page
+                 (e.g. "winz/"), used in the search-engine data
      registration optional true: shows the "Register for free" button, which
                  opens the registration form (only once a registration
                  endpoint is set in config.js)
@@ -40,6 +47,9 @@
    ========================================================================== */
 
 (function () {
+  // Official venue details for search-engine data (schema.org Place).
+  var ROBINS = { name: "Robin's Bar & Coffee", url: "https://robins-coffee.ch/" };
+
   // Winter Schedule 2026/27, Robins Caffè.
   // Meet-ups start at fixed times and have no fixed end (members stay as long
   // as they like), so only the start time is shown.
@@ -79,6 +89,7 @@
       venue: "ROBIN’S",
       admission: { en: "Free admission", de: "Eintritt frei" },
       registration: true,
+      registrationPage: "winz/",
       partners: [{ name: "WINZ", url: "https://www.ifi.uzh.ch/en/winz.html" }],
       schedule: [
         { time: "13:00–13:15", duration: "15 min",
@@ -118,11 +129,14 @@
       partners: f.partners || null,
       sessions: [{ date: date, time: f.time || startTime(date), label: null }],
       venue: f.venue || "Robins Caffè",
-      address: "Stampfenbachstrasse 38, 8006 Zürich",
+      address: "Zähringerstrasse 33, 8001 Zürich",
+      place: ROBINS,
       summary: f.summary || null,
       admission: f.admission || null,
       schedule: f.schedule || null,
-      registration: !!f.registration
+      registration: !!f.registration,
+      registrationPage: f.registrationPage || null,
+      free: true
     };
   });
 

@@ -34,6 +34,8 @@ js/i18n.js          Short interface texts created by JavaScript (EN + DE)
 css/features.css    Language switcher, event programme, registration dialog
 i18n/de.json        German translations of the page text  <- edit here
 tools/build.py      Builds the German pages, the legal pages, redirects and sitemap.xml
+tools/events_data.js  Event data for the build (run by build.py with Node.js)
+js/event-schema.js  Event data for search engines (used by the site and the build)
 de/, privacy/       Redirects from the old addresses (generated)
 registration/       Google Sheets + Apps Script registration backend
 data/config.js      Links and contact details  <- edit here
@@ -50,7 +52,7 @@ assets/fonts/       Font files and licences (SIL OFL 1.1)
 Open `data/config.js` and replace `null` with the URL. The matching buttons appear automatically. While a link is `null`, its buttons are hidden or point to the contact section, so visitors never see unfinished content.
 
 **Add or change an event**
-Edit `data/events.js`. Dates use `YYYY-MM-DD`. Events are sorted automatically, and past events disappear on their own. A meeting time appears only once it is filled in.
+Edit `data/events.js`, then run `python3 tools/build.py` so the dates are also written into the pages for search engines and visitors without JavaScript. Dates use `YYYY-MM-DD`. Events are sorted automatically, and past events disappear on their own. A meeting time appears only once it is filled in.
 
 **Change text**
 Edit `en/index.html`. Each section starts with a comment such as `<!-- 3. COMMUNITY -->`. Then update the German version (see below).
@@ -58,7 +60,7 @@ Edit `en/index.html`. Each section starts with a comment such as `<!-- 3. COMMUN
 **German version (EN/DE)**
 German is the default language (`/`), English is at `/en/`. The English page is the source. After changing English text in `en/index.html`:
 1. add or update the German translation in `i18n/de.json` (key = English text, value = German; Swiss spelling with ss, never ß),
-2. run `python3 tools/build.py`. It rebuilds the German `index.html`, the legal pages and `sitemap.xml`, and stops with a list of any English text that has no translation yet.
+2. run `python3 tools/build.py` (needs Python 3 and Node.js). It rebuilds the German `index.html`, the legal pages and `sitemap.xml`, and stops with a list of any English text that has no translation yet.
 
 Event texts are bilingual in `data/events.js` (`{ en: "…", de: "…" }`); short interface labels created by JavaScript are in `js/i18n.js`. The Impressum and Privacy Policy texts live in `tools/build.py`.
 

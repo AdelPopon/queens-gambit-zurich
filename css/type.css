@@ -46,7 +46,7 @@ h3, h4 { letter-spacing: -0.02em; }
 .mission p { font-size: clamp(1.5rem, 2.4vw + .75rem, 2.4rem); letter-spacing: -0.025em; line-height: 1.08; }
 .pilot__head h3 { font-size: clamp(1.5rem, 2.4vw + .85rem, 2.3rem); letter-spacing: -0.03em; line-height: 1; }
 .feature h3, .collab h3, .join-card h3, .event__title { line-height: 1.15; }
-.pilot__levels h4 { font-size: 1rem; }
+.pilot__levels h4, .pilot__levels h5 { font-size: 1rem; }
 
 /* Navigation keeps its existing font (League Spartan in the mobile menu) */
 @media (max-width: 1023px) {

@@ -56,7 +56,7 @@
       menu: "Menü",
       close: "Schliessen",
       "programme.community": "Schachclub",
-      "programme.kids": "Kinderschach",
+      "programme.kids": "Kids Chess",
       "programme.impact": "Soziales Engagement",
       "status.workshop": "Workshop",
       "status.upcoming-pilot": "Pilotprojekt",
