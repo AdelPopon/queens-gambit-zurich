@@ -36,3 +36,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-14_1422.zip` | `backup-2026-10-14_1422` | `dc10805` | 2026-10-14 14:22 | Before the Mailchimp newsletter signup form (privacy-first) |
 | `QGZ_Website_Backup_2026-10-14_1554.zip` | `backup-2026-10-14_1554` | `de7997e` | 2026-10-14 15:54 | Before hiding the newsletter form (Mailchimp JSONP endpoint removed) |
 | `QGZ_Website_Backup_2026-10-14_1615.zip` | `backup-2026-10-14_1615` | `de7997e` | 2026-10-14 16:15 | Before the Kids Chess Zollikon registration page and backend |
+| `QGZ_Website_Backup_2026-10-14_1640.zip` | `backup-2026-10-14_1640` | `45d060d` | 2026-10-14 16:40 | Before connecting the newsletter form to the Apps Script backend (PR #28) |
