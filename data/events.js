@@ -144,7 +144,7 @@
     id: "zollikon-kids-chess-pilot-2026",
     programme: "kids",
     status: "workshop",
-    title: "Zollikon Kids Chess Workshop",
+    title: "Zollikon Kids Chess",
     sessions: [
       { date: "2026-10-24", time: "09:30–11:30", label: { en: "Learn & Discover", de: "Lernen & Entdecken" } },
       { date: "2026-10-25", time: "09:30–11:30", label: { en: "Practice & Challenge", de: "Üben & Herausfordern" } },

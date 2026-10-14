@@ -17,7 +17,8 @@ window.QGZ_CONFIG = {
     // Instagram profile URL, e.g. "https://www.instagram.com/<handle>/"
     instagram: "https://www.instagram.com/queensgambitzurich/",
 
-    // Kids Chess / Zollikon pilot registration form URL
+    // Kids Chess workshop registration (the "Register" button in the Kids
+    // Chess section). Set automatically below once kidsChess.endpoint is set.
     kidsRegistration: null,
 
     // Legal pages (English / German)
@@ -32,6 +33,18 @@ window.QGZ_CONFIG = {
   // cannot store registrations. Setup: registration/README.md
   registration: {
     endpoint: "https://script.google.com/macros/s/AKfycbyZVFaN3BAbUFEfRiGaCsAm0Nff1_6liDWFZa2aYx-9jTgwcTwWoAs0lFFPi-E61mMcbQ/exec"
+  },
+
+  // Kids Chess workshop registration (Zollikon Kids Chess, /kids/zollikon/).
+  // The URL of the deployed Kids Chess Apps Script web app ("…/exec"), a
+  // separate script and Sheet from the WINZ registration above. Like that
+  // URL, it is not a secret: it accepts registrations and says which sessions
+  // are full, but never returns stored data. While it is null, the
+  // registration page shows no form and the Kids Chess "Register" button
+  // keeps its fallback. Setup: registration/kids-chess/README.md
+  kidsChess: {
+    endpoint: "https://script.google.com/macros/s/AKfycbx6P4P_y_yHfGL5wGcaEjloJhFeifZsG_-OL1BXsmbYlqFBGk5rZOfVUz3WwWRLDLev/exec",
+    page: { en: "/en/kids/zollikon/", de: "/kids/zollikon/" }
   },
 
   // Newsletter (Mailchimp audience "Queen's Gambit Zürich", double opt-in).
@@ -49,3 +62,9 @@ window.QGZ_CONFIG = {
     email: "info@queensgambitzurich.ch"
   }
 };
+
+// The Kids Chess "Register" button points to the registration page only once
+// the registration backend is connected.
+if (window.QGZ_CONFIG.kidsChess.endpoint) {
+  window.QGZ_CONFIG.links.kidsRegistration = window.QGZ_CONFIG.kidsChess.page;
+}
