@@ -9,6 +9,7 @@ then run the build. It needs Python 3 and Node.js (for the event data). It write
     index.html                 German home page (en/index.html + i18n/de.json)
     impressum/, datenschutz/   legal pages (DE)   en/impressum/, en/privacy/ (EN)
     winz/, en/winz/            registration pages
+    kids/zollikon/, en/kids/zollikon/   Kids Chess workshop registration
     sitemap.xml                all pages with hreflang alternates
     and, in en/index.html and the pages above, the upcoming events for search
     engines and visitors without JavaScript (between the @events markers).
@@ -261,6 +262,7 @@ PRIVACY = {
         <h2>5. Registering for an event</h2>
         <p>For selected events, such as QGZ × WINZ, you can register on this website. We then process your full name, your email address, your participation type, your Elo rating if you choose to give it, the language of the form and the date and time of your registration.</p>
         <p>We use this data only to manage your registration: to confirm it, to plan the event (for example the blitz tournament pairings) and to email you about this event. We do not use it for advertising or newsletters, and we do not pass it on to anyone else. Only the QGZ organisers have access.</p>
+        <p>For Kids Chess workshops, such as Kids Chess Zollikon, a parent or guardian registers the child. We then process the parent’s or guardian’s first and last name, email address and phone number; the child’s first and last name, age and chess experience; the sessions booked, the applicable price and the payment status; the language of the form and the date and time of the registration. We use the phone number only to reach you about the workshop, for example on the day itself. If you also tick the optional box for emails about future Kids Chess workshops and activities, we record this consent with the registration and keep your name and email address for that purpose until you withdraw it; this does not subscribe you to our newsletter.</p>
         <p>The form sends your details to a Google Apps Script service in our Google account. Your registration is stored in a private Google Sheets spreadsheet, and the confirmation emails are sent via Google. When you submit the form, your browser connects to Google's servers, which also process your IP address. Google LLC may process this data in the USA and participates in the Swiss-U.S. Data Privacy Framework. To protect the form against spam, we use a hidden check field and a timing check; no cookies or tracking are involved.</p>
         <p>You register by ticking the consent box. You can withdraw your consent and cancel your registration at any time by emailing <span class="legal__email">{EMAIL}</span>; we then delete your registration. Otherwise we delete registrations no later than three months after the event.</p>
 
@@ -304,6 +306,7 @@ PRIVACY = {
         <h2>5. Anmeldung für einen Anlass</h2>
         <p>Für ausgewählte Anlässe wie QGZ × WINZ kannst du dich auf dieser Website anmelden. Dabei bearbeiten wir deinen Vor- und Nachnamen, deine E-Mail-Adresse, die Art deiner Teilnahme, deine Elo-Zahl, sofern du sie angibst, die Sprache des Formulars sowie Datum und Uhrzeit deiner Anmeldung.</p>
         <p>Wir verwenden diese Daten nur, um deine Anmeldung zu verwalten: um sie zu bestätigen, den Anlass zu planen (zum Beispiel die Paarungen des Blitzturniers) und dich per E-Mail über diesen Anlass zu informieren. Wir verwenden sie weder für Werbung noch für Newsletter und geben sie nicht an Dritte weiter. Zugriff haben nur die Organisatorinnen und Organisatoren von QGZ.</p>
+        <p>Bei Kids-Chess-Workshops wie Kids Chess Zollikon meldet ein Elternteil oder eine erziehungsberechtigte Person das Kind an. Dabei bearbeiten wir Vor- und Nachname, E-Mail-Adresse und Telefonnummer des Elternteils oder der erziehungsberechtigten Person; Vor- und Nachname, Alter und Schacherfahrung des Kindes; die gebuchten Termine, den anwendbaren Preis und den Zahlungsstatus; die Sprache des Formulars sowie Datum und Uhrzeit der Anmeldung. Die Telefonnummer verwenden wir nur, um dich wegen des Workshops zu erreichen, zum Beispiel am Workshoptag selbst. Wenn du zusätzlich das freiwillige Feld für E-Mails über künftige Kids-Chess-Workshops und -Aktivitäten ankreuzt, halten wir diese Einwilligung bei der Anmeldung fest und bewahren deinen Namen und deine E-Mail-Adresse für diesen Zweck auf, bis du die Einwilligung widerrufst; damit wirst du nicht für unseren Newsletter angemeldet.</p>
         <p>Das Formular übermittelt deine Angaben an einen Google-Apps-Script-Dienst in unserem Google-Konto. Deine Anmeldung wird in einer privaten Google-Sheets-Tabelle gespeichert, und die Bestätigungs-E-Mails werden über Google versendet. Beim Absenden verbindet sich dein Browser mit den Servern von Google, die dabei auch deine IP-Adresse bearbeiten. Google LLC kann diese Daten in den USA bearbeiten und nimmt am Swiss-U.S. Data Privacy Framework teil. Zum Schutz vor Spam verwenden wir ein verstecktes Prüffeld und eine Zeitprüfung; Cookies oder Tracking kommen dabei nicht zum Einsatz.</p>
         <p>Du meldest dich an, indem du das Einwilligungsfeld ankreuzt. Du kannst deine Einwilligung jederzeit widerrufen und deine Anmeldung stornieren, indem du an <span class="legal__email">{EMAIL}</span> schreibst; wir löschen deine Anmeldung dann. Andernfalls löschen wir Anmeldungen spätestens drei Monate nach dem Anlass.</p>
 
@@ -520,13 +523,76 @@ def registration_pages(home_html, lang):
 
 
 # --------------------------------------------------------------------------
+# 3b. Kids Chess workshop registration pages: /kids/<workshop>/ (DE) and
+#     /en/kids/<workshop>/ (EN). The page content is tools/kids_registration.html
+#     (English, translated with i18n/de.json); sessions come from
+#     data/events.js and the form posts to the Kids Chess Apps Script
+#     (data/config.js → kidsChess.endpoint), separate from WINZ.
+# --------------------------------------------------------------------------
+KIDS_PAGES = {
+    "zollikon": {
+        "event_id": "zollikon-kids-chess-pilot-2026",
+        "en": {"slug": "en/kids/zollikon", "title": "Registration: Kids Chess Zollikon",
+               "description": "Registration for Kids Chess Zollikon: three chess mornings for children aged 5–13 on 24, 25 and 31 October 2026 at Combi Face, Zollikon."},
+        "de": {"slug": "kids/zollikon", "title": "Anmeldung: Kids Chess Zollikon",
+               "description": "Anmeldung für Kids Chess Zollikon: drei Schachvormittage für Kinder von 5 bis 13 Jahren am 24., 25. und 31. Oktober 2026 im Combi Face, Zollikon."},
+    },
+}
+
+KIDS_PAGE = REG_PAGE.split("<main id=\"main\">")[0].replace(
+    "<!-- GENERATED by tools/build.py (registration page). The form is copied from the home page dialog; the event comes from data/events.js. -->",
+    "<!-- GENERATED by tools/build.py (Kids Chess registration page) from tools/kids_registration.html. Do not edit this file directly. -->"
+) + """<main id="main">
+{content}
+</main>
+
+{footer}
+
+<div class="toast" role="status" aria-live="polite" data-toast hidden></div>
+
+{scripts}
+</body>
+</html>
+"""
+
+
+def kids_pages(home_html, lang):
+    styles, scripts, header, footer = shell(home_html, lang, ("kids-registration",))
+    v = re.search(r"\?v=([0-9-]+)", home_html).group(1)
+    scripts += f'\n<script src="/js/kids-registration.js?v={v}"></script>'
+    src = (ROOT / "tools" / "kids_registration.html").read_text()
+    src = re.sub(r"^<!--.*?-->\n", "", src, count=1, flags=re.S)       # source note
+    if lang == "de":
+        data = json.loads((ROOT / "i18n" / "de.json").read_text())
+        src, missing = translate_html(src, data["strings"], set(data["_keep"]))
+        if missing:
+            sys.exit("Missing German translations in i18n/de.json (tools/kids_registration.html):\n  - " + "\n  - ".join(missing))
+        src = src.replace('href="/en/privacy/"', 'href="/datenschutz/"')
+    for key, cfg in KIDS_PAGES.items():
+        meta = cfg[lang]
+        en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
+        hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
+        page = KIDS_PAGE.format(
+            lang=lang, site=SITE, slug=meta["slug"], en_slug=en_slug, de_slug=de_slug,
+            title=meta["title"], description=meta["description"],
+            og_locale="de_CH" if lang == "de" else "en_GB",
+            event_ld=ld_script(event_data(lang, cfg["event_id"], f"{SITE}/{meta['slug']}/")["schema"], "event"),
+            header=hdr, footer=footer, styles=styles, scripts=scripts,
+            content=src.rstrip().replace("{event_id}", cfg["event_id"]))
+        out = ROOT / meta["slug"] / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page)
+
+
+# --------------------------------------------------------------------------
 # 4. Sitemap
 # --------------------------------------------------------------------------
 def sitemap(lastmod):
     pairs = [("en/", "", "weekly", "1.0"),
              ("en/impressum/", "impressum/", "yearly", "0.3"),
              ("en/privacy/", "datenschutz/", "yearly", "0.3"),
-             ("en/winz/", "winz/", "weekly", "0.8")]
+             ("en/winz/", "winz/", "weekly", "0.8")] + \
+            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "weekly", "0.8") for c in KIDS_PAGES.values()]
     rows = []
     for en, de, freq, prio in pairs:
         for loc in (de, en):
@@ -587,6 +653,8 @@ if __name__ == "__main__":
     legal_pages(de_html, "de")
     registration_pages(en_html, "en")
     registration_pages(de_html, "de")
+    kids_pages(en_html, "en")
+    kids_pages(de_html, "de")
     redirect_pages()
     sitemap(TODAY)
-    print("Built: index.html (DE), impressum/, datenschutz/, winz/, en/impressum/, en/privacy/, en/winz/, redirects, sitemap.xml")
+    print("Built: index.html (DE), impressum/, datenschutz/, winz/, kids/zollikon/, en/impressum/, en/privacy/, en/winz/, en/kids/zollikon/, redirects, sitemap.xml")

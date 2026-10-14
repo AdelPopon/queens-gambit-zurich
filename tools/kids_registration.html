@@ -1,0 +1,150 @@
+<!-- Source of the Kids Chess workshop registration page (English).
+     tools/build.py inserts it into /en/kids/zollikon/ and, translated with
+     i18n/de.json, into /kids/zollikon/. Behaviour: js/kids-registration.js.
+     Styles: css/kids-registration.css. Sessions come from data/events.js. -->
+  <section class="section kreg" id="top-of-page" aria-labelledby="kreg-title" data-kreg data-event-id="{event_id}">
+    <div class="container kreg__inner">
+      <header class="kreg__head">
+        <p class="eyebrow">Kids Chess · Workshop</p>
+        <h1 class="kreg__title" id="kreg-title">Kids Chess Zollikon</h1>
+        <p class="kreg__lead">Registration for three chess mornings for children aged 5–13. Choose one, two or all three sessions.</p>
+        <dl class="kreg__facts">
+          <div><dt>Dates</dt><dd>24, 25 &amp; 31 October 2026</dd></div>
+          <div><dt>Location</dt><dd>Combi Face, Oberdorfstrasse 37, 8702 Zollikon</dd></div>
+          <div><dt>Ages</dt><dd>5–13 years</dd></div>
+          <div><dt>Group size</dt><dd>Maximum 18 children per session</dd></div>
+        </dl>
+      </header>
+
+      <div class="kreg__panel" data-kreg-panel>
+        <noscript><p class="reg-form__alert">Please enable JavaScript to register, or email info@queensgambitzurich.ch.</p></noscript>
+        <p class="reg-form__alert kreg__closed" data-kreg-closed hidden></p>
+
+        <form class="reg-form kreg-form" data-kreg-form novalidate hidden>
+          <fieldset class="kreg-step">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">1</span>Choose sessions <span class="reg-req" aria-hidden="true">*</span></legend>
+            <p class="kreg-step__hint" id="kreg-sessions-hint">Select one, two or all three sessions.</p>
+            <div class="kreg-sessions" data-kreg-sessions role="group" aria-describedby="kreg-sessions-hint kreg-sessions-error"></div>
+            <p class="reg-field__error" id="kreg-sessions-error" data-error-for="sessions" hidden></p>
+            <p class="kreg-summary" data-kreg-summary aria-live="polite" hidden></p>
+          </fieldset>
+
+          <fieldset class="kreg-step">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">2</span>Your child</legend>
+            <div class="kreg-grid">
+              <div class="reg-field">
+                <label for="kreg-child-first">First name <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-child-first" name="childFirst" type="text" maxlength="60" autocomplete="off" required aria-describedby="kreg-child-first-error">
+                <p class="reg-field__error" id="kreg-child-first-error" data-error-for="childFirst" hidden></p>
+              </div>
+              <div class="reg-field">
+                <label for="kreg-child-last">Last name <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-child-last" name="childLast" type="text" maxlength="60" autocomplete="off" required aria-describedby="kreg-child-last-error">
+                <p class="reg-field__error" id="kreg-child-last-error" data-error-for="childLast" hidden></p>
+              </div>
+              <div class="reg-field">
+                <label for="kreg-age">Age <span class="reg-req" aria-hidden="true">*</span></label>
+                <select id="kreg-age" name="age" required aria-describedby="kreg-age-error" data-kreg-age>
+                  <option value="">Please choose</option>
+                </select>
+                <p class="reg-field__error" id="kreg-age-error" data-error-for="age" hidden></p>
+              </div>
+            </div>
+            <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-exp-label" aria-describedby="kreg-exp-error">
+              <p class="kreg-choice__label" id="kreg-exp-label">Chess experience <span class="reg-req" aria-hidden="true">*</span></p>
+              <div class="kreg-choice__options">
+                <label class="kreg-pill"><input type="radio" name="experience" value="beginner" required><span>Beginner</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="intermediate"><span>Intermediate</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-exp-error" data-error-for="experience" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="kreg-step">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">3</span>Parent or guardian</legend>
+            <div class="kreg-grid">
+              <div class="reg-field">
+                <label for="kreg-parent-first">First name <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-parent-first" name="parentFirst" type="text" maxlength="60" autocomplete="given-name" required aria-describedby="kreg-parent-first-error">
+                <p class="reg-field__error" id="kreg-parent-first-error" data-error-for="parentFirst" hidden></p>
+              </div>
+              <div class="reg-field">
+                <label for="kreg-parent-last">Last name <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-parent-last" name="parentLast" type="text" maxlength="60" autocomplete="family-name" required aria-describedby="kreg-parent-last-error">
+                <p class="reg-field__error" id="kreg-parent-last-error" data-error-for="parentLast" hidden></p>
+              </div>
+              <div class="reg-field">
+                <label for="kreg-email">Email address <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-email" name="email" type="email" maxlength="254" autocomplete="email" inputmode="email" required aria-describedby="kreg-email-error">
+                <p class="reg-field__error" id="kreg-email-error" data-error-for="email" hidden></p>
+              </div>
+              <div class="reg-field">
+                <label for="kreg-phone">Phone number <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-phone" name="phone" type="tel" maxlength="25" autocomplete="tel" inputmode="tel" required aria-describedby="kreg-phone-error">
+                <p class="reg-field__error" id="kreg-phone-error" data-error-for="phone" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Spam protection: real visitors never see or fill this field -->
+          <div class="reg-form__hp" aria-hidden="true">
+            <label for="kreg-website">Website</label>
+            <input id="kreg-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <fieldset class="kreg-step kreg-step--consent">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">4</span>Consent</legend>
+            <p class="reg-form__privacy">We use these details only to manage this registration and to contact you about the workshop. They are stored in Google Sheets and deleted no later than three months after the workshop.</p>
+            <div class="reg-field reg-field--check">
+              <input id="kreg-consent" name="consent" type="checkbox" required aria-describedby="kreg-consent-error">
+              <label for="kreg-consent">I agree to the processing of these details as described in the <a data-link="privacy" href="/en/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. <span class="reg-req" aria-hidden="true">*</span></label>
+              <p class="reg-field__error" id="kreg-consent-error" data-error-for="consent" hidden></p>
+            </div>
+            <div class="reg-field reg-field--check">
+              <input id="kreg-marketing" name="marketing" type="checkbox">
+              <label for="kreg-marketing"><span class="reg-optional">Optional:</span> I would like to receive emails about future Kids Chess workshops and activities of Queen's Gambit Zürich.</label>
+            </div>
+          </fieldset>
+
+          <p class="reg-form__alert" role="alert" tabindex="-1" data-kreg-alert hidden></p>
+          <button class="btn btn--primary reg-form__submit kreg-form__submit" type="submit" data-kreg-submit>Register</button>
+          <p class="reg-form__note"><span aria-hidden="true">*</span> Required field</p>
+        </form>
+
+        <div class="reg-done kreg-done" tabindex="-1" data-kreg-success hidden>
+          <p class="kreg-done__badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+          <h2 class="kreg-done__title">Registration confirmed</h2>
+          <p data-kreg-done-text></p>
+          <button class="btn btn--ghost" type="button" data-kreg-another>Register another child</button>
+        </div>
+
+        <template data-kreg-messages>
+          <span data-msg="sessions">Please choose at least one session.</span>
+          <span data-msg="childFirst">Please enter your child's first name.</span>
+          <span data-msg="childLast">Please enter your child's last name.</span>
+          <span data-msg="age">Please choose your child's age.</span>
+          <span data-msg="experience">Please choose your child's chess experience.</span>
+          <span data-msg="parentFirst">Please enter your first name.</span>
+          <span data-msg="parentLast">Please enter your last name.</span>
+          <span data-msg="email">Please enter a valid email address.</span>
+          <span data-msg="phone">Please enter a phone number we can reach you on.</span>
+          <span data-msg="consent">Please agree to the Privacy Policy to register.</span>
+          <span data-msg="full">Full</span>
+          <span data-msg="fullError">Sorry, a session you selected is now full. Please check your selection.</span>
+          <span data-msg="count1">1 session</span>
+          <span data-msg="countN">{n} sessions</span>
+          <span data-msg="selected">Selected: {count}</span>
+          <span data-msg="total">Total: {price}</span>
+          <span data-msg="years">{n} years</span>
+          <span data-msg="done">Thank you. {child} is registered for {count}. We have sent a confirmation to {email}. If it does not arrive within a few minutes, please check your spam folder.</span>
+          <span data-msg="sending">Sending…</span>
+          <span data-msg="duplicate">This child is already registered with this email address. To change the booking, please email info@queensgambitzurich.ch.</span>
+          <span data-msg="closed">Registration for this workshop is closed.</span>
+          <span data-msg="allFull">All sessions are fully booked. For questions, please email info@queensgambitzurich.ch.</span>
+          <span data-msg="rate">Too many attempts. Please wait a few minutes and try again.</span>
+          <span data-msg="server">The registration could not be saved. Please try again later or email info@queensgambitzurich.ch.</span>
+          <span data-msg="network">We could not reach the registration service. Please check your connection and try again, or email info@queensgambitzurich.ch.</span>
+        </template>
+      </div>
+    </div>
+  </section>
