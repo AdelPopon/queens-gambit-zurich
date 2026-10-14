@@ -35,24 +35,13 @@ window.QGZ_CONFIG = {
   },
 
   // Newsletter (Mailchimp audience "Queen's Gambit Zürich", double opt-in).
-  // These are the public identifiers of Mailchimp's own signup endpoint (the
-  // same values that appear in any Mailchimp signup form). They are not API
-  // keys and give no access to the audience. The form posts to Mailchimp only
-  // when a visitor submits it. While "action" is null, the form stays hidden.
-  // groups: Mailchimp group "Newsletter topics" (interest IDs).
+  // The form sends signups to a Google Apps Script web app (newsletter/),
+  // which adds new addresses to Mailchimp as "pending" (Mailchimp then sends
+  // its confirmation email) and never changes existing contacts. The Mailchimp
+  // API key lives only in that script. While "endpoint" is null, the form
+  // stays hidden. Setup: newsletter/README.md
   newsletter: {
-    // Hidden 14 Oct 2026: Mailchimp no longer serves the JSONP endpoint (post-json
-    // returns 404), so the form could not subscribe anyone. Re-enabled once the
-    // Apps Script backend is in place.
-    action: null,
-    u: "ed48e3ae905866bc59a68cb85",
-    id: "309936e8c9",
-    groups: {
-      community: "group[59269][1]",   // Women's Chess Club & Community
-      kids: "group[59269][2]",        // Kids Chess
-      news: "group[59269][4]"         // General QGZ News & Events
-    },
-    languageField: "LANG"             // audience field "Language" (de / en)
+    endpoint: null
   },
 
   contact: {
