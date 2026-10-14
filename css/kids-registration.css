@@ -91,21 +91,52 @@
 .kreg-session.is-selected { border-color: var(--g-blue); background: var(--kids-yellow-soft); box-shadow: 0 0 0 3px rgba(253, 214, 31, .35); }
 .kreg-session.is-selected .kreg-session__tick { background: var(--g-blue); border-color: var(--g-blue); color: #fff; }
 .kreg-session:has(input:focus-visible) { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; }
-.kreg-session.is-full { cursor: not-allowed; background: rgba(255, 255, 255, .55); border-style: dashed; }
-.kreg-session.is-full .kreg-session__text { opacity: .55; }
+.kreg-session.is-full { background: rgba(255, 255, 255, .7); border-style: dashed; }
+.kreg-session.is-full .kreg-session__date, .kreg-session.is-full .kreg-session__meta, .kreg-session.is-full .kreg-session__price { opacity: .65; }
+.kreg-session.is-full.is-selected { background: var(--g-lavender); box-shadow: 0 0 0 3px rgba(57, 73, 171, .18); }
+.kreg-session__price { font-weight: 700; color: var(--g-blue); white-space: nowrap; }
 .kreg-session__badge {
+  justify-self: start; margin-top: .3rem;
   font-size: var(--fs-label); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   padding: .3rem .6rem; border-radius: 99px; background: var(--g-lavender); color: var(--g-indigo);
 }
 .kreg-summary {
-  justify-self: start; margin: 0; padding: .45rem .85rem; border-radius: 99px;
-  background: var(--kids-yellow); color: var(--g-ink); font-weight: 600; font-size: var(--fs-small);
+  display: grid; gap: .35rem; margin: 0; padding: .9rem 1rem; border-radius: 16px;
+  background: var(--kids-yellow-soft); border: 1px solid var(--kids-yellow); color: var(--g-ink);
 }
+.kreg-summary__total { margin: 0; font-weight: 700; font-size: 1.05rem; }
+.kreg-summary__inc-title { margin: .2rem 0 0; font-size: var(--fs-small); font-weight: 600; color: var(--muted); }
+.kreg-summary__inc { margin: 0; padding-left: 1.15rem; display: grid; gap: .2rem; font-size: var(--fs-small); }
+.kreg-summary__note { list-style: none; margin-left: -1.15rem; color: var(--muted); font-style: italic; }
+.kreg-waitlist {
+  margin: 0; padding: .8rem 1rem; border-radius: 14px; font-size: var(--fs-small);
+  background: var(--g-lavender); border-left: 4px solid var(--g-indigo); color: var(--g-ink);
+}
+.kreg-paynote { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+.kreg-total { margin: 0; font-weight: 700; font-size: 1.15rem; }
+
+/* ---------- What's included ---------- */
+.kreg-inc { display: grid; gap: .9rem; }
+.kreg-inc__title { font-size: clamp(1.25rem, 1.2vw + 1rem, 1.6rem); }
+.kreg-inc__grid { display: grid; gap: .75rem; }
+@media (min-width: 720px) { .kreg-inc__grid { grid-template-columns: 1fr 1fr 1.2fr; } }
+.kreg-inc__card {
+  display: grid; gap: .5rem; align-content: start; padding: 1rem 1.1rem;
+  background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius-sm); box-shadow: var(--glass-shadow);
+}
+.kreg-inc__card h3 { font-size: 1rem; text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-weight: 700; }
+.kreg-inc__card ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .25rem; font-size: var(--fs-small); }
+.kreg-inc__card--package { background: var(--kids-yellow-soft); border-color: var(--kids-yellow); }
+.kreg-inc__price { display: block; font-weight: 600; color: var(--g-blue); font-size: var(--fs-small); }
+.kreg-inc__note { margin: 0; font-size: .8rem; color: var(--muted); font-style: italic; }
 
 /* ---------- Experience choice ---------- */
 .kreg-choice { border: 0; }
 .kreg-choice__label { font-weight: 600; font-size: .9rem; margin: 0; }
 .kreg-choice__options { display: flex; flex-wrap: wrap; gap: .6rem; }
+.kreg-choice__options--stack { flex-direction: column; align-items: flex-start; }
+.kreg-choice .kreg-step__hint { margin: 0; }
 .kreg-pill { position: relative; cursor: pointer; }
 .kreg-pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .kreg-pill span {
@@ -115,10 +146,21 @@
 }
 .kreg-pill:hover span { border-color: var(--g-blue); }
 .kreg-pill input:checked + span { background: var(--g-blue); border-color: var(--g-blue); color: #fff; }
+.kreg-pill--check input:checked + span::before { content: "✓ "; }
+.kreg-pill span { text-align: left; }
 .kreg-pill input:focus-visible + span { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; }
 .kreg-choice[aria-invalid="true"] .kreg-pill span { border-color: #B3261E; }
 
 /* Selects and the tel field share the .reg-field look */
+.reg-field textarea {
+  width: 100%; font: 400 1rem/1.4 var(--font-body); color: inherit; background: var(--g-white); resize: vertical;
+  border: 1px solid rgba(57, 73, 171, .25); border-radius: var(--g-radius-sm); padding: .7rem .85rem;
+}
+.reg-field textarea:focus, .reg-field input[type=date]:focus { outline: none; border-color: var(--g-blue); box-shadow: 0 0 0 3px rgba(0, 112, 180, .18); }
+.reg-field input[type=date] {
+  width: 100%; font: inherit; color: inherit; background: var(--g-white); min-height: 46px;
+  border: 1px solid rgba(57, 73, 171, .25); border-radius: var(--g-radius-sm); padding: .6rem .8rem;
+}
 .reg-field input[type=tel] {
   width: 100%; font: inherit; color: inherit; background: var(--g-white);
   border: 1px solid rgba(57, 73, 171, .25); border-radius: var(--g-radius-sm); padding: .7rem .85rem; min-height: 46px;

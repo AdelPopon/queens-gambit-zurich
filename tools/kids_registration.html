@@ -1,7 +1,9 @@
 <!-- Source of the Kids Chess workshop registration page (English).
      tools/build.py inserts it into /en/kids/zollikon/ and, translated with
-     i18n/de.json, into /kids/zollikon/. Behaviour: js/kids-registration.js.
-     Styles: css/kids-registration.css. Sessions come from data/events.js. -->
+     i18n/de.json (kids_strings: formal "Sie"), into /kids/zollikon/.
+     Behaviour: js/kids-registration.js. Styles: css/kids-registration.css.
+     Sessions come from data/events.js; prices and free places from the
+     Kids Chess Apps Script (Settings tab of the Sheet). -->
   <section class="section kreg" id="top-of-page" aria-labelledby="kreg-title" data-kreg data-event-id="{event_id}">
     <div class="container kreg__inner">
       <header class="kreg__head">
@@ -16,6 +18,35 @@
         </dl>
       </header>
 
+      <section class="kreg-inc" aria-labelledby="kreg-inc-title">
+        <h2 class="kreg-inc__title" id="kreg-inc-title">What's included</h2>
+        <div class="kreg-inc__grid">
+          <div class="kreg-inc__card">
+            <h3>Every session</h3>
+            <ul>
+              <li>Chess activities and instruction</li>
+              <li>Snacks and drinks</li>
+              <li>A mini workbook or chess puzzles to take home</li>
+            </ul>
+          </div>
+          <div class="kreg-inc__card">
+            <h3>Saturday 31 October</h3>
+            <ul>
+              <li>Participation in the tournament</li>
+              <li>A trophy or prize</li>
+            </ul>
+          </div>
+          <div class="kreg-inc__card kreg-inc__card--package">
+            <h3>Full three-day package <span class="kreg-inc__price" data-kreg-package-price></span></h3>
+            <ul>
+              <li>The physical Chess Passport workbook</li>
+              <li>A certificate of participation</li>
+            </ul>
+            <p class="kreg-inc__note">The certificate of participation is awarded only to children who attend the complete three-day workshop.</p>
+          </div>
+        </div>
+      </section>
+
       <div class="kreg__panel" data-kreg-panel>
         <noscript><p class="reg-form__alert">Please enable JavaScript to register, or email info@queensgambitzurich.ch.</p></noscript>
         <p class="reg-form__alert kreg__closed" data-kreg-closed hidden></p>
@@ -23,10 +54,15 @@
         <form class="reg-form kreg-form" data-kreg-form novalidate hidden>
           <fieldset class="kreg-step">
             <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">1</span>Choose sessions <span class="reg-req" aria-hidden="true">*</span></legend>
-            <p class="kreg-step__hint" id="kreg-sessions-hint">Select one, two or all three sessions.</p>
+            <p class="kreg-step__hint" id="kreg-sessions-hint">Select one, two or all three sessions. The total is calculated automatically.</p>
             <div class="kreg-sessions" data-kreg-sessions role="group" aria-describedby="kreg-sessions-hint kreg-sessions-error"></div>
             <p class="reg-field__error" id="kreg-sessions-error" data-error-for="sessions" hidden></p>
-            <p class="kreg-summary" data-kreg-summary aria-live="polite" hidden></p>
+            <div class="kreg-summary" data-kreg-summary aria-live="polite" hidden>
+              <p class="kreg-summary__total" data-kreg-summary-total></p>
+              <p class="kreg-summary__inc-title">Included in this booking:</p>
+              <ul class="kreg-summary__inc" data-kreg-summary-inc></ul>
+            </div>
+            <p class="kreg-waitlist" data-kreg-waitlist role="status" hidden></p>
           </fieldset>
 
           <fieldset class="kreg-step">
@@ -43,20 +79,46 @@
                 <p class="reg-field__error" id="kreg-child-last-error" data-error-for="childLast" hidden></p>
               </div>
               <div class="reg-field">
-                <label for="kreg-age">Age <span class="reg-req" aria-hidden="true">*</span></label>
-                <select id="kreg-age" name="age" required aria-describedby="kreg-age-error" data-kreg-age>
-                  <option value="">Please choose</option>
-                </select>
-                <p class="reg-field__error" id="kreg-age-error" data-error-for="age" hidden></p>
+                <label for="kreg-dob">Date of birth <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-dob" name="dob" type="date" min="2012-10-25" max="2021-10-31" required aria-describedby="kreg-dob-error">
+                <p class="reg-field__error" id="kreg-dob-error" data-error-for="dob" hidden></p>
               </div>
             </div>
+
             <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-exp-label" aria-describedby="kreg-exp-error">
               <p class="kreg-choice__label" id="kreg-exp-label">Chess experience <span class="reg-req" aria-hidden="true">*</span></p>
               <div class="kreg-choice__options">
-                <label class="kreg-pill"><input type="radio" name="experience" value="beginner" required><span>Beginner</span></label>
-                <label class="kreg-pill"><input type="radio" name="experience" value="intermediate"><span>Intermediate</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="never" required><span>Never played before</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="beginner"><span>Beginner</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="basic"><span>Knows the basic rules</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="regular"><span>Plays regularly</span></label>
               </div>
               <p class="reg-field__error" id="kreg-exp-error" data-error-for="experience" hidden></p>
+            </div>
+
+            <div class="reg-field kreg-choice" role="group" aria-labelledby="kreg-lang-label" aria-describedby="kreg-lang-error">
+              <p class="kreg-choice__label" id="kreg-lang-label">Languages spoken <span class="reg-req" aria-hidden="true">*</span> <span class="reg-optional">(choose all that apply)</span></p>
+              <div class="kreg-choice__options">
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="de"><span>German</span></label>
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="en"><span>English</span></label>
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="it"><span>Italian</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-lang-error" data-error-for="languages" hidden></p>
+            </div>
+
+            <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-allergy-label" aria-describedby="kreg-allergy-hint kreg-allergy-error">
+              <p class="kreg-choice__label" id="kreg-allergy-label">Allergies or dietary restrictions <span class="reg-req" aria-hidden="true">*</span></p>
+              <p class="kreg-step__hint" id="kreg-allergy-hint">Snacks provided: fresh seasonal fruit (apples, pears, grapes and bananas), DAR-VIDA crackers, water, apple juice and orange juice.</p>
+              <div class="kreg-choice__options kreg-choice__options--stack">
+                <label class="kreg-pill"><input type="radio" name="allergies" value="none" required><span>No known allergies or dietary restrictions</span></label>
+                <label class="kreg-pill"><input type="radio" name="allergies" value="other"><span>Yes, allergies, intolerances or dietary requirements</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-allergy-error" data-error-for="allergies" hidden></p>
+            </div>
+            <div class="reg-field" data-kreg-allergy-details hidden>
+              <label for="kreg-allergy-details">Please specify the allergy, intolerance or dietary requirement <span class="reg-req" aria-hidden="true">*</span></label>
+              <textarea id="kreg-allergy-details" name="allergyDetails" rows="3" maxlength="500" aria-describedby="kreg-allergy-details-error"></textarea>
+              <p class="reg-field__error" id="kreg-allergy-details-error" data-error-for="allergyDetails" hidden></p>
             </div>
           </fieldset>
 
@@ -92,9 +154,31 @@
             <input id="kreg-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
 
+          <fieldset class="kreg-step">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">4</span>Photos and additional information</legend>
+            <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-photo-label" aria-describedby="kreg-photo-hint kreg-photo-error">
+              <p class="kreg-choice__label" id="kreg-photo-label">Photo and video consent <span class="reg-req" aria-hidden="true">*</span></p>
+              <p class="kreg-step__hint" id="kreg-photo-hint">A photo of your child will be taken during the programme for their personal Chess Passport. Children's faces will never be identifiable on public social media.</p>
+              <div class="kreg-choice__options">
+                <label class="kreg-pill"><input type="radio" name="photo" value="yes" required><span>Yes, I consent</span></label>
+                <label class="kreg-pill"><input type="radio" name="photo" value="no"><span>No, I do not consent</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-photo-error" data-error-for="photo" hidden></p>
+            </div>
+            <div class="reg-field">
+              <label for="kreg-notes">Additional information <span class="reg-optional">(optional)</span></label>
+              <textarea id="kreg-notes" name="notes" rows="3" maxlength="1000"></textarea>
+            </div>
+          </fieldset>
+
           <fieldset class="kreg-step kreg-step--consent">
-            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">4</span>Consent</legend>
-            <p class="reg-form__privacy">We use these details only to manage this registration and to contact you about the workshop. They are stored in Google Sheets and deleted no later than three months after the workshop.</p>
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">5</span>Consent</legend>
+            <div class="reg-field reg-field--check">
+              <input id="kreg-terms" name="terms" type="checkbox" required aria-describedby="kreg-terms-error">
+              <label for="kreg-terms">I have read the <a href="https://docs.google.com/document/d/e/2PACX-1vQbCzzy9_eTMN-JHarZ-x3Gm9neAFaQ3G33XKh5A3CdSaGQuhSByJyDd5TJHC_3tytD1isT82ph8_xa/pub" target="_blank" rel="noopener">Terms &amp; Conditions</a> and agree to them. <span class="reg-req" aria-hidden="true">*</span></label>
+              <p class="reg-field__error" id="kreg-terms-error" data-error-for="terms" hidden></p>
+            </div>
+            <p class="reg-form__privacy">We use these details only to manage this registration and to run the workshop safely, including allergy and dietary information. They are stored in Google Sheets and deleted no later than three months after the workshop.</p>
             <div class="reg-field reg-field--check">
               <input id="kreg-consent" name="consent" type="checkbox" required aria-describedby="kreg-consent-error">
               <label for="kreg-consent">I agree to the processing of these details as described in the <a data-link="privacy" href="/en/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. <span class="reg-req" aria-hidden="true">*</span></label>
@@ -106,6 +190,8 @@
             </div>
           </fieldset>
 
+          <p class="kreg-paynote">Payment instructions are sent separately by email after registration.</p>
+          <p class="kreg-total" data-kreg-total aria-live="polite" hidden></p>
           <p class="reg-form__alert" role="alert" tabindex="-1" data-kreg-alert hidden></p>
           <button class="btn btn--primary reg-form__submit kreg-form__submit" type="submit" data-kreg-submit>Register</button>
           <p class="reg-form__note"><span aria-hidden="true">*</span> Required field</p>
@@ -113,7 +199,7 @@
 
         <div class="reg-done kreg-done" tabindex="-1" data-kreg-success hidden>
           <p class="kreg-done__badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
-          <h2 class="kreg-done__title">Registration confirmed</h2>
+          <h2 class="kreg-done__title" data-kreg-done-title></h2>
           <p data-kreg-done-text></p>
           <button class="btn btn--ghost" type="button" data-kreg-another>Register another child</button>
         </div>
@@ -122,25 +208,42 @@
           <span data-msg="sessions">Please choose at least one session.</span>
           <span data-msg="childFirst">Please enter your child's first name.</span>
           <span data-msg="childLast">Please enter your child's last name.</span>
-          <span data-msg="age">Please choose your child's age.</span>
+          <span data-msg="dob">Please enter your child's date of birth. The workshop is for children aged 5 to 13.</span>
           <span data-msg="experience">Please choose your child's chess experience.</span>
+          <span data-msg="languages">Please choose at least one language.</span>
+          <span data-msg="allergies">Please tell us about allergies or dietary restrictions.</span>
+          <span data-msg="allergyDetails">Please specify the allergy, intolerance or dietary requirement.</span>
           <span data-msg="parentFirst">Please enter your first name.</span>
           <span data-msg="parentLast">Please enter your last name.</span>
           <span data-msg="email">Please enter a valid email address.</span>
           <span data-msg="phone">Please enter a phone number we can reach you on.</span>
+          <span data-msg="photo">Please choose whether you consent to photos.</span>
+          <span data-msg="terms">Please accept the Terms &amp; Conditions to register.</span>
           <span data-msg="consent">Please agree to the Privacy Policy to register.</span>
-          <span data-msg="full">Full</span>
-          <span data-msg="fullError">Sorry, a session you selected is now full. Please check your selection.</span>
+          <span data-msg="full">Full · waiting list</span>
+          <span data-msg="fullError">Sorry, a session you selected is now full. You can join the waiting list or remove that date.</span>
+          <span data-msg="waitlistNote">{dates} is fully booked. You can join the waiting list for this booking, or remove the full date to book the other sessions now.</span>
+          <span data-msg="waitlistButton">Join the waiting list</span>
           <span data-msg="count1">1 session</span>
           <span data-msg="countN">{n} sessions</span>
-          <span data-msg="selected">Selected: {count}</span>
-          <span data-msg="total">Total: {price}</span>
-          <span data-msg="years">{n} years</span>
-          <span data-msg="done">Thank you. {child} is registered for {count}. We have sent a confirmation to {email}. If it does not arrive within a few minutes, please check your spam folder.</span>
+          <span data-msg="and"> and </span>
+          <span data-msg="summary">{count} · Total: {price}</span>
+          <span data-msg="summaryDiscount">{count} · Total: {price} instead of {full} ({saving} discount)</span>
+          <span data-msg="summaryNoPrice">{count}</span>
+          <span data-msg="packagePrice">{price} instead of {full}</span>
+          <span data-msg="totalLine">Total: {price}</span>
+          <span data-msg="incSession">For every session: chess activities and instruction, snacks and drinks, and a mini workbook or chess puzzles to take home</span>
+          <span data-msg="incTournament">31 October: participation in the tournament and a trophy or prize</span>
+          <span data-msg="incFull">Full three-day package: the physical Chess Passport workbook and a certificate of participation</span>
+          <span data-msg="incNoCert">The Chess Passport workbook and the certificate are part of the full three-day package only.</span>
+          <span data-msg="doneTitle">Registration received</span>
+          <span data-msg="done">Thank you. {child} is registered for {count}. We have sent a confirmation to {email}. Payment instructions will follow in a separate email. If the confirmation does not arrive within a few minutes, please check your spam folder.</span>
+          <span data-msg="doneTitleWait">On the waiting list</span>
+          <span data-msg="doneWait">Thank you. {child} is on the waiting list for {count}. We have sent a confirmation to {email} and will contact you as soon as a place becomes available.</span>
+          <span data-msg="price">The prices have just been updated. Please check the new total and submit again.</span>
           <span data-msg="sending">Sending…</span>
           <span data-msg="duplicate">This child is already registered with this email address. To change the booking, please email info@queensgambitzurich.ch.</span>
           <span data-msg="closed">Registration for this workshop is closed.</span>
-          <span data-msg="allFull">All sessions are fully booked. For questions, please email info@queensgambitzurich.ch.</span>
           <span data-msg="rate">Too many attempts. Please wait a few minutes and try again.</span>
           <span data-msg="server">The registration could not be saved. Please try again later or email info@queensgambitzurich.ch.</span>
           <span data-msg="network">We could not reach the registration service. Please check your connection and try again, or email info@queensgambitzurich.ch.</span>

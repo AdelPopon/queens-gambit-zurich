@@ -61,14 +61,14 @@
  ]
 }
 </script>
-<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1715" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/fonts.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/site.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/glass.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/features.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/type.css?v=20261014-1715">
-<link rel="stylesheet" href="/css/kids-registration.css?v=20261014-1715">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261014-1945" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/site.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/glass.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/atmosphere.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/features.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/type.css?v=20261014-1945">
+<link rel="stylesheet" href="/css/kids-registration.css?v=20261014-1945">
 </head>
 <body>
 
@@ -145,6 +145,35 @@
         </dl>
       </header>
 
+      <section class="kreg-inc" aria-labelledby="kreg-inc-title">
+        <h2 class="kreg-inc__title" id="kreg-inc-title">Was inbegriffen ist</h2>
+        <div class="kreg-inc__grid">
+          <div class="kreg-inc__card">
+            <h3>Jeder Termin</h3>
+            <ul>
+              <li>Schachaktivitäten und Unterricht</li>
+              <li>Snacks und Getränke</li>
+              <li>Ein Mini-Arbeitsheft oder Schachrätsel für zu Hause</li>
+            </ul>
+          </div>
+          <div class="kreg-inc__card">
+            <h3>Samstag, 31. Oktober</h3>
+            <ul>
+              <li>Teilnahme am Turnier</li>
+              <li>Ein Pokal oder Preis</li>
+            </ul>
+          </div>
+          <div class="kreg-inc__card kreg-inc__card--package">
+            <h3>Ganzes Dreitagespaket <span class="kreg-inc__price" data-kreg-package-price></span></h3>
+            <ul>
+              <li>Das gedruckte Chess-Passport-Arbeitsheft</li>
+              <li>Ein Teilnahmezertifikat</li>
+            </ul>
+            <p class="kreg-inc__note">Das Teilnahmezertifikat erhalten nur Kinder, die den ganzen dreitägigen Workshop besuchen.</p>
+          </div>
+        </div>
+      </section>
+
       <div class="kreg__panel" data-kreg-panel>
         <noscript><p class="reg-form__alert">Bitte aktivieren Sie JavaScript, um die Anmeldung auszufüllen, oder schreiben Sie an info@queensgambitzurich.ch.</p></noscript>
         <p class="reg-form__alert kreg__closed" data-kreg-closed hidden></p>
@@ -152,10 +181,15 @@
         <form class="reg-form kreg-form" data-kreg-form novalidate hidden>
           <fieldset class="kreg-step">
             <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">1</span>Termine wählen <span class="reg-req" aria-hidden="true">*</span></legend>
-            <p class="kreg-step__hint" id="kreg-sessions-hint">Wählen Sie einen, zwei oder alle drei Termine.</p>
+            <p class="kreg-step__hint" id="kreg-sessions-hint">Wählen Sie einen, zwei oder alle drei Termine. Das Total wird automatisch berechnet.</p>
             <div class="kreg-sessions" data-kreg-sessions role="group" aria-describedby="kreg-sessions-hint kreg-sessions-error"></div>
             <p class="reg-field__error" id="kreg-sessions-error" data-error-for="sessions" hidden></p>
-            <p class="kreg-summary" data-kreg-summary aria-live="polite" hidden></p>
+            <div class="kreg-summary" data-kreg-summary aria-live="polite" hidden>
+              <p class="kreg-summary__total" data-kreg-summary-total></p>
+              <p class="kreg-summary__inc-title">In dieser Buchung inbegriffen:</p>
+              <ul class="kreg-summary__inc" data-kreg-summary-inc></ul>
+            </div>
+            <p class="kreg-waitlist" data-kreg-waitlist role="status" hidden></p>
           </fieldset>
 
           <fieldset class="kreg-step">
@@ -172,20 +206,46 @@
                 <p class="reg-field__error" id="kreg-child-last-error" data-error-for="childLast" hidden></p>
               </div>
               <div class="reg-field">
-                <label for="kreg-age">Alter <span class="reg-req" aria-hidden="true">*</span></label>
-                <select id="kreg-age" name="age" required aria-describedby="kreg-age-error" data-kreg-age>
-                  <option value="">Bitte auswählen</option>
-                </select>
-                <p class="reg-field__error" id="kreg-age-error" data-error-for="age" hidden></p>
+                <label for="kreg-dob">Geburtsdatum <span class="reg-req" aria-hidden="true">*</span></label>
+                <input id="kreg-dob" name="dob" type="date" min="2012-10-25" max="2021-10-31" required aria-describedby="kreg-dob-error">
+                <p class="reg-field__error" id="kreg-dob-error" data-error-for="dob" hidden></p>
               </div>
             </div>
+
             <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-exp-label" aria-describedby="kreg-exp-error">
               <p class="kreg-choice__label" id="kreg-exp-label">Schacherfahrung <span class="reg-req" aria-hidden="true">*</span></p>
               <div class="kreg-choice__options">
-                <label class="kreg-pill"><input type="radio" name="experience" value="beginner" required><span>Anfänger/in</span></label>
-                <label class="kreg-pill"><input type="radio" name="experience" value="intermediate"><span>Fortgeschritten</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="never" required><span>Hat noch nie gespielt</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="beginner"><span>Anfänger/in</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="basic"><span>Kennt die Grundregeln</span></label>
+                <label class="kreg-pill"><input type="radio" name="experience" value="regular"><span>Spielt regelmässig</span></label>
               </div>
               <p class="reg-field__error" id="kreg-exp-error" data-error-for="experience" hidden></p>
+            </div>
+
+            <div class="reg-field kreg-choice" role="group" aria-labelledby="kreg-lang-label" aria-describedby="kreg-lang-error">
+              <p class="kreg-choice__label" id="kreg-lang-label">Gesprochene Sprachen <span class="reg-req" aria-hidden="true">*</span> <span class="reg-optional">(Mehrfachauswahl möglich)</span></p>
+              <div class="kreg-choice__options">
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="de"><span>Deutsch</span></label>
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="en"><span>Englisch</span></label>
+                <label class="kreg-pill kreg-pill--check"><input type="checkbox" name="languages" value="it"><span>Italienisch</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-lang-error" data-error-for="languages" hidden></p>
+            </div>
+
+            <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-allergy-label" aria-describedby="kreg-allergy-hint kreg-allergy-error">
+              <p class="kreg-choice__label" id="kreg-allergy-label">Allergien oder Ernährungseinschränkungen <span class="reg-req" aria-hidden="true">*</span></p>
+              <p class="kreg-step__hint" id="kreg-allergy-hint">Wir bieten an: frisches saisonales Obst (Äpfel, Birnen, Trauben und Bananen), DAR-VIDA Cracker, Wasser, Apfelsaft und Orangensaft.</p>
+              <div class="kreg-choice__options kreg-choice__options--stack">
+                <label class="kreg-pill"><input type="radio" name="allergies" value="none" required><span>Keine bekannten Allergien oder Ernährungseinschränkungen</span></label>
+                <label class="kreg-pill"><input type="radio" name="allergies" value="other"><span>Ja, Allergien, Unverträglichkeiten oder Ernährungsanforderungen</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-allergy-error" data-error-for="allergies" hidden></p>
+            </div>
+            <div class="reg-field" data-kreg-allergy-details hidden>
+              <label for="kreg-allergy-details">Bitte geben Sie die Allergie, Unverträglichkeit oder Ernährungsanforderung an <span class="reg-req" aria-hidden="true">*</span></label>
+              <textarea id="kreg-allergy-details" name="allergyDetails" rows="3" maxlength="500" aria-describedby="kreg-allergy-details-error"></textarea>
+              <p class="reg-field__error" id="kreg-allergy-details-error" data-error-for="allergyDetails" hidden></p>
             </div>
           </fieldset>
 
@@ -221,9 +281,31 @@
             <input id="kreg-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
 
+          <fieldset class="kreg-step">
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">4</span>Fotos und weitere Informationen</legend>
+            <div class="reg-field kreg-choice" role="radiogroup" aria-labelledby="kreg-photo-label" aria-describedby="kreg-photo-hint kreg-photo-error">
+              <p class="kreg-choice__label" id="kreg-photo-label">Einwilligung für Fotos und Videos <span class="reg-req" aria-hidden="true">*</span></p>
+              <p class="kreg-step__hint" id="kreg-photo-hint">Während des Programms wird ein Foto Ihres Kindes für seinen persönlichen Chess Passport gemacht. Auf öffentlichen Social-Media-Kanälen sind Gesichter von Kindern nie erkennbar.</p>
+              <div class="kreg-choice__options">
+                <label class="kreg-pill"><input type="radio" name="photo" value="yes" required><span>Ja, ich bin einverstanden</span></label>
+                <label class="kreg-pill"><input type="radio" name="photo" value="no"><span>Nein, ich bin nicht einverstanden</span></label>
+              </div>
+              <p class="reg-field__error" id="kreg-photo-error" data-error-for="photo" hidden></p>
+            </div>
+            <div class="reg-field">
+              <label for="kreg-notes">Weitere Informationen <span class="reg-optional">(freiwillig)</span></label>
+              <textarea id="kreg-notes" name="notes" rows="3" maxlength="1000"></textarea>
+            </div>
+          </fieldset>
+
           <fieldset class="kreg-step kreg-step--consent">
-            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">4</span>Einwilligung</legend>
-            <p class="reg-form__privacy">Wir verwenden diese Angaben nur, um die Anmeldung zu verwalten und Sie zum Workshop zu kontaktieren. Sie werden in Google Sheets gespeichert und spätestens drei Monate nach dem Workshop gelöscht.</p>
+            <legend class="kreg-step__title"><span class="kreg-step__num" aria-hidden="true">5</span>Einwilligung</legend>
+            <div class="reg-field reg-field--check">
+              <input id="kreg-terms" name="terms" type="checkbox" required aria-describedby="kreg-terms-error">
+              <label for="kreg-terms">Ich habe die <a href="https://docs.google.com/document/d/e/2PACX-1vQbCzzy9_eTMN-JHarZ-x3Gm9neAFaQ3G33XKh5A3CdSaGQuhSByJyDd5TJHC_3tytD1isT82ph8_xa/pub" target="_blank" rel="noopener">Allgemeinen Geschäftsbedingungen</a> gelesen und bin damit einverstanden. <span class="reg-req" aria-hidden="true">*</span></label>
+              <p class="reg-field__error" id="kreg-terms-error" data-error-for="terms" hidden></p>
+            </div>
+            <p class="reg-form__privacy">Wir verwenden diese Angaben, einschliesslich der Angaben zu Allergien und Ernährung, nur für die Verwaltung der Anmeldung und eine sichere Durchführung des Workshops. Sie werden in Google Sheets gespeichert und spätestens drei Monate nach dem Workshop gelöscht.</p>
             <div class="reg-field reg-field--check">
               <input id="kreg-consent" name="consent" type="checkbox" required aria-describedby="kreg-consent-error">
               <label for="kreg-consent">Ich akzeptiere die Bearbeitung dieser Angaben gemäss der <a data-link="privacy" href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>. <span class="reg-req" aria-hidden="true">*</span></label>
@@ -235,6 +317,8 @@
             </div>
           </fieldset>
 
+          <p class="kreg-paynote">Die Zahlungsinformationen erhalten Sie nach der Anmeldung separat per E-Mail.</p>
+          <p class="kreg-total" data-kreg-total aria-live="polite" hidden></p>
           <p class="reg-form__alert" role="alert" tabindex="-1" data-kreg-alert hidden></p>
           <button class="btn btn--primary reg-form__submit kreg-form__submit" type="submit" data-kreg-submit>Anmelden</button>
           <p class="reg-form__note"><span aria-hidden="true">*</span> Pflichtfeld</p>
@@ -242,7 +326,7 @@
 
         <div class="reg-done kreg-done" tabindex="-1" data-kreg-success hidden>
           <p class="kreg-done__badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
-          <h2 class="kreg-done__title">Anmeldung bestätigt</h2>
+          <h2 class="kreg-done__title" data-kreg-done-title></h2>
           <p data-kreg-done-text></p>
           <button class="btn btn--ghost" type="button" data-kreg-another>Weiteres Kind anmelden</button>
         </div>
@@ -251,25 +335,42 @@
           <span data-msg="sessions">Bitte wählen Sie mindestens einen Termin.</span>
           <span data-msg="childFirst">Bitte geben Sie den Vornamen Ihres Kindes ein.</span>
           <span data-msg="childLast">Bitte geben Sie den Nachnamen Ihres Kindes ein.</span>
-          <span data-msg="age">Bitte wählen Sie das Alter Ihres Kindes.</span>
+          <span data-msg="dob">Bitte geben Sie das Geburtsdatum Ihres Kindes ein. Der Workshop ist für Kinder von 5 bis 13 Jahren.</span>
           <span data-msg="experience">Bitte wählen Sie die Schacherfahrung Ihres Kindes.</span>
+          <span data-msg="languages">Bitte wählen Sie mindestens eine Sprache.</span>
+          <span data-msg="allergies">Bitte machen Sie Angaben zu Allergien oder Ernährungseinschränkungen.</span>
+          <span data-msg="allergyDetails">Bitte geben Sie die Allergie, Unverträglichkeit oder Ernährungsanforderung an.</span>
           <span data-msg="parentFirst">Bitte geben Sie Ihren Vornamen ein.</span>
           <span data-msg="parentLast">Bitte geben Sie Ihren Nachnamen ein.</span>
           <span data-msg="email">Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
           <span data-msg="phone">Bitte geben Sie eine Telefonnummer an, unter der wir Sie erreichen.</span>
+          <span data-msg="photo">Bitte wählen Sie, ob Sie mit Fotos einverstanden sind.</span>
+          <span data-msg="terms">Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen, um die Anmeldung abzuschliessen.</span>
           <span data-msg="consent">Bitte stimmen Sie der Datenschutzerklärung zu, um die Anmeldung abzuschliessen.</span>
-          <span data-msg="full">Ausgebucht</span>
-          <span data-msg="fullError">Ein von Ihnen gewählter Termin ist leider inzwischen ausgebucht. Bitte prüfen Sie Ihre Auswahl.</span>
+          <span data-msg="full">Ausgebucht · Warteliste</span>
+          <span data-msg="fullError">Ein von Ihnen gewählter Termin ist leider inzwischen ausgebucht. Sie können sich auf die Warteliste setzen lassen oder diesen Termin entfernen.</span>
+          <span data-msg="waitlistNote">{dates} ist ausgebucht. Sie können sich mit dieser Buchung auf die Warteliste setzen lassen oder den ausgebuchten Termin entfernen und die anderen Termine jetzt buchen.</span>
+          <span data-msg="waitlistButton">Auf die Warteliste</span>
           <span data-msg="count1">1 Termin</span>
           <span data-msg="countN">{n} Termine</span>
-          <span data-msg="selected">Ausgewählt: {count}</span>
-          <span data-msg="total">Total: {price}</span>
-          <span data-msg="years">{n} Jahre</span>
-          <span data-msg="done">Vielen Dank. {child} ist für {count} angemeldet. Wir haben eine Bestätigung an {email} gesendet. Falls sie nicht innert weniger Minuten ankommt, schauen Sie bitte in Ihrem Spam-Ordner nach.</span>
+          <span data-msg="and"> und </span>
+          <span data-msg="summary">{count} · Total: {price}</span>
+          <span data-msg="summaryDiscount">{count} · Total: {price} statt {full} ({saving} Rabatt)</span>
+          <span data-msg="summaryNoPrice">{count}</span>
+          <span data-msg="packagePrice">{price} statt {full}</span>
+          <span data-msg="totalLine">Total: {price}</span>
+          <span data-msg="incSession">An jedem Termin: Schachaktivitäten und Unterricht, Snacks und Getränke sowie ein Mini-Arbeitsheft oder Schachrätsel für zu Hause</span>
+          <span data-msg="incTournament">31. Oktober: Teilnahme am Turnier und ein Pokal oder Preis</span>
+          <span data-msg="incFull">Ganzes Dreitagespaket: das gedruckte Chess-Passport-Arbeitsheft und ein Teilnahmezertifikat</span>
+          <span data-msg="incNoCert">Das Chess-Passport-Arbeitsheft und das Zertifikat gibt es nur mit dem ganzen Dreitagespaket.</span>
+          <span data-msg="doneTitle">Anmeldung erhalten</span>
+          <span data-msg="done">Vielen Dank. {child} ist für {count} angemeldet. Wir haben eine Bestätigung an {email} gesendet. Die Zahlungsinformationen folgen in einer separaten E-Mail. Falls die Bestätigung nicht innert weniger Minuten ankommt, schauen Sie bitte in Ihrem Spam-Ordner nach.</span>
+          <span data-msg="doneTitleWait">Auf der Warteliste</span>
+          <span data-msg="doneWait">Vielen Dank. {child} steht für {count} auf der Warteliste. Wir haben eine Bestätigung an {email} gesendet und melden uns, sobald ein Platz frei wird.</span>
+          <span data-msg="price">Die Preise wurden soeben aktualisiert. Bitte prüfen Sie das neue Total und senden Sie die Anmeldung nochmals ab.</span>
           <span data-msg="sending">Wird gesendet …</span>
           <span data-msg="duplicate">Dieses Kind ist mit dieser E-Mail-Adresse bereits angemeldet. Für eine Änderung der Buchung schreiben Sie bitte an info@queensgambitzurich.ch.</span>
           <span data-msg="closed">Die Anmeldung für diesen Workshop ist geschlossen.</span>
-          <span data-msg="allFull">Alle Termine sind ausgebucht. Bei Fragen schreiben Sie bitte an info@queensgambitzurich.ch.</span>
           <span data-msg="rate">Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es dann erneut.</span>
           <span data-msg="server">Die Anmeldung konnte nicht gespeichert werden. Bitte versuchen Sie es später nochmals oder schreiben Sie an info@queensgambitzurich.ch.</span>
           <span data-msg="network">Der Anmeldedienst ist nicht erreichbar. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut, oder schreiben Sie an info@queensgambitzurich.ch.</span>
@@ -327,12 +428,12 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="/data/config.js?v=20261014-1715"></script>
-<script src="/js/i18n.js?v=20261014-1715"></script>
-<script src="/data/events.js?v=20261014-1715"></script>
-<script src="/js/event-schema.js?v=20261014-1715"></script>
-<script src="/js/site.js?v=20261014-1715"></script>
-<script src="/js/newsletter.js?v=20261014-1715"></script>
-<script src="/js/kids-registration.js?v=20261014-1715"></script>
+<script src="/data/config.js?v=20261014-1945"></script>
+<script src="/js/i18n.js?v=20261014-1945"></script>
+<script src="/data/events.js?v=20261014-1945"></script>
+<script src="/js/event-schema.js?v=20261014-1945"></script>
+<script src="/js/site.js?v=20261014-1945"></script>
+<script src="/js/newsletter.js?v=20261014-1945"></script>
+<script src="/js/kids-registration.js?v=20261014-1945"></script>
 </body>
 </html>

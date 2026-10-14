@@ -20,8 +20,9 @@ function base(over) {
   return Object.assign({
     workshopId: "zollikon-kids-chess-pilot-2026",
     parentFirst: "Anna", parentLast: "Muster", email: "parent" + n + "+test@example.com", phone: "+41 79 123 45 67",
-    childFirst: "Lina", childLast: "Muster", age: "8", experience: "beginner",
-    sessions: ["2026-10-24"], consent: true, marketing: false, lang: "en",
+    childFirst: "Lina", childLast: "Muster", dob: "2018-03-10", experience: "beginner",
+    languages: ["de", "en"], allergies: "none", allergyDetails: "", photo: "no", notes: "",
+    sessions: ["2026-10-24"], consent: true, terms: true, marketing: false, lang: "en",
     website: "", elapsedMs: 9000
   }, over || {});
 }
@@ -55,11 +56,27 @@ test("setup creates Registrations, Settings, Dashboard, Log", () => {
   assert(env.ss._sheets.Registrations.getLastRow() > 900, "tick boxes make rows look used (like real Sheets)");
 });
 
-test("Settings: session ids stay text, capacity 18, prices empty, not published", () => {
+test("Settings: capacity 18, prices 60/60/75, 3-day package 165, published", () => {
   const c = env.ctx.readSettings_();
   assert.strictEqual(JSON.stringify(c.capacity), JSON.stringify({ "2026-10-24": 18, "2026-10-25": 18, "2026-10-31": 18 }));
-  assert.strictEqual(JSON.stringify(c.price), JSON.stringify({ "2026-10-24": null, "2026-10-25": null, "2026-10-31": null }));
-  assert.strictEqual(c.publish, false); assert.strictEqual(c.open, true);
+  assert.strictEqual(JSON.stringify(c.price), JSON.stringify({ "2026-10-24": 60, "2026-10-25": 60, "2026-10-31": 75 }));
+  assert.strictEqual(c.packages["3"], 165); assert.strictEqual(c.packages["2"], null);
+  assert.strictEqual(c.publish, true); assert.strictEqual(c.open, true);
+});
+
+test("all seven combinations are priced as agreed", () => {
+  const c = env.ctx.readSettings_(), P = (ids) => env.ctx.priceFor_(c, ids);
+  const A = "2026-10-24", B = "2026-10-25", C = "2026-10-31";
+  assert.deepStrictEqual([P([A]), P([B]), P([C]), P([A, B]), P([A, C]), P([B, C]), P([A, B, C])], [60, 60, 75, 120, 135, 135, 165]);
+});
+
+test("backend refuses a stale total shown on the website", () => {
+  const e = makeEnv(); e.ctx.setup();
+  const r = post(e, base({ sessions: ["2026-10-24", "2026-10-31"], expectedTotal: 120 }));
+  assert.strictEqual(r.code, "price"); assert.strictEqual(r.pricing.packages["3"], 165);
+  assert.strictEqual(regRows(e).length, 0);
+  assert(post(e, base({ sessions: ["2026-10-24", "2026-10-31"], expectedTotal: 135 })).ok);
+  assert.strictEqual(regRows(e)[0]["Price"], 135);
 });
 
 test("rows are written from row 2 down, despite the tick boxes", () => {
@@ -71,23 +88,29 @@ test("rows are written from row 2 down, despite the tick boxes", () => {
 
 test("dashboard formulas are written with setFormula (locale-safe)", () => {
   const d = env.ss._sheets.Dashboard._data;
-  assert(d.flat().some((v) => v && v.formula && v.formula.includes("COUNTIF(")));
+  assert(d.flat().some((v) => v && v.formula && v.formula.includes("MAX(0,")));
   assert(!env.ss._sheets.Sheet1, "default empty tab removed");
 });
 
-test("1. one session: stored, parent + organiser emails, no price", () => {
+test("1. one session: stored with price 60, parent + organiser emails", () => {
   const before = env.mails.length;
   const r = post(env, base({ sessions: ["2026-10-24"] }));
   assert.deepStrictEqual([r.ok, r.stored, r.sessions], [true, true, 1]);
   const row = regRows(env).pop();
   assert.strictEqual(row["Sat 24 Oct"], true); assert.strictEqual(row["Sun 25 Oct"], false);
-  assert.strictEqual(row["Sessions"], 1); assert.strictEqual(row["Price"], "");
-  assert.strictEqual(row["Registration Status"], "Confirmed"); assert.strictEqual(row["Payment Status"], "Open");
+  assert.strictEqual(row["Sessions"], 1); assert.strictEqual(row["Price"], 60);
+  assert.strictEqual(row["Date of Birth"], "2018-03-10"); assert.strictEqual(row["Age"], 8);
+  assert.strictEqual(row["Languages"], "German, English"); assert.strictEqual(row["Allergies / Diet"], "None known");
+  assert.strictEqual(row["Photo Consent"], "No"); assert.strictEqual(row["Terms Accepted"], "Yes");
+  assert.strictEqual(row["Registration Status"], "Registered"); assert.strictEqual(row["Payment Status"], "Open");
   assert.strictEqual(row["Parent Phone"], "+41 79 123 45 67");
   const m = env.mails.slice(before);
   assert.strictEqual(m.length, 2);
-  assert(m[0].to.endsWith("+test@example.com") && /Registration confirmed/.test(m[0].subject));
-  assert(!/CHF|Total/.test(m[0].body), "no price while unpublished");
+  assert(m[0].to.endsWith("+test@example.com") && /^Registration received: Zollikon Kids Chess$/.test(m[0].subject));
+  assert(/Total: CHF 60\n/.test(m[0].body), "price");
+  assert(/Payment instructions will follow in a separate email/.test(m[0].body));
+  assert(!/IBAN|twint|http.*pay/i.test(m[0].body), "no payment details");
+  assert(/For every session/.test(m[0].body) && !/trophy/.test(m[0].body) && /certificate of participation are part of the full three-day package only/.test(m[0].body));
   assert(/Saturday, 24 October 2026, 09:30–11:30/.test(m[0].body));
   assert(/Combi Face, Oberdorfstrasse 37, 8702 Zollikon/.test(m[0].body));
   assert.strictEqual(m[1].to, "info@queensgambitzurich.ch");
@@ -99,18 +122,25 @@ test("2. two sessions", () => {
   assert(r.ok);
   const row = regRows(env).pop();
   assert.strictEqual(row["Sessions"], 2); assert.strictEqual(row["Selected Dates"], "Sat 24 Oct, Sat 31 Oct");
+  assert.strictEqual(row["Price"], 135);
+  const m = env.mails[env.mails.length - 2];
+  assert(/Total: CHF 135\n/.test(m.body) && /trophy or prize/.test(m.body) && !/Chess Passport workbook and a certificate/.test(m.body));
 });
 
 test("3. all three sessions, German: German email", () => {
   const before = env.mails.length;
-  const r = post(env, base({ sessions: ["2026-10-31", "2026-10-25", "2026-10-24"], lang: "de", experience: "intermediate", marketing: true }));
+  const r = post(env, base({ sessions: ["2026-10-31", "2026-10-25", "2026-10-24"], lang: "de", experience: "regular", marketing: true }));
   assert(r.ok);
   const row = regRows(env).pop();
   assert.strictEqual(row["Sessions"], 3); assert.strictEqual(row["Selected Dates"], "Sat 24 Oct, Sun 25 Oct, Sat 31 Oct");
   assert.strictEqual(row["Marketing Consent"], "Yes"); assert.strictEqual(row["Language"], "DE");
-  assert.strictEqual(row["Chess Experience"], "Intermediate");
+  assert.strictEqual(row["Chess Experience"], "Plays regularly");
   const m = env.mails[before];
-  assert(/^Anmeldebestätigung/.test(m.subject) && /Samstag, 31\. Oktober 2026, 09:00–12:00/.test(m.body) && /3 Termine/.test(m.body));
+  assert(/^Anmeldung erhalten/.test(m.subject) && /Samstag, 31\. Oktober 2026, 09:00–12:00/.test(m.body) && /3 Termine/.test(m.body));
+  assert(/Total: CHF 165 \(ganzes Dreitagespaket statt CHF 195, CHF 30 Rabatt\)/.test(m.body), "discount line");
+  assert(/Teilnahmezertifikat/.test(m.body) && /Pokal oder Preis/.test(m.body) && !/gibt es nur/.test(m.body));
+  assert(/Zahlungsinformationen erhalten Sie in einer separaten E-Mail/.test(m.body));
+  assert.strictEqual(row["Price"], 165);
 });
 
 test("duplicate: same parent email + same child is rejected, no email", () => {
@@ -132,8 +162,14 @@ test("validation: missing consent, bad email/phone/age, unknown session, honeypo
   assert.strictEqual(post(env, base({ consent: false })).code, "invalid");
   assert.strictEqual(post(env, base({ email: "nope" })).code, "invalid");
   assert.strictEqual(post(env, base({ phone: "12" })).code, "invalid");
-  assert.strictEqual(post(env, base({ age: "4" })).code, "invalid");
-  assert.strictEqual(post(env, base({ age: "14" })).code, "invalid");
+  assert.strictEqual(post(env, base({ dob: "2021-10-25" })).code, "invalid");   // 4 on 24 Oct
+  assert.strictEqual(post(env, base({ dob: "2012-10-24" })).code, "invalid");   // 14 on 24 Oct
+  assert(post(env, base({ dob: "2021-10-24", childFirst: "Five" })).ok, "exactly 5 on the day");
+  assert.strictEqual(post(env, base({ dob: "2018-02-30" })).code, "invalid");
+  assert.strictEqual(post(env, base({ languages: [] })).code, "invalid");
+  assert.strictEqual(post(env, base({ allergies: "other", allergyDetails: "" })).code, "invalid");
+  assert.strictEqual(post(env, base({ photo: "" })).code, "invalid");
+  assert.strictEqual(post(env, base({ terms: false })).code, "invalid");
   assert.strictEqual(post(env, base({ experience: "expert" })).code, "invalid");
   assert.strictEqual(post(env, base({ sessions: [] })).code, "invalid");
   assert.strictEqual(post(env, base({ sessions: ["2026-11-01"] })).code, "invalid");
@@ -141,7 +177,7 @@ test("validation: missing consent, bad email/phone/age, unknown session, honeypo
   assert.strictEqual(post(env, base({ website: "x" })).code, "invalid");
   assert.strictEqual(post(env, base({ elapsedMs: 500 })).code, "invalid");
   assert.strictEqual(post(env, base({ workshopId: "other" })).code, "closed");
-  assert.strictEqual(regRows(env).length, count, "nothing stored");
+  assert.strictEqual(regRows(env).length, count + 1, "nothing else stored");
 });
 
 test("formula injection is neutralised", () => {
@@ -152,10 +188,10 @@ test("formula injection is neutralised", () => {
   assert(!raw.some((v) => v && v.formula), "no formula stored");
 });
 
-test("availability GET: no personal data, sessions not full, no prices", () => {
+test("availability GET: no personal data, sessions not full, published prices", () => {
   const r = get(env, { workshop: "zollikon-kids-chess-pilot-2026" });
   assert.deepStrictEqual(Object.keys(r).sort(), ["ok", "open", "pricing", "sessions"]);
-  assert.strictEqual(r.pricing, null);
+  assert.strictEqual(JSON.stringify(r.pricing), JSON.stringify({ currency: "CHF", sessions: { "2026-10-24": 60, "2026-10-25": 60, "2026-10-31": 75 }, packages: { 3: 165 } }));
   assert.strictEqual(JSON.stringify(r).includes("@"), false);
   assert.strictEqual(get(env, {}).service, "qgz-kids-registration");
 });
@@ -181,6 +217,8 @@ test("capacity: 18 per session, 19th rejected, other sessions still open", () =>
 
 test("prices: per session, package, publish switch, fill missing", () => {
   const env3 = makeEnv(); env3.ctx.setup();
+  setSetting(env3, "Publish prices", 1, "No"); ["2026-10-24", "2026-10-25", "2026-10-31"].forEach((id) => setSetting(env3, id, 3, ""));
+  setSetting(env3, "Package price, 3 sessions", 1, "");
   assert(post(env3, base({ sessions: ["2026-10-24", "2026-10-25"] })).ok);   // before prices exist
   setSetting(env3, "2026-10-24", 3, 40); setSetting(env3, "2026-10-25", 3, 40); setSetting(env3, "2026-10-31", 3, 50);
   setSetting(env3, "Package price, 3 sessions", 1, 110);
@@ -199,6 +237,55 @@ test("prices: per session, package, publish switch, fill missing", () => {
   env3.ctx.fillMissingPrices();
   assert.strictEqual(regRows(env3)[0]["Price"], 80);
   assert(/1 price\(s\) filled in/.test(env3.ctx._alert));
+});
+
+test("waiting list: full session → waitlist only when asked; no place held, no revenue", () => {
+  const e = makeEnv(); e.ctx.setup();
+  setSetting(e, "2026-10-31", 2, 1);
+  assert(post(e, base({ sessions: ["2026-10-31"], childFirst: "First" })).ok);
+  assert.strictEqual(post(e, base({ sessions: ["2026-10-24", "2026-10-31"], childFirst: "Second" })).code, "full");
+  const before = e.mails.length;
+  const r = post(e, base({ sessions: ["2026-10-24", "2026-10-31"], childFirst: "Second", waitlist: true, lang: "de", email: "wait@example.com" }));
+  assert(r.ok && r.status === "waitlist");
+  const row = regRows(e).pop();
+  assert.strictEqual(row["Registration Status"], "Waiting list"); assert.strictEqual(row["Payment Status"], "");
+  const m = e.mails.slice(before);
+  assert(/^Warteliste: Zollikon Kids Chess$/.test(m[0].subject) && /Samstag, 31\. Oktober 2026 ist ausgebucht/.test(m[0].body) && /keine Zahlung nötig/.test(m[0].body));
+  assert(!/separaten E-Mail/.test(m[0].body), "no payment note for waitlist");
+  assert(/WAITING LIST/.test(m[1].subject) && /\[FULL\]/.test(m[1].body));
+  // waitlisted child does not hold the 24 Oct place
+  const a = get(e, { workshop: "zollikon-kids-chess-pilot-2026" });
+  assert.strictEqual(a.sessions["2026-10-31"].full, true); assert.strictEqual(a.sessions["2026-10-24"].full, false);
+  // waitlist flag with free sessions → normal registration
+  assert.strictEqual(post(e, base({ sessions: ["2026-10-24"], childFirst: "Third", waitlist: true })).status, "registered");
+  // same child cannot be on the list twice
+  assert.strictEqual(post(e, base({ sessions: ["2026-10-31"], childFirst: "Second", waitlist: true, email: "wait@example.com" })).code, "duplicate");
+});
+
+test("allergies: details required and stored; parent message stored", () => {
+  const e = makeEnv(); e.ctx.setup();
+  assert(post(e, base({ allergies: "other", allergyDetails: "Nuts (severe)", notes: "Picked up by grandma", languages: ["it"] })).ok);
+  const row = regRows(e)[0];
+  assert.strictEqual(row["Allergies / Diet"], "Yes, see details"); assert.strictEqual(row["Allergy Details"], "Nuts (severe)");
+  assert.strictEqual(row["Parent Message"], "Picked up by grandma"); assert.strictEqual(row["Languages"], "Italian");
+  assert(/Allergies \/ diet: Nuts \(severe\)/.test(e.mails[1].body));
+});
+
+test("multiple children with one parent email", () => {
+  const e = makeEnv(); e.ctx.setup();
+  ["Ana", "Ben", "Cleo"].forEach((n) => assert(post(e, base({ email: "family@example.com", childFirst: n })).ok));
+  assert.strictEqual(regRows(e).length, 3);
+});
+
+test("cleanup removes only regtest rows; setup migrates an empty sheet with the old layout", () => {
+  const e = makeEnv(); e.ctx.setup();
+  assert(post(e, base({ email: "queensgambitzurich+kids-regtest-1@gmail.com" })).ok);
+  assert(post(e, base({ email: "real@example.com" })).ok);
+  assert.strictEqual(e.ctx.removeTestRegistrations(), 1);
+  assert.deepStrictEqual(regRows(e).map((r) => r["Parent Email"]), ["real@example.com"]);
+  // setup refuses to change the layout when real data is present
+  const sh = e.ss._sheets.Registrations; sh._data[0][8] = "Child Age";
+  assert.throws(() => e.ctx.setup(), /older column layout/);
 });
 
 test("past sessions cannot be booked", () => {
@@ -245,10 +332,11 @@ test("dashboard formulas reference the right columns", () => {
   const d = env.ss._sheets.Dashboard._data;
   const flat = d.map((r) => r.map((v) => (v && v.formula) || v));
   const row = (label) => flat.find((r) => String(r[0]).startsWith(label));
-  assert(/'Registrations'!Q2:Q<>"Cancelled"/.test(row("Registrations (children)")[1]) || /Registration/.test(row("Registrations (children)")[1]));
+  assert(/="Registered"/.test(row("Registered children")[1]) && /="Waiting list"/.test(row("On the waiting list")[1]));
+  assert(/="Waiting list"/.test(row("Sat 24 Oct")[4]), "waiting list column");
   const sat = row("Sat 24 Oct");
   assert(/'Settings'!C5/.test(sat[2]), "capacity from Settings C5: " + sat[2]);
-  assert(/MAX\(0,C11-B11\)/.test(sat[3]), sat[3]);
+  assert(/MAX\(0,C(\d+)-B\1\)/.test(sat[3]), sat[3]);
   assert(row("Sat 31 Oct")[2].includes("'Settings'!C7"));
   assert(row("Expected revenue")[2].includes("IFERROR(1*"));
 });
@@ -257,7 +345,7 @@ test("German email uses the formal Sie form and the event name", () => {
   const e = makeEnv(); e.ctx.setup();
   assert(post(e, base({ lang: "de", parentFirst: "Anna", parentLast: "Muster" })).ok);
   const m = e.mails[0];
-  assert(/^Anmeldebestätigung: Zollikon Kids Chess$/.test(m.subject), m.subject);
+  assert(/^Anmeldung erhalten: Zollikon Kids Chess$/.test(m.subject), m.subject);
   assert(/Guten Tag Anna Muster/.test(m.body) && /dass Sie/.test(m.body) && /schreiben Sie an/.test(m.body));
   assert(!/\b(du|dein|dich|dir|schreib|antworte)\b/.test(m.body), "no du-forms");
   assert(/^Zollikon Kids Chess registration: Lina Muster \(1 session\)$/.test(e.mails[1].subject), e.mails[1].subject);

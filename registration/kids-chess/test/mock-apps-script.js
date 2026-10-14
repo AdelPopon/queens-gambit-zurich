@@ -46,7 +46,7 @@ function makeEnv() {
         setValue: (v) => { put(r, c, v); return rg; },
         setFormula: (f) => { put(r, c, f); return rg; },
         clearContent: () => { for (let i = 0; i < nr; i++) for (let j = 0; j < nc; j++) if (data[r - 1 + i]) data[r - 1 + i][c - 1 + j] = ""; return rg; },
-        createFilter: () => { filter = {}; return filter; }
+        createFilter: () => { filter = { remove: () => { filter = null; } }; return filter; }
       }, { get: (t, k) => (k in t ? t[k] : () => rg) });
       return rg;
     }
@@ -68,6 +68,7 @@ function makeEnv() {
       insertColumnsAfter: (a, n) => { maxCols += n; },
       getFilter: () => filter,
       clear: () => { data.length = 0; },
+      deleteRow: (n) => { data.splice(n - 1, 1); },
       _data: data
     }, { get: (t, k) => (k in t ? t[k] : () => sh) });
     return sh;

@@ -45,7 +45,7 @@ http.createServer((req, res) => {
   }
   if (url.pathname === "/__kids-state") {
     const sh = env.ss._sheets.Registrations._data;
-    return json({ rows: sh.slice(1).map((r) => Object.fromEntries(sh[0].map((h, i) => [h, r[i]]))),
+    return json({ rows: sh.slice(1).filter((r) => r[0]).map((r) => Object.fromEntries(sh[0].map((h, i) => [h, r[i]]))),
       emails: env.mails.map((m) => ({ to: m.to, subject: m.subject, body: m.body })) });
   }
   if (url.pathname === "/__kids-email.html") {

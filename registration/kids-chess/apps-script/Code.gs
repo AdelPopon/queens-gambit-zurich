@@ -19,8 +19,11 @@
  *   GET   ?workshop=<id>                    → which sessions are full, and the
  *         prices only once "Publish prices" is Yes. Never personal data.
  *
- * Prices, capacity and "registration open" are set in the Settings tab of the
- * Sheet, not here. Setup instructions: registration/kids-chess/README.md
+ * Capacity, prices and "registration open" live in the Settings tab of the
+ * Sheet (setup fills in the defaults from WORKSHOP below). The script always
+ * computes the price itself; a total shown on the website that no longer
+ * matches is refused ("price"), so a parent never books at a stale price.
+ * Setup instructions: registration/kids-chess/README.md
  */
 
 var SETTINGS = {
@@ -37,7 +40,8 @@ var SETTINGS = {
   DEFAULT_CAPACITY: 18,       // used by setup() for new Settings rows
   MIN_FILL_MS: 4000,          // faster submissions are treated as bots
   MAX_PER_HOUR: 60,           // overall limit across all visitors
-  MAX_PER_EMAIL_HOUR: 8       // repeated attempts with the same email (siblings need several)
+  MAX_PER_EMAIL_HOUR: 8,      // repeated attempts with the same email (siblings need several)
+  SETTINGS_VERSION: 2         // bump to reset the Settings tab to the WORKSHOP defaults on setup
 };
 
 /*
@@ -53,34 +57,41 @@ var WORKSHOP = {
   maxAge: 13,
   title: { en: 'Zollikon Kids Chess', de: 'Zollikon Kids Chess' },
   location: 'Combi Face, Oberdorfstrasse 37, 8702 Zollikon',
+  currency: 'CHF',
+  publishPrices: true,
+  packages: { 3: 165 },        // full three-day package (instead of 60 + 60 + 75 = 195)
+  termsUrl: 'https://docs.google.com/document/d/e/2PACX-1vQbCzzy9_eTMN-JHarZ-x3Gm9neAFaQ3G33XKh5A3CdSaGQuhSByJyDd5TJHC_3tytD1isT82ph8_xa/pub',
   sessions: [
-    { id: '2026-10-24', column: 'Sat 24 Oct', time: '09:30–11:30',
+    { id: '2026-10-24', column: 'Sat 24 Oct', time: '09:30–11:30', price: 60,
       en: { date: 'Saturday, 24 October 2026', label: 'Learn & Discover' },
       de: { date: 'Samstag, 24. Oktober 2026', label: 'Lernen & Entdecken' } },
-    { id: '2026-10-25', column: 'Sun 25 Oct', time: '09:30–11:30',
+    { id: '2026-10-25', column: 'Sun 25 Oct', time: '09:30–11:30', price: 60,
       en: { date: 'Sunday, 25 October 2026', label: 'Practice & Challenge' },
       de: { date: 'Sonntag, 25. Oktober 2026', label: 'Üben & Herausfordern' } },
-    { id: '2026-10-31', column: 'Sat 31 Oct', time: '09:00–12:00',
+    { id: '2026-10-31', column: 'Sat 31 Oct', time: '09:00–12:00', price: 75, tournament: true,
       en: { date: 'Saturday, 31 October 2026', label: 'Tournament & Awards' },
       de: { date: 'Samstag, 31. Oktober 2026', label: 'Turnier & Preisverleihung' } }
   ]
 };
 
-var EXPERIENCE = { beginner: 'Beginner', intermediate: 'Intermediate' };
+// Options as in the original Google Form
+var EXPERIENCE = { never: 'Never played before', beginner: 'Beginner', basic: 'Knows the basic rules', regular: 'Plays regularly' };
 var EXPERIENCE_LABELS = {
-  en: { beginner: 'Beginner', intermediate: 'Intermediate' },
-  de: { beginner: 'Anfänger/in', intermediate: 'Fortgeschritten' }
+  en: EXPERIENCE,
+  de: { never: 'Hat noch nie gespielt', beginner: 'Anfänger/in', basic: 'Kennt die Grundregeln', regular: 'Spielt regelmässig' }
 };
-var STATUS = { confirmed: 'Confirmed', cancelled: 'Cancelled' };
+var LANGUAGES = { de: 'German', en: 'English', it: 'Italian' };
+var STATUS = { registered: 'Registered', waitlist: 'Waiting list', cancelled: 'Cancelled' };
 var PAYMENT = ['Open', 'Paid', 'Refunded'];
 
 function headers_() {
   return ['Registration ID', 'Registration Date',
     'Parent First Name', 'Parent Last Name', 'Parent Email', 'Parent Phone',
-    'Child First Name', 'Child Last Name', 'Child Age', 'Chess Experience']
+    'Child First Name', 'Child Last Name', 'Date of Birth', 'Age', 'Chess Experience', 'Languages',
+    'Allergies / Diet', 'Allergy Details', 'Photo Consent']
     .concat(WORKSHOP.sessions.map(function (s) { return s.column; }))
     .concat(['Sessions', 'Selected Dates', 'Price', 'Registration Status', 'Payment Status',
-      'Marketing Consent', 'Language', 'Notes']);
+      'Marketing Consent', 'Terms Accepted', 'Language', 'Parent Message', 'Notes']);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -117,6 +128,11 @@ function doPost(e) {
   }
   if (!conf.open) return reply_({ ok: false, code: 'closed' });
   r.price = priceFor_(conf, r.sessions);
+  // The website shows a total; it must match the price computed here.
+  if (r.expectedTotal !== null && conf.publish && r.price !== r.expectedTotal) {
+    log_('rejected', 'price: shown ' + r.expectedTotal + ', actual ' + r.price, r.email);
+    return reply_({ ok: false, code: 'price', pricing: publicPricing_(conf) });
+  }
   try {
     lock.waitLock(20000);
     var sheet = sheet_();
@@ -129,10 +145,13 @@ function doPost(e) {
     }
     var counts = countBySession_(rows, col);
     var full = r.sessions.filter(function (id) { return counts[id] >= conf.capacity[id]; });
-    if (full.length) {
+    if (full.length && !r.waitlist) {
       log_('rejected', 'full: ' + full.join(', '), r.email);
       return reply_({ ok: false, code: 'full', full: full });
     }
+    // Waiting list only when a chosen session is really full
+    r.status = full.length ? STATUS.waitlist : STATUS.registered;
+    r.full = full;
 
     r.id = registrationId_(timestamp);
     // Not appendRow: the session tick boxes make every row look "used" to
@@ -164,8 +183,9 @@ function doPost(e) {
   } catch (err) {
     log_('error', 'admin email: ' + err, r.email);
   }
-  log_('registered', r.id + ' · ' + r.sessions.length + ' session(s)' + (mailOk ? '' : ' (confirmation email failed)'), r.email);
-  return reply_({ ok: true, stored: true, emailSent: mailOk, sessions: r.sessions.length });
+  log_(r.status === STATUS.waitlist ? 'waiting list' : 'registered', r.id + ' · ' + r.sessions.length + ' session(s)' + (mailOk ? '' : ' (confirmation email failed)'), r.email);
+  return reply_({ ok: true, stored: true, emailSent: mailOk, sessions: r.sessions.length,
+    status: r.status === STATUS.waitlist ? 'waitlist' : 'registered', price: r.price });
 }
 
 /*
@@ -181,7 +201,7 @@ function doGet(e) {
     var sheet = sheet_();
     var counts = countBySession_(dataRows_(sheet), columnMap_(sheet));
     var sessions = {};
-    WORKSHOP.sessions.forEach(function (s) { sessions[s.id] = { full: counts[s.id] >= conf.capacity[s.id] }; });
+    WORKSHOP.sessions.forEach(function (s) { sessions[s.id] = { full: counts[s.id] >= conf.capacity[s.id] }; });   // no numbers: privacy
     return reply_({ ok: true, open: conf.open, sessions: sessions, pricing: conf.publish ? publicPricing_(conf) : null });
   } catch (err) {
     log_('error', 'availability: ' + err, '');
@@ -197,6 +217,7 @@ function validate_(x) {
   if (!(Number(x.elapsedMs) >= SETTINGS.MIN_FILL_MS)) return { ok: false, code: 'spam' }; // too fast
   if (x.workshopId !== WORKSHOP.id || !WORKSHOP.open) return { ok: false, code: 'closed' };
   if (x.consent !== true) return { ok: false, code: 'invalid', field: 'consent' };
+  if (x.terms !== true) return { ok: false, code: 'invalid', field: 'terms' };
 
   var clean = function (v, max) { v = String(v == null ? '' : v).replace(/\s+/g, ' ').trim(); return v.length > max ? null : v; };
   var v = {
@@ -204,9 +225,16 @@ function validate_(x) {
     parentFirst: clean(x.parentFirst, 60), parentLast: clean(x.parentLast, 60),
     email: clean(x.email, 254), phone: clean(x.phone, 30),
     childFirst: clean(x.childFirst, 60), childLast: clean(x.childLast, 60),
-    age: String(x.age == null ? '' : x.age).trim(),
+    dob: String(x.dob || '').trim(),
     experience: String(x.experience || ''),
+    languages: Array.isArray(x.languages) ? x.languages.map(String) : [],
+    allergies: String(x.allergies || ''),
+    allergyDetails: clean(x.allergyDetails, 500),
+    photo: String(x.photo || ''),
+    notes: String(x.notes == null ? '' : x.notes).trim(),
     marketing: x.marketing === true,
+    waitlist: x.waitlist === true,
+    expectedTotal: x.expectedTotal === undefined || x.expectedTotal === null || x.expectedTotal === '' ? null : Number(x.expectedTotal),
     lang: x.lang === 'de' ? 'de' : 'en'
   };
   var names = ['parentFirst', 'parentLast', 'childFirst', 'childLast'];
@@ -215,9 +243,15 @@ function validate_(x) {
   }
   if (!v.email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) return { ok: false, code: 'invalid', field: 'email' };
   if (!v.phone || !/^\+?[0-9 ()\/.\-]{6,25}$/.test(v.phone) || v.phone.replace(/\D/g, '').length < 7) return { ok: false, code: 'invalid', field: 'phone' };
-  if (!/^\d{1,2}$/.test(v.age) || +v.age < WORKSHOP.minAge || +v.age > WORKSHOP.maxAge) return { ok: false, code: 'invalid', field: 'age' };
-  v.age = Number(v.age);
   if (!EXPERIENCE[v.experience]) return { ok: false, code: 'invalid', field: 'experience' };
+  v.languages = Object.keys(LANGUAGES).filter(function (k) { return v.languages.indexOf(k) >= 0; });
+  if (!v.languages.length) return { ok: false, code: 'invalid', field: 'languages' };
+  if (v.allergies !== 'none' && v.allergies !== 'other') return { ok: false, code: 'invalid', field: 'allergies' };
+  if (v.allergyDetails === null || (v.allergies === 'other' && v.allergyDetails.length < 2)) return { ok: false, code: 'invalid', field: 'allergyDetails' };
+  if (v.allergies === 'none') v.allergyDetails = '';
+  if (v.photo !== 'yes' && v.photo !== 'no') return { ok: false, code: 'invalid', field: 'photo' };
+  if (v.notes.length > 1000) return { ok: false, code: 'invalid', field: 'notes' };
+  if (v.expectedTotal !== null && !isFinite(v.expectedTotal)) return { ok: false, code: 'invalid', field: 'expectedTotal' };
 
   if (!Array.isArray(x.sessions)) return { ok: false, code: 'invalid', field: 'sessions' };
   var known = WORKSHOP.sessions.map(function (s) { return s.id; });
@@ -226,7 +260,23 @@ function validate_(x) {
   var today = Utilities.formatDate(new Date(), 'Europe/Zurich', 'yyyy-MM-dd');
   if (picked.some(function (id) { return id < today; })) return { ok: false, code: 'closed', field: 'past session' };
   v.sessions = picked;
+  // Date of birth: a real date; age 5–13 on the first booked session
+  var m = v.dob.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return { ok: false, code: 'invalid', field: 'dob' };
+  var y = +m[1], mo = +m[2], d = +m[3];
+  var check = new Date(Date.UTC(y, mo - 1, d));
+  if (check.getUTCFullYear() !== y || check.getUTCMonth() !== mo - 1 || check.getUTCDate() !== d) return { ok: false, code: 'invalid', field: 'dob' };
+  v.age = ageOn_(v.dob, picked[0]);
+  if (v.age < WORKSHOP.minAge || v.age > WORKSHOP.maxAge) return { ok: false, code: 'invalid', field: 'dob' };
   return { ok: true, value: v };
+}
+
+// Age in whole years on the given day (both "YYYY-MM-DD")
+function ageOn_(dob, day) {
+  var b = dob.split('-').map(Number), t = day.split('-').map(Number);
+  var age = t[0] - b[0];
+  if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) age--;
+  return age;
 }
 
 function rateLimit_(email) {
@@ -274,9 +324,11 @@ function nextFreeRow_(rows, col) {
   return rows.length + 2;
 }
 
-function isActive_(row, col) {
-  return String(row[col['Registration Status'] - 1]).trim().toLowerCase() !== STATUS.cancelled.toLowerCase();
-}
+function status_(row, col) { return String(row[col['Registration Status'] - 1]).trim().toLowerCase(); }
+// Not cancelled (registered or waiting list): used for duplicates
+function isActive_(row, col) { return status_(row, col) !== STATUS.cancelled.toLowerCase(); }
+// Holds places: registered (also the earlier label "Confirmed")
+function holdsPlace_(row, col) { var st = status_(row, col); return st === STATUS.registered.toLowerCase() || st === 'confirmed'; }
 
 function isTicked_(v) { return v === true || String(v).toUpperCase() === 'TRUE'; }
 
@@ -284,7 +336,7 @@ function countBySession_(rows, col) {
   var counts = {};
   WORKSHOP.sessions.forEach(function (s) { counts[s.id] = 0; });
   rows.forEach(function (row) {
-    if (!isActive_(row, col)) return;
+    if (!row[col['Registration ID'] - 1] || !holdsPlace_(row, col)) return;
     WORKSHOP.sessions.forEach(function (s) { if (isTicked_(row[col[s.column] - 1])) counts[s.id]++; });
   });
   return counts;
@@ -313,16 +365,23 @@ function rowFor_(sheet, col, r, timestamp) {
   set('Parent Phone', "'" + r.phone);          // keep leading + and 0 as text
   set('Child First Name', safe_(r.childFirst));
   set('Child Last Name', safe_(r.childLast));
-  set('Child Age', r.age);
+  set('Date of Birth', "'" + r.dob);
+  set('Age', r.age);
   set('Chess Experience', EXPERIENCE[r.experience]);
+  set('Languages', r.languages.map(function (k) { return LANGUAGES[k]; }).join(', '));
+  set('Allergies / Diet', r.allergies === 'none' ? 'None known' : 'Yes, see details');
+  set('Allergy Details', safe_(r.allergyDetails));
+  set('Photo Consent', r.photo === 'yes' ? 'Yes' : 'No');
   WORKSHOP.sessions.forEach(function (s) { set(s.column, r.sessions.indexOf(s.id) >= 0); });
   set('Sessions', r.sessions.length);
   set('Selected Dates', r.sessions.map(function (id) { return sessionById_(id).column; }).join(', '));
   set('Price', r.price == null ? '' : r.price);
-  set('Registration Status', STATUS.confirmed);
-  set('Payment Status', PAYMENT[0]);
+  set('Registration Status', r.status || STATUS.registered);
+  set('Payment Status', r.status === STATUS.waitlist ? '' : PAYMENT[0]);
   set('Marketing Consent', r.marketing ? 'Yes' : 'No');
+  set('Terms Accepted', 'Yes');
   set('Language', r.lang.toUpperCase());
+  set('Parent Message', safe_(r.notes || ''));
   return row;
 }
 
@@ -338,7 +397,7 @@ function sessionById_(id) {
 /* ----- Settings tab: capacity, prices, open/closed ----- */
 
 function readSettings_() {
-  var conf = { open: WORKSHOP.open, publish: false, currency: 'CHF', capacity: {}, price: {}, packages: {} };
+  var conf = { open: WORKSHOP.open, publish: false, currency: WORKSHOP.currency || 'CHF', capacity: {}, price: {}, packages: {} };
   WORKSHOP.sessions.forEach(function (s) { conf.capacity[s.id] = SETTINGS.DEFAULT_CAPACITY; conf.price[s.id] = null; });
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SETTINGS.SETTINGS_SHEET);
   if (!sh) return conf;
@@ -539,25 +598,53 @@ function applyRetentionFromMenu() {
 
 var MAIL_TEXT = {
   en: {
-    subject: 'Registration confirmed: {title}',
+    subject: { registered: 'Registration received: {title}', waitlist: 'Waiting list: {title}' },
     hello: 'Hello {name}',
-    intro: 'Thank you for registering {child} for {title}. This email confirms the booking.',
+    intro: {
+      registered: 'Thank you for registering {child} for {title}. We have received the registration.',
+      waitlist: 'Thank you for your interest in {title}. {full} is fully booked, so we have put {child} on the waiting list for the booking below. We will contact you as soon as a place becomes available.'
+    },
     child: 'Child', sessions: 'Sessions', location: 'Location', booking: 'Booking',
     count: { 1: '1 session', n: '{n} sessions' }, total: 'Total',
+    discount: '(full three-day package instead of {full}, {saving} discount)',
     reference: 'Reference',
+    included: 'Included',
+    inc: {
+      session: 'For every session: chess activities and instruction, snacks and drinks, and a mini workbook or chess puzzles to take home',
+      tournament: '31 October: participation in the tournament and a trophy or prize',
+      full: 'Full three-day package: the physical Chess Passport workbook and a certificate of participation',
+      certNote: 'The Chess Passport workbook and the certificate of participation are part of the full three-day package only.'
+    },
+    payment: 'Payment instructions will follow in a separate email. As set out in the Terms & Conditions, the place is confirmed once payment has been received.',
+    waitPayment: 'No payment is needed while {child} is on the waiting list.',
     change: 'If you would like to change or cancel the booking, or if you have any questions, simply reply to this email or write to {email}.',
-    bye: 'We look forward to seeing {child}!',
+    bye: { registered: 'We look forward to seeing {child}!', waitlist: 'Thank you for your patience.' },
+    and: ' and ',
     home: 'https://queensgambitzurich.ch/en/'
   },
   de: {
-    subject: 'Anmeldebestätigung: {title}',
+    subject: { registered: 'Anmeldung erhalten: {title}', waitlist: 'Warteliste: {title}' },
     hello: 'Guten Tag {fullName}',
-    intro: 'Vielen Dank, dass Sie {child} für {title} angemeldet haben. Mit dieser E-Mail bestätigen wir die Buchung.',
+    intro: {
+      registered: 'Vielen Dank, dass Sie {child} für {title} angemeldet haben. Wir haben die Anmeldung erhalten.',
+      waitlist: 'Vielen Dank für Ihr Interesse an {title}. {full} ist ausgebucht. Wir haben {child} deshalb für die untenstehende Buchung auf die Warteliste gesetzt und melden uns, sobald ein Platz frei wird.'
+    },
     child: 'Kind', sessions: 'Termine', location: 'Ort', booking: 'Buchung',
     count: { 1: '1 Termin', n: '{n} Termine' }, total: 'Total',
+    discount: '(ganzes Dreitagespaket statt {full}, {saving} Rabatt)',
     reference: 'Referenz',
+    included: 'Inbegriffen',
+    inc: {
+      session: 'An jedem Termin: Schachaktivitäten und Unterricht, Snacks und Getränke sowie ein Mini-Arbeitsheft oder Schachrätsel für zu Hause',
+      tournament: '31. Oktober: Teilnahme am Turnier und ein Pokal oder Preis',
+      full: 'Ganzes Dreitagespaket: das gedruckte Chess-Passport-Arbeitsheft und ein Teilnahmezertifikat',
+      certNote: 'Das Chess-Passport-Arbeitsheft und das Teilnahmezertifikat gibt es nur mit dem ganzen Dreitagespaket.'
+    },
+    payment: 'Die Zahlungsinformationen erhalten Sie in einer separaten E-Mail. Gemäss den Allgemeinen Geschäftsbedingungen ist der Platz bestätigt, sobald die Zahlung eingegangen ist.',
+    waitPayment: 'Solange {child} auf der Warteliste steht, ist keine Zahlung nötig.',
     change: 'Möchten Sie die Buchung ändern oder stornieren, oder haben Sie Fragen? Antworten Sie einfach auf diese E-Mail oder schreiben Sie an {email}.',
-    bye: 'Wir freuen uns auf {child}!',
+    bye: { registered: 'Wir freuen uns auf {child}!', waitlist: 'Vielen Dank für Ihre Geduld.' },
+    and: ' und ',
     home: 'https://queensgambitzurich.ch/'
   }
 };
@@ -566,26 +653,51 @@ function fill_(s, vars) {
   return String(s).replace(/\{(\w+)\}/g, function (m, k) { return vars[k] == null ? m : vars[k]; });
 }
 
+// What the booking includes (the distinctions shown on the website)
+function inclusions_(r, lang) {
+  var t = MAIL_TEXT[lang].inc;
+  var list = [t.session];
+  if (r.sessions.some(function (id) { return sessionById_(id).tournament; })) list.push(t.tournament);
+  if (r.sessions.length === WORKSHOP.sessions.length) list.push(t.full);
+  return { list: list, note: r.sessions.length === WORKSHOP.sessions.length ? '' : t.certNote };
+}
+
+function sumOfSessions_(conf, ids) {
+  var total = 0;
+  for (var i = 0; i < ids.length; i++) { var p = conf.price[ids[i]]; if (p == null) return null; total += p; }
+  return total;
+}
+
 function sendConfirmation_(r, conf) {
   var t = MAIL_TEXT[r.lang];
+  var kind = r.status === STATUS.waitlist ? 'waitlist' : 'registered';
   var title = WORKSHOP.title[r.lang];
   var child = r.childFirst + ' ' + r.childLast;
-  var vars = { title: title, name: r.parentFirst, fullName: r.parentFirst + ' ' + r.parentLast, child: r.childFirst, email: SETTINGS.REPLY_TO, n: r.sessions.length };
+  var fullNames = (r.full || []).map(function (id) { return sessionById_(id)[r.lang].date; });
+  var vars = { title: title, name: r.parentFirst, fullName: r.parentFirst + ' ' + r.parentLast, child: r.childFirst,
+    email: SETTINGS.REPLY_TO, n: r.sessions.length, full: fullNames.join(t.and) };
   var sessions = r.sessions.map(function (id) {
     var s = sessionById_(id);
     return { when: s[r.lang].date + ', ' + s.time, what: s[r.lang].label };
   });
   var count = fill_(r.sessions.length === 1 ? t.count[1] : t.count.n, vars);
   var showPrice = conf.publish && r.price != null;
+  var sum = sumOfSessions_(conf, r.sessions);
+  var discount = showPrice && sum != null && sum > r.price
+    ? fill_(t.discount, { full: money_(conf, sum), saving: money_(conf, sum - r.price) }) : '';
+  var inc = inclusions_(r, r.lang);
+  var tail = kind === 'registered' ? [t.payment] : [fill_(t.waitPayment, vars)];
 
-  var text = [fill_(t.hello, vars), '', fill_(t.intro, vars), '',
+  var text = [fill_(t.hello, vars), '', fill_(t.intro[kind], vars), '',
     t.child + ': ' + child + ' (' + EXPERIENCE_LABELS[r.lang][r.experience] + ')', '',
     t.sessions + ':']
     .concat(sessions.map(function (s) { return '- ' + s.when + ' · ' + s.what; }))
     .concat(['', t.location + ': ' + WORKSHOP.location, t.booking + ': ' + count])
-    .concat(showPrice ? [t.total + ': ' + money_(conf, r.price)] : [])
-    .concat([t.reference + ': ' + r.id, '', fill_(t.change, vars), '', fill_(t.bye, vars),
-      "Queen's Gambit Zürich", t.home]);
+    .concat(showPrice ? [t.total + ': ' + money_(conf, r.price) + (discount ? ' ' + discount : '')] : [])
+    .concat([t.reference + ': ' + r.id, '', t.included + ':'])
+    .concat(inc.list.map(function (x) { return '- ' + x; }))
+    .concat(inc.note ? [inc.note] : [])
+    .concat([''], tail, ['', fill_(t.change, vars), '', fill_(t.bye[kind], vars), "Queen's Gambit Zürich", t.home]);
 
   var row = function (label, value) {
     return '<tr><td style="padding:6px 12px 6px 0;color:#4E5470;vertical-align:top;white-space:nowrap">' + esc_(label) +
@@ -594,6 +706,7 @@ function sendConfirmation_(r, conf) {
   var sessionHtml = sessions.map(function (s) {
     return '<div style="margin:0 0 6px"><strong>' + esc_(s.when) + '</strong><br>' + esc_(s.what) + '</div>';
   }).join('');
+  var p = function (txt, extra) { return '<p style="margin:0 0 12px' + (extra || '') + '">' + esc_(txt) + '</p>'; };
   var html =
     '<div style="background:#EAF3FF;padding:24px 12px;font-family:Arial,Helvetica,sans-serif">' +
     '<div style="max-width:560px;margin:0 auto;background:#FFFFFF;border-radius:18px;overflow:hidden;border:1px solid #DCE3F5">' +
@@ -601,26 +714,29 @@ function sendConfirmation_(r, conf) {
     '<div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9">Queen\'s Gambit Zürich · Kids Chess</div>' +
     '<div style="font-size:22px;font-weight:bold;margin-top:6px">' + esc_(title) + '</div></div>' +
     '<div style="padding:24px;font-size:15px;line-height:1.55;color:#202334">' +
-    '<p style="margin:0 0 12px">' + esc_(fill_(t.hello, vars)) + '</p>' +
-    '<p style="margin:0 0 18px">' + esc_(fill_(t.intro, vars)) + '</p>' +
+    p(fill_(t.hello, vars)) + p(fill_(t.intro[kind], vars), ';margin-bottom:18px') +
     '<div style="background:#FFF8D6;border:1px solid #FDE68A;border-radius:12px;padding:14px 16px;margin:0 0 18px">' +
     '<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:15px">' +
     row(t.child, '<strong>' + esc_(child) + '</strong> (' + esc_(EXPERIENCE_LABELS[r.lang][r.experience]) + ')') +
     row(t.sessions, sessionHtml) +
     row(t.location, esc_(WORKSHOP.location)) +
     row(t.booking, esc_(count)) +
-    (showPrice ? row(t.total, '<strong>' + esc_(money_(conf, r.price)) + '</strong>') : '') +
+    (showPrice ? row(t.total, '<strong>' + esc_(money_(conf, r.price)) + '</strong>' + (discount ? '<br><span style="color:#4E5470;font-size:13px">' + esc_(discount) + '</span>' : '')) : '') +
     row(t.reference, esc_(r.id)) +
     '</table></div>' +
-    '<p style="margin:0 0 12px">' + esc_(fill_(t.change, vars)) + '</p>' +
-    '<p style="margin:0">' + esc_(fill_(t.bye, vars)) + '</p>' +
+    '<p style="margin:0 0 6px;font-weight:bold">' + esc_(t.included) + '</p>' +
+    '<ul style="margin:0 0 ' + (inc.note ? '6' : '18') + 'px;padding-left:20px">' + inc.list.map(function (x) { return '<li style="margin:0 0 4px">' + esc_(x) + '</li>'; }).join('') + '</ul>' +
+    (inc.note ? p(inc.note, ';color:#4E5470;font-size:13px;margin-bottom:18px') : '') +
+    '<div style="border-left:4px solid #0070B4;background:#F5F8FF;padding:10px 14px;margin:0 0 18px">' + esc_(tail[0]) + '</div>' +
+    p(fill_(t.change, vars)) +
+    '<p style="margin:0">' + esc_(fill_(t.bye[kind], vars)) + '</p>' +
     '<p style="margin:16px 0 0;color:#4E5470">Queen\'s Gambit Zürich<br>' +
     '<a href="' + t.home + '" style="color:#0070B4">queensgambitzurich.ch</a></p>' +
     '</div></div></div>';
 
   MailApp.sendEmail({
     to: r.email,
-    subject: fill_(t.subject, vars),
+    subject: fill_(t.subject[kind], vars),
     body: text.join('\n'),
     htmlBody: html,
     name: SETTINGS.SENDER_NAME,
@@ -630,28 +746,36 @@ function sendConfirmation_(r, conf) {
 
 function sendAdminNotice_(r, timestamp, conf) {
   var when = Utilities.formatDate(timestamp, 'Europe/Zurich', 'yyyy-MM-dd HH:mm:ss');
+  var wait = r.status === STATUS.waitlist;
   var lines = [
-    'New registration for ' + WORKSHOP.title.en,
+    (wait ? 'WAITING LIST' : 'New registration') + ' for ' + WORKSHOP.title.en,
     '',
-    'Child: ' + r.childFirst + ' ' + r.childLast + ', age ' + r.age + ', ' + EXPERIENCE[r.experience],
+    'Child: ' + r.childFirst + ' ' + r.childLast + ', born ' + r.dob + ' (age ' + r.age + ')',
+    'Chess experience: ' + EXPERIENCE[r.experience],
+    'Languages: ' + r.languages.map(function (k) { return LANGUAGES[k]; }).join(', '),
+    'Allergies / diet: ' + (r.allergies === 'none' ? 'none known' : r.allergyDetails),
+    'Photo consent: ' + (r.photo === 'yes' ? 'Yes' : 'No'),
+    '',
     'Parent: ' + r.parentFirst + ' ' + r.parentLast,
     'Email: ' + r.email,
     'Phone: ' + r.phone,
     '',
     'Sessions (' + r.sessions.length + '):'
-  ].concat(r.sessions.map(function (id) { var s = sessionById_(id); return '- ' + s.en.date + ', ' + s.time + ' · ' + s.en.label; }))
+  ].concat(r.sessions.map(function (id) { var s = sessionById_(id); return '- ' + s.en.date + ', ' + s.time + ' · ' + s.en.label + ((r.full || []).indexOf(id) >= 0 ? '  [FULL]' : ''); }))
    .concat([
-    'Price: ' + (r.price == null ? 'not configured yet' : money_(conf, r.price)),
+    'Price: ' + (r.price == null ? 'not configured' : money_(conf, r.price)) + (wait ? ' (waiting list, nothing to pay yet)' : ''),
+    'Message from parent: ' + (r.notes || '-'),
     'Marketing consent: ' + (r.marketing ? 'Yes' : 'No'),
     'Language: ' + r.lang.toUpperCase(),
     'Reference: ' + r.id,
     'Registered: ' + when + ' (Zürich time)',
     '',
+    'Payment instructions are not sent automatically.',
     'Dashboard and all registrations: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl()
   ]);
   MailApp.sendEmail({
     to: SETTINGS.ADMIN_EMAIL,
-    subject: WORKSHOP.title.en + ' registration: ' + r.childFirst + ' ' + r.childLast + ' (' + r.sessions.length + ' session' + (r.sessions.length === 1 ? '' : 's') + ')',
+    subject: WORKSHOP.title.en + (wait ? ' WAITING LIST: ' : ' registration: ') + r.childFirst + ' ' + r.childLast + ' (' + r.sessions.length + ' session' + (r.sessions.length === 1 ? '' : 's') + ')',
     body: lines.join('\n'),
     name: 'QGZ Kids Chess registration'
   });
@@ -664,6 +788,7 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Kids Chess')
     .addItem('Fill in missing prices', 'fillMissingPrices')
     .addItem('Send test emails to me', 'testEmails')
+    .addItem('Remove test registrations (email contains "regtest")', 'removeTestRegistrations')
     .addItem('Data retention: show deletion date', 'showRetention')
     .addItem('Data retention: apply now (only on or after the deletion date)', 'applyRetentionFromMenu')
     .addSeparator()
@@ -684,6 +809,20 @@ function setup() {
   // --- Registrations ---
   var sheet = ss.getSheetByName(SETTINGS.SHEET_NAME) || ss.insertSheet(SETTINGS.SHEET_NAME, 0);
   if (sheet.getMaxColumns() < H.length) sheet.insertColumnsAfter(sheet.getMaxColumns(), H.length - sheet.getMaxColumns());
+  // New column layout: only allowed while there are no registrations yet
+  if (sheet.getLastColumn() > 0) {
+    var oldHead = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].filter(String);
+    if (oldHead.length && oldHead.join('|') !== H.join('|').slice(0, oldHead.join('|').length) || oldHead.length > H.length) {
+      var idCol = oldHead.indexOf('Registration ID') + 1;
+      var hasData = idCol > 0 && sheet.getLastRow() > 1 &&
+        sheet.getRange(2, idCol, sheet.getLastRow() - 1, 1).getValues().some(function (v) { return String(v[0]) !== ''; });
+      if (hasData) throw new Error('The Registrations tab has registrations in an older column layout. Export and remove them before running setup.');
+      if (sheet.getFilter()) sheet.getFilter().remove();
+      var all = sheet.getRange(1, 1, sheet.getMaxRows(), sheet.getMaxColumns());
+      all.clearDataValidations();
+      all.clearContent();
+    }
+  }
   sheet.getRange(1, 1, 1, H.length).setValues([H]).setFontWeight('bold').setBackground('#E4E9FF').setWrap(true);
   sheet.setFrozenRows(1);
   sheet.setFrozenColumns(1);
@@ -691,43 +830,47 @@ function setup() {
   var rows = sheet.getMaxRows() - 1;
   sheet.getRange(2, c('Registration Date'), rows, 1).setNumberFormat('yyyy-mm-dd hh:mm');
   sheet.getRange(2, c('Price'), rows, 1).setNumberFormat('#,##0.00');
-  // Checkbox validation (rows are written by Registration ID, see doPost)
-  // writes after the last row that has content).
+  // Tick boxes (rows are written by Registration ID, see doPost)
   var tick = SpreadsheetApp.newDataValidation().requireCheckbox().build();
   WORKSHOP.sessions.forEach(function (s) { sheet.getRange(2, c(s.column), rows, 1).setDataValidation(tick); });
   sheet.getRange(2, c('Registration Status'), rows, 1).setDataValidation(
-    SpreadsheetApp.newDataValidation().requireValueInList([STATUS.confirmed, STATUS.cancelled], true).build());
+    SpreadsheetApp.newDataValidation().requireValueInList([STATUS.registered, STATUS.waitlist, STATUS.cancelled], true).build());
   sheet.getRange(2, c('Payment Status'), rows, 1).setDataValidation(
     SpreadsheetApp.newDataValidation().requireValueInList(PAYMENT, true).build());
   sheet.setColumnWidths(1, H.length, 130);
   sheet.setColumnWidth(c('Parent Email'), 210);
   sheet.setColumnWidth(c('Notes'), 240);
+  sheet.setColumnWidth(c('Allergy Details'), 220);
+  sheet.setColumnWidth(c('Parent Message'), 220);
   if (!sheet.getFilter()) sheet.getRange(1, 1, sheet.getMaxRows(), H.length).createFilter();
 
   // --- Settings (values entered earlier are kept) ---
   var set = ss.getSheetByName(SETTINGS.SETTINGS_SHEET) || ss.insertSheet(SETTINGS.SETTINGS_SHEET, 1);
   var keep = {};
-  if (set.getLastRow() > 0) {
+  var props = PropertiesService.getScriptProperties();
+  var fresh = Number(props.getProperty('settingsVersion') || 0) < SETTINGS.SETTINGS_VERSION;   // reset to WORKSHOP defaults once
+  if (set.getLastRow() > 0 && !fresh) {
     set.getRange(1, 1, set.getLastRow(), 4).getValues().forEach(function (r) { keep[String(r[0])] = r; });
   }
   var get = function (key, i, dflt) { return keep[key] && keep[key][i] !== '' ? keep[key][i] : dflt; };
   var layout = [
     [WORKSHOP.title.en + ' · Settings', '', '', ''],
-    ['Change the values in the white cells. Leave a price empty while it is not decided: nothing is shown to parents until "Publish prices" is Yes.', '', '', ''],
+    ['Change the values in the white cells. Prices apply to new registrations. Leave a price empty while it is not decided; nothing is shown to parents until "Publish prices" is Yes.', '', '', ''],
     ['', '', '', ''],
     ['Session ID', 'Session', 'Capacity (children)', 'Price per session']
   ];
   WORKSHOP.sessions.forEach(function (s) {
-    layout.push(["'" + s.id, s.column + ' · ' + s.time + ' · ' + s.en.label, get(s.id, 2, SETTINGS.DEFAULT_CAPACITY), get(s.id, 3, '')]);
+    layout.push(["'" + s.id, s.column + ' · ' + s.time + ' · ' + s.en.label, get(s.id, 2, SETTINGS.DEFAULT_CAPACITY), get(s.id, 3, s.price == null ? '' : s.price)]);
   });
   layout.push(['', '', '', '']);
   layout.push(['Setting', 'Value', '', '']);
   for (var n = 2; n <= WORKSHOP.sessions.length; n++) {
     var k = 'Package price, ' + n + ' sessions';
-    layout.push([k, get(k, 1, ''), 'Optional. Replaces the sum of the session prices for ' + n + ' sessions.', '']);
+    var dflt = WORKSHOP.packages && WORKSHOP.packages[n] != null ? WORKSHOP.packages[n] : '';
+    layout.push([k, get(k, 1, dflt), 'Optional. Replaces the sum of the session prices for ' + n + ' sessions.', '']);
   }
-  layout.push(['Currency', get('Currency', 1, 'CHF'), '', '']);
-  layout.push(['Publish prices', get('Publish prices', 1, 'No'), 'Yes = show prices on the website and in confirmation emails.', '']);
+  layout.push(['Currency', get('Currency', 1, WORKSHOP.currency || 'CHF'), '', '']);
+  layout.push(['Publish prices', get('Publish prices', 1, WORKSHOP.publishPrices ? 'Yes' : 'No'), 'Yes = show prices on the website and in confirmation emails.', '']);
   layout.push(['Registration open', get('Registration open', 1, 'Yes'), 'No = the website form stops accepting registrations.', '']);
   set.clear();
   set.getRange(1, 1, layout.length, 4).setValues(layout);
@@ -748,6 +891,7 @@ function setup() {
   set.getRange(sRow + 1, 2, WORKSHOP.sessions.length - 1, 1).setNumberFormat('#,##0.00');
   set.setColumnWidth(1, 230); set.setColumnWidth(2, 260); set.setColumnWidth(3, 150); set.setColumnWidth(4, 150);
   set.setFrozenRows(0);
+  props.setProperty('settingsVersion', String(SETTINGS.SETTINGS_VERSION));
 
   buildDashboard_(ss, H, first);
 
@@ -789,39 +933,46 @@ function buildDashboard_(ss, H, firstSessionRow) {
   var S = "'" + SETTINGS.SETTINGS_SHEET + "'!";
   var col = function (name) { var l = colLetter_(H.indexOf(name) + 1); return R + l + '2:' + l; };
   var status = col('Registration Status'), price = col('Price'), pay = col('Payment Status'), id = col('Registration ID');
-  var active = '(' + id + '<>"")*(' + status + '<>"' + STATUS.cancelled + '")';
+  var has = '(' + id + '<>"")';
+  var reg = '(' + has + '*((' + status + '="' + STATUS.registered + '")+(' + status + '="Confirmed")))';
+  var wait = '(' + has + '*(' + status + '="' + STATUS.waitlist + '"))';
+  var amount = 'IFERROR(1*' + price + ',0)';
+  var W = 5, blank = function () { var r = []; for (var i = 0; i < W; i++) r.push(''); return r; };
+  var line = function (a) { while (a.length < W) a.push(''); return a; };
 
   var rows = [
-    [WORKSHOP.title.en + ' · Dashboard', '', '', ''],
-    ['Updates automatically from the Registrations tab. Cancelled registrations are not counted.', '', '', ''],
-    ['', '', '', ''],
-    ['Overview', '', '', ''],
-    ['Registrations (children)', '=SUMPRODUCT(' + active + ')', '', ''],
-    ['Cancelled', '=COUNTIF(' + status + ',"' + STATUS.cancelled + '")', '', ''],
-    ['Bookings for ' + WORKSHOP.sessions.map(function (s, i) { return i + 1; }).join(' / ') + ' sessions',
-      '=' + WORKSHOP.sessions.map(function (s, i) { return 'SUMPRODUCT(' + active + '*(' + col('Sessions') + '=' + (i + 1) + '))'; }).join('&" / "&'), '', ''],
-    ['Marketing consent given', '=SUMPRODUCT(' + active + '*(' + col('Marketing Consent') + '="Yes"))', '', ''],
-    ['', '', '', ''],
-    ['Session', 'Children registered', 'Capacity', 'Places left']
+    line([WORKSHOP.title.en + ' · Dashboard']),
+    line(['Updates automatically from the Registrations tab. Only "Registered" children hold places and count for revenue; waiting list and cancelled registrations are listed separately.']),
+    blank(),
+    line(['Overview']),
+    line(['Registered children', '=SUMPRODUCT(' + reg + ')']),
+    line(['On the waiting list', '=SUMPRODUCT(' + wait + ')']),
+    line(['Cancelled', '=SUMPRODUCT(' + has + '*(' + status + '="' + STATUS.cancelled + '"))']),
+    line(['Bookings for ' + WORKSHOP.sessions.map(function (s, i) { return i + 1; }).join(' / ') + ' sessions (registered)',
+      '=' + WORKSHOP.sessions.map(function (s, i) { return 'SUMPRODUCT(' + reg + '*(' + col('Sessions') + '=' + (i + 1) + '))'; }).join('&" / "&')]),
+    line(['Marketing consent given', '=SUMPRODUCT(' + has + '*(' + col('Marketing Consent') + '="Yes"))']),
+    blank(),
+    ['Session', 'Registered', 'Capacity', 'Places left', 'Waiting list']
   ];
+  var firstS = rows.length + 1;
   WORKSHOP.sessions.forEach(function (s, i) {
     var r = rows.length + 1;
-    var capCell = S + 'C' + (firstSessionRow + i);
     rows.push([s.column + ' · ' + s.time + ' · ' + s.en.label,
-      '=SUMPRODUCT(' + active + '*(' + col(s.column) + '=TRUE))', '=' + capCell, '=MAX(0,C' + r + '-B' + r + ')']);
+      '=SUMPRODUCT(' + reg + '*(' + col(s.column) + '=TRUE))', '=' + S + 'C' + (firstSessionRow + i),
+      '=MAX(0,C' + r + '-B' + r + ')', '=SUMPRODUCT(' + wait + '*(' + col(s.column) + '=TRUE))']);
   });
-  var sessionEnd = rows.length;
-  rows.push(['', '', '', '']);
-  rows.push(['Revenue and payments', 'Registrations', 'Amount', '']);
+  var lastS = rows.length;
+  rows.push(blank());
+  rows.push(line(['Revenue and payments (registered)', 'Registrations', 'Amount']));
   var r0 = rows.length + 1;
-  rows.push(['Expected revenue (all active registrations)', '=SUMPRODUCT(' + active + ')', '=SUMPRODUCT(' + active + '*IFERROR(1*' + price + ',0))', '']);
-  rows.push(['Paid', '=SUMPRODUCT(' + active + '*(' + pay + '="Paid"))', '=SUMPRODUCT(' + active + '*(' + pay + '="Paid")*IFERROR(1*' + price + ',0))', '']);
-  rows.push(['Open (not yet paid)', '=SUMPRODUCT(' + active + '*(' + pay + '="Open"))', '=SUMPRODUCT(' + active + '*(' + pay + '="Open")*IFERROR(1*' + price + ',0))', '']);
-  rows.push(['Refunded', '=COUNTIF(' + pay + ',"Refunded")', '=SUMIF(' + pay + ',"Refunded",' + price + ')', '']);
-  rows.push(['Registrations without a price', '=SUMPRODUCT(' + active + '*(' + price + '=""))', 'Use Kids Chess ▸ Fill in missing prices once prices are set.', '']);
+  rows.push(line(['Expected revenue', '=SUMPRODUCT(' + reg + ')', '=SUMPRODUCT(' + reg + '*' + amount + ')']));
+  rows.push(line(['Paid', '=SUMPRODUCT(' + reg + '*(' + pay + '="Paid"))', '=SUMPRODUCT(' + reg + '*(' + pay + '="Paid")*' + amount + ')']));
+  rows.push(line(['Open (not yet paid)', '=SUMPRODUCT(' + reg + '*(' + pay + '="Open"))', '=SUMPRODUCT(' + reg + '*(' + pay + '="Open")*' + amount + ')']));
+  rows.push(line(['Refunded', '=SUMPRODUCT(' + has + '*(' + pay + '="Refunded"))', '=SUMPRODUCT(' + has + '*(' + pay + '="Refunded")*' + amount + ')']));
+  rows.push(line(['Registered without a price', '=SUMPRODUCT(' + reg + '*(' + price + '=""))', 'Use Kids Chess ▸ Fill in missing prices once prices are set.']));
   // Formulas via setFormula, so they work in any spreadsheet locale (with
   // setValues a comma-separated formula fails where ";" is the separator).
-  d.getRange(1, 1, rows.length, 4).setValues(rows.map(function (r) {
+  d.getRange(1, 1, rows.length, W).setValues(rows.map(function (r) {
     return r.map(function (v) { return typeof v === 'string' && v.charAt(0) === '=' ? '' : v; });
   }));
   rows.forEach(function (r, i) {
@@ -830,16 +981,16 @@ function buildDashboard_(ss, H, firstSessionRow) {
 
   d.getRange('A1').setFontWeight('bold').setFontSize(14).setFontColor('#0070B4');
   d.getRange('A2').setFontColor('#4E5470').setFontStyle('italic');
-  [4, 10, r0 - 1].forEach(function (r) { d.getRange(r, 1, 1, 4).setFontWeight('bold').setBackground('#E4E9FF'); });
-  d.getRange(11, 2, sessionEnd - 10, 3).setHorizontalAlignment('center');
-  d.getRange(11, 4, sessionEnd - 10, 1).setFontWeight('bold').setBackground('#FFF8D6');
+  [4, firstS - 1, r0 - 1].forEach(function (r) { d.getRange(r, 1, 1, W).setFontWeight('bold').setBackground('#E4E9FF'); });
+  d.getRange(firstS, 2, lastS - firstS + 1, 4).setHorizontalAlignment('center');
+  d.getRange(firstS, 4, lastS - firstS + 1, 1).setFontWeight('bold').setBackground('#FFF8D6');
   d.getRange(r0, 3, 4, 1).setNumberFormat('#,##0.00');
   d.getRange(r0 + 4, 3).setFontColor('#4E5470').setFontStyle('italic');
   // Places left: red when a session is full
   var full = SpreadsheetApp.newConditionalFormatRule().whenNumberEqualTo(0).setBackground('#F9D8D6').setFontColor('#8C1D18')
-    .setRanges([d.getRange(11, 4, sessionEnd - 10, 1)]).build();
+    .setRanges([d.getRange(firstS, 4, lastS - firstS + 1, 1)]).build();
   d.setConditionalFormatRules([full]);
-  d.setColumnWidth(1, 320); d.setColumnWidths(2, 3, 150);
+  d.setColumnWidth(1, 340); d.setColumnWidths(2, 4, 130);
 }
 
 /**
@@ -873,7 +1024,28 @@ function testEmails() {
   var ids = WORKSHOP.sessions.map(function (s) { return s.id; });
   ['en', 'de'].forEach(function (lang) {
     sendConfirmation_({ id: 'KC-TEST', parentFirst: 'Test', parentLast: 'Parent', email: me, phone: '+41 00 000 00 00',
-      childFirst: 'Test', childLast: 'Child', age: 8, experience: 'beginner', sessions: ids,
+      childFirst: 'Test', childLast: 'Child', dob: '2018-05-01', age: 8, experience: 'beginner', languages: ['de', 'en'],
+      allergies: 'none', allergyDetails: '', photo: 'no', notes: '', sessions: ids, status: STATUS.registered,
       price: priceFor_(conf, ids), marketing: false, lang: lang }, conf);
   });
+}
+
+/**
+ * Menu ▸ Remove test registrations: deletes the rows whose parent email
+ * contains "regtest" (the addresses used for testing), nothing else.
+ */
+function removeTestRegistrations() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SETTINGS.SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) return 0;
+  var head = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var ec = head.indexOf('Parent Email') + 1;
+  if (ec < 1) return 0;
+  var values = sheet.getRange(2, ec, sheet.getLastRow() - 1, 1).getValues();
+  var removed = 0;
+  for (var i = values.length - 1; i >= 0; i--) {
+    if (/regtest/i.test(String(values[i][0]))) { sheet.deleteRow(i + 2); removed++; }
+  }
+  log_('cleanup', removed + ' test registration(s) removed', '');
+  try { SpreadsheetApp.getUi().alert(removed + ' test registration(s) removed.'); } catch (e) { console.log(removed + ' removed'); }
+  return removed;
 }
