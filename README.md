@@ -33,3 +33,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-13_1932.zip` | `backup-2026-10-13_1932` | `9158dea` | 2026-10-13 19:32 | Before the Chess Club / Community terminology review (PR #22) |
 | `QGZ_Website_Backup_2026-10-13_2106.zip` | `backup-2026-10-13_2106` | `bbc054a` | 2026-10-13 21:06 | Before collapsing the Zollikon dates in the Upcoming list on phones (PR #24) |
 | `QGZ_Website_Backup_2026-10-14_1302.zip` | `backup-2026-10-14_1302` | `697473c` | 2026-10-14 13:02 | Before the SEO fixes (PR #25) |
+| `QGZ_Website_Backup_2026-10-14_1422.zip` | `backup-2026-10-14_1422` | `dc10805` | 2026-10-14 14:22 | Before the Mailchimp newsletter signup form (privacy-first) |
