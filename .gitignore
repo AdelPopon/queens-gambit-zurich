@@ -1,1 +1,4 @@
 __pycache__/
+
+# Python packages (never part of the website)
+*.whl
