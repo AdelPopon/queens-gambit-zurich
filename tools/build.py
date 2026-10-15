@@ -173,14 +173,14 @@ LEGAL = {
         "impressum": {"slug": "en/impressum", "title": "Impressum", "lead": "Information about the operator of this website.",
                       "description": "Impressum of Queen's Gambit Zürich, a women's chess club and community in Zürich, Switzerland."},
         "privacy": {"slug": "en/privacy", "title": "Privacy Policy", "lead": "How we handle data on this website.",
-                    "description": "Privacy policy of Queen's Gambit Zürich: no cookies, no tracking; how event registrations are handled under the Swiss FADP."},
+                    "description": "Privacy policy of Queen's Gambit Zürich: no cookies, privacy-friendly visitor statistics; how registrations and the newsletter are handled under the Swiss FADP."},
         "eyebrow": "Legal", "updated": "Last updated", "home": "/en/",
     },
     "de": {
         "impressum": {"slug": "impressum", "title": "Impressum", "lead": "Angaben zur Betreiberin dieser Website.",
                       "description": "Impressum von Queen's Gambit Zürich, Schachclub und Community für Frauen in Zürich."},
         "privacy": {"slug": "datenschutz", "title": "Datenschutzerklärung", "lead": "Wie wir mit Daten auf dieser Website umgehen.",
-                    "description": "Datenschutzerklärung von Queen's Gambit Zürich: keine Cookies, kein Tracking; wie Anmeldungen für Anlässe gemäss DSG bearbeitet werden."},
+                    "description": "Datenschutzerklärung von Queen's Gambit Zürich: keine Cookies, datenschutzfreundliche Besucherstatistik; wie Anmeldungen und der Newsletter gemäss DSG bearbeitet werden."},
         "eyebrow": "Rechtliches", "updated": "Zuletzt aktualisiert", "home": "/",
     },
 }
@@ -248,11 +248,12 @@ PRIVACY = {
         Email: <span class="legal__email">{EMAIL}</span></p>
 
         <h2>2. In short</h2>
-        <p>This website is mainly informational. It has no user accounts. The only personal data we ask for is in the registration form for selected events (section 5) and in the newsletter form (section 6), both of which you use voluntarily. The website uses no cookies and no analytics or tracking tools, and it does not embed content from social networks. Fonts, images and scripts are delivered from this website itself.</p>
+        <p>This website is mainly informational. It has no user accounts. The only personal data we ask for is in the registration form for selected events (section 5) and in the newsletter form (section 6), both of which you use voluntarily. The website uses no cookies. To see how many people visit it, we use GoatCounter, a privacy-friendly visitor statistics service that stores no personal data (section 3). The website does not embed content from social networks. Fonts, images and scripts are delivered from this website itself.</p>
 
-        <h2>3. Hosting and technical data</h2>
+        <h2>3. Hosting, technical data and visitor statistics</h2>
         <p>This website is hosted on GitHub Pages, a service of GitHub, Inc., USA. When you visit the website, your browser connects to GitHub's servers, which necessarily process technical data such as your IP address, the date and time of the request and your browser type in order to deliver the pages. According to GitHub, visitors' IP addresses are logged and stored for security purposes. We do not receive or analyse this data ourselves.</p>
         <p>GitHub processes this data in the USA. GitHub participates in the Swiss-U.S. Data Privacy Framework, under which Switzerland recognises an adequate level of data protection for certified US companies. For details, see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub General Privacy Statement</a>.</p>
+        <p>To see how many people visit the website and which pages are read, we use GoatCounter, a visitor statistics service operated by Martin Tournoij, Ireland, with servers at Hetzner Online GmbH in Germany and Finland. When a page loads, your browser sends GoatCounter the address and title of the page, the page you came from or a campaign parameter in the link (for example from our newsletter), and your screen width; GoatCounter's server also receives your IP address and your browser identification. GoatCounter does not store your IP address or the full browser identification: it derives only your country, browser and operating system and keeps statistics that do not identify you. To recognise repeat page views, it keeps a random identifier in memory for up to 8 hours. GoatCounter sets no cookies and stores nothing in your browser. We only see the statistics; they do not allow us to identify you. Switzerland recognises the EU as having an adequate level of data protection. For details, see the <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">GoatCounter privacy policy</a>.</p>
 
         <h2>4. Contacting us by email</h2>
         <p>You can contact us at <span class="legal__email">{EMAIL}</span>. This mailbox is provided by GoDaddy (GoDaddy Operating Company, LLC, USA). We also use <span class="legal__email">queensgambitzurich@gmail.com</span>, a Gmail account provided by Google; we may reply from this address.</p>
@@ -281,7 +282,7 @@ PRIVACY = {
         <h2>9. Changes</h2>
         <p>We will update this privacy policy if the website or the way we process data changes. The current version is always published on this page.</p>
 
-        <p class="legal__updated">Last updated: 14 October 2026</p>
+        <p class="legal__updated">Last updated: 15 October 2026</p>
 """,
     "de": f"""
         <p>Diese Datenschutzerklärung erklärt, wie Personendaten bearbeitet werden, wenn du diese Website besuchst, dich für einen Anlass anmeldest, unseren Newsletter abonnierst oder uns kontaktierst. Sie richtet sich nach dem Schweizer Bundesgesetz über den Datenschutz (DSG).</p>
@@ -292,11 +293,12 @@ PRIVACY = {
         E-Mail: <span class="legal__email">{EMAIL}</span></p>
 
         <h2>2. Kurz zusammengefasst</h2>
-        <p>Diese Website dient hauptsächlich der Information. Es gibt keine Benutzerkonten. Personendaten erfragen wir nur im Anmeldeformular für ausgewählte Anlässe (Abschnitt 5) und im Newsletter-Formular (Abschnitt 6), die du beide freiwillig nutzt. Die Website verwendet keine Cookies und keine Analyse- oder Tracking-Tools und bindet keine Inhalte sozialer Netzwerke ein. Schriften, Bilder und Skripte werden direkt von dieser Website geladen.</p>
+        <p>Diese Website dient hauptsächlich der Information. Es gibt keine Benutzerkonten. Personendaten erfragen wir nur im Anmeldeformular für ausgewählte Anlässe (Abschnitt 5) und im Newsletter-Formular (Abschnitt 6), die du beide freiwillig nutzt. Die Website verwendet keine Cookies. Um zu sehen, wie viele Personen sie besuchen, verwenden wir GoatCounter, einen datenschutzfreundlichen Dienst für Besucherstatistiken, der keine Personendaten speichert (Abschnitt 3). Die Website bindet keine Inhalte sozialer Netzwerke ein. Schriften, Bilder und Skripte werden direkt von dieser Website geladen.</p>
 
-        <h2>3. Hosting und technische Daten</h2>
+        <h2>3. Hosting, technische Daten und Besucherstatistik</h2>
         <p>Diese Website wird bei GitHub Pages gehostet, einem Dienst der GitHub, Inc., USA. Wenn du die Website besuchst, verbindet sich dein Browser mit den Servern von GitHub. Dabei werden zwangsläufig technische Daten wie deine IP-Adresse, Datum und Uhrzeit der Anfrage und dein Browsertyp bearbeitet, damit die Seiten ausgeliefert werden können. Gemäss GitHub werden die IP-Adressen der Besucherinnen und Besucher aus Sicherheitsgründen protokolliert und gespeichert. Wir selbst erhalten und analysieren diese Daten nicht.</p>
         <p>GitHub bearbeitet diese Daten in den USA. GitHub nimmt am Swiss-U.S. Data Privacy Framework teil, unter dem die Schweiz für zertifizierte US-Unternehmen ein angemessenes Datenschutzniveau anerkennt. Weitere Informationen findest du im <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub General Privacy Statement</a>.</p>
+        <p>Um zu sehen, wie viele Personen die Website besuchen und welche Seiten gelesen werden, verwenden wir GoatCounter, einen Dienst für Besucherstatistiken, der von Martin Tournoij, Irland, betrieben wird; die Server stehen bei der Hetzner Online GmbH in Deutschland und Finnland. Beim Laden einer Seite übermittelt dein Browser GoatCounter die Adresse und den Titel der Seite, die Seite, von der du kommst, oder einen Kampagnenparameter im Link (zum Beispiel aus unserem Newsletter) sowie deine Bildschirmbreite; der Server von GoatCounter erhält zudem deine IP-Adresse und die Kennung deines Browsers. GoatCounter speichert weder deine IP-Adresse noch die vollständige Browserkennung: Abgeleitet werden nur Land, Browser und Betriebssystem, und gespeichert werden Statistiken, die dich nicht identifizieren. Um wiederholte Seitenaufrufe zu erkennen, wird bis zu 8 Stunden lang eine zufällige Kennung im Arbeitsspeicher gehalten. GoatCounter setzt keine Cookies und speichert nichts in deinem Browser. Wir sehen nur die Statistiken; sie erlauben uns nicht, dich zu identifizieren. Die Schweiz anerkennt für die EU ein angemessenes Datenschutzniveau. Weitere Informationen findest du in der <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">Datenschutzerklärung von GoatCounter</a>.</p>
 
         <h2>4. Kontakt per E-Mail</h2>
         <p>Du erreichst uns unter <span class="legal__email">{EMAIL}</span>. Dieses Postfach wird von GoDaddy (GoDaddy Operating Company, LLC, USA) bereitgestellt. Zudem verwenden wir <span class="legal__email">queensgambitzurich@gmail.com</span>, ein Gmail-Konto von Google; es kann sein, dass wir von dieser Adresse aus antworten.</p>
@@ -325,7 +327,7 @@ PRIVACY = {
         <h2>9. Änderungen</h2>
         <p>Wir passen diese Datenschutzerklärung an, wenn sich die Website oder die Bearbeitung von Daten ändert. Die aktuelle Version ist jeweils auf dieser Seite veröffentlicht.</p>
 
-        <p class="legal__updated">Zuletzt aktualisiert: 14. Oktober 2026</p>
+        <p class="legal__updated">Zuletzt aktualisiert: 15. Oktober 2026</p>
 """,
 }
 

@@ -453,6 +453,23 @@
     });
   }
 
+  /* ---------- 4e. Visitor statistics (GoatCounter) ----------
+     Loads the self-hosted counter (js/count.js) only when a GoatCounter code is
+     set in data/config.js. No cookies; see the Privacy Policy, section 3. */
+  (function () {
+    var code = CONFIG.analytics && CONFIG.analytics.goatcounter;
+    if (!code || !/^[a-z0-9-]+$/.test(code)) return;
+    // Count each page by its address only; link parameters such as
+    // utm_source=newsletter are still sent separately as the campaign.
+    window.goatcounter = window.goatcounter || {};
+    window.goatcounter.path = function () { return location.pathname; };
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "/js/count.js?v=2.7.0";
+    s.setAttribute("data-goatcounter", "https://" + code + ".goatcounter.com/count");
+    document.head.appendChild(s);
+  })();
+
   /* ---------- 5. Copy email ---------- */
   document.querySelectorAll("[data-copy-email]").forEach(function (btn) {
     btn.addEventListener("click", function () {
