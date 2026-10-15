@@ -17,6 +17,9 @@ window.QGZ_CONFIG = {
     // Instagram profile URL, e.g. "https://www.instagram.com/<handle>/"
     instagram: "https://www.instagram.com/queensgambitzurich/",
 
+    // LinkedIn page URL (shown in the footer)
+    linkedin: "https://www.linkedin.com/company/queensgambitzurich/",
+
     // Kids Chess workshop registration (the "Register" button in the Kids
     // Chess section). Set automatically below once kidsChess.endpoint is set.
     kidsRegistration: null,
