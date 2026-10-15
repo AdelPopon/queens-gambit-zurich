@@ -31,7 +31,7 @@ window.QGZ_CONFIG = {
   // (dashboard at https://<code>.goatcounter.com). No cookies, no personal
   // data; described in the Privacy Policy. While it is null, nothing is loaded.
   analytics: {
-    goatcounter: null
+    goatcounter: "queensgambitzurich"
   },
 
   // Event registration (QGZ × WINZ). The URL of the deployed Google Apps
