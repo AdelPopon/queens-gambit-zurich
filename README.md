@@ -38,3 +38,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-14_1615.zip` | `backup-2026-10-14_1615` | `de7997e` | 2026-10-14 16:15 | Before the Kids Chess Zollikon registration page and backend |
 | `QGZ_Website_Backup_2026-10-14_1640.zip` | `backup-2026-10-14_1640` | `45d060d` | 2026-10-14 16:40 | Before connecting the newsletter form to the Apps Script backend (PR #28) |
 | `QGZ_Website_Backup_2026-10-14_1656.zip` | `backup-2026-10-14_1656` | `9a0e175` | 2026-10-14 16:56 | Before removing stray Python wheel files from the site root |
+| `QGZ_Website_Backup_2026-10-15_1254.zip` | `backup-2026-10-15_1254` | `c294d07` | 2026-10-15 12:54 | Before adding GoatCounter visitor statistics |
