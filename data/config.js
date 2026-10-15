@@ -26,6 +26,14 @@ window.QGZ_CONFIG = {
     privacy: { en: "/en/privacy/", de: "/datenschutz/" }
   },
 
+  // Visitor statistics (GoatCounter, https://www.goatcounter.com): the site
+  // code chosen when creating the GoatCounter account, e.g. "queensgambitzurich"
+  // (dashboard at https://<code>.goatcounter.com). No cookies, no personal
+  // data; described in the Privacy Policy. While it is null, nothing is loaded.
+  analytics: {
+    goatcounter: "queensgambitzurich"
+  },
+
   // Event registration (QGZ × WINZ). The URL of the deployed Google Apps
   // Script web app ("…/exec"). It is not a secret: it only accepts new
   // registrations and never returns stored data. While it is null, the
