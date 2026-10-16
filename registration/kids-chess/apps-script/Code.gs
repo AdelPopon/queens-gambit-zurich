@@ -615,7 +615,7 @@ var MAIL_TEXT = {
       full: 'Full three-day package: the physical Chess Passport workbook and a certificate of participation',
       certNote: 'The Chess Passport workbook and the certificate of participation are part of the full three-day package only.'
     },
-    payment: 'Payment instructions will follow in a separate email. As set out in the Terms & Conditions, the place is confirmed once payment has been received.',
+    payment: 'The workshop takes place with a minimum number of children. You will receive the payment information once it is confirmed, by 22 October at the latest. If the workshop does not take place, there is no cost to you. As set out in the Terms & Conditions, the place is confirmed once payment has been received.',
     waitPayment: 'No payment is needed while {child} is on the waiting list.',
     change: 'If you would like to change or cancel the booking, or if you have any questions, simply reply to this email or write to {email}.',
     bye: { registered: 'We look forward to seeing {child}!', waitlist: 'Thank you for your patience.' },
@@ -640,7 +640,7 @@ var MAIL_TEXT = {
       full: 'Ganzes Dreitagespaket: das gedruckte Chess-Passport-Arbeitsheft und ein Teilnahmezertifikat',
       certNote: 'Das Chess-Passport-Arbeitsheft und das Teilnahmezertifikat gibt es nur mit dem ganzen Dreitagespaket.'
     },
-    payment: 'Die Zahlungsinformationen erhalten Sie in einer separaten E-Mail. Gemäss den Allgemeinen Geschäftsbedingungen ist der Platz bestätigt, sobald die Zahlung eingegangen ist.',
+    payment: 'Der Workshop findet ab einer Mindestanzahl Kinder statt. Die Zahlungsinformationen erhalten Sie, sobald die Durchführung bestätigt ist – spätestens am 22. Oktober. Sollte der Workshop nicht stattfinden, entstehen Ihnen keine Kosten. Gemäss den Allgemeinen Geschäftsbedingungen ist der Platz bestätigt, sobald die Zahlung eingegangen ist.',
     waitPayment: 'Solange {child} auf der Warteliste steht, ist keine Zahlung nötig.',
     change: 'Möchten Sie die Buchung ändern oder stornieren, oder haben Sie Fragen? Antworten Sie einfach auf diese E-Mail oder schreiben Sie an {email}.',
     bye: { registered: 'Wir freuen uns auf {child}!', waitlist: 'Vielen Dank für Ihre Geduld.' },

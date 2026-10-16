@@ -108,7 +108,7 @@ test("1. one session: stored with price 60, parent + organiser emails", () => {
   assert.strictEqual(m.length, 2);
   assert(m[0].to.endsWith("+test@example.com") && /^Registration received: Zollikon Kids Chess$/.test(m[0].subject));
   assert(/Total: CHF 60\n/.test(m[0].body), "price");
-  assert(/Payment instructions will follow in a separate email/.test(m[0].body));
+  assert(/minimum number of children.[^]*by 22 October at the latest[^]*no cost to you/.test(m[0].body));
   assert(!/IBAN|twint|http.*pay/i.test(m[0].body), "no payment details");
   assert(/For every session/.test(m[0].body) && !/trophy/.test(m[0].body) && /certificate of participation are part of the full three-day package only/.test(m[0].body));
   assert(/Saturday, 24 October 2026, 09:30–11:30/.test(m[0].body));
@@ -139,7 +139,7 @@ test("3. all three sessions, German: German email", () => {
   assert(/^Anmeldung erhalten/.test(m.subject) && /Samstag, 31\. Oktober 2026, 09:00–12:00/.test(m.body) && /3 Termine/.test(m.body));
   assert(/Total: CHF 165 \(ganzes Dreitagespaket statt CHF 195, CHF 30 Rabatt\)/.test(m.body), "discount line");
   assert(/Teilnahmezertifikat/.test(m.body) && /Pokal oder Preis/.test(m.body) && !/gibt es nur/.test(m.body));
-  assert(/Zahlungsinformationen erhalten Sie in einer separaten E-Mail/.test(m.body));
+  assert(/Mindestanzahl Kinder statt[^]*spätestens am 22. Oktober[^]*keine Kosten/.test(m.body));
   assert.strictEqual(row["Price"], 165);
 });
 
@@ -251,7 +251,7 @@ test("waiting list: full session → waitlist only when asked; no place held, no
   assert.strictEqual(row["Registration Status"], "Waiting list"); assert.strictEqual(row["Payment Status"], "");
   const m = e.mails.slice(before);
   assert(/^Warteliste: Zollikon Kids Chess$/.test(m[0].subject) && /Samstag, 31\. Oktober 2026 ist ausgebucht/.test(m[0].body) && /keine Zahlung nötig/.test(m[0].body));
-  assert(!/separaten E-Mail/.test(m[0].body), "no payment note for waitlist");
+  assert(!/Mindestanzahl/.test(m[0].body), "no payment note for waitlist");
   assert(/WAITING LIST/.test(m[1].subject) && /\[FULL\]/.test(m[1].body));
   // waitlisted child does not hold the 24 Oct place
   const a = get(e, { workshop: "zollikon-kids-chess-pilot-2026" });
