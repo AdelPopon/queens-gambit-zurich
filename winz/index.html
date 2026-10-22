@@ -69,13 +69,13 @@
  ]
 }
 </script>
-<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261022-0900" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/fonts.css?v=20261022-0900">
-<link rel="stylesheet" href="/css/site.css?v=20261022-0900">
-<link rel="stylesheet" href="/css/glass.css?v=20261022-0900">
-<link rel="stylesheet" href="/css/atmosphere.css?v=20261022-0900">
-<link rel="stylesheet" href="/css/features.css?v=20261022-0900">
-<link rel="stylesheet" href="/css/type.css?v=20261022-0900">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-400-normal.woff2?v=20261022-0930" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css?v=20261022-0930">
+<link rel="stylesheet" href="/css/site.css?v=20261022-0930">
+<link rel="stylesheet" href="/css/glass.css?v=20261022-0930">
+<link rel="stylesheet" href="/css/atmosphere.css?v=20261022-0930">
+<link rel="stylesheet" href="/css/features.css?v=20261022-0930">
+<link rel="stylesheet" href="/css/type.css?v=20261022-0930">
 </head>
 <body>
 
@@ -168,14 +168,26 @@
         </select>
         <p class="reg-field__error" id="reg-type-error" data-error-for="type" hidden></p>
       </div>
-      <div class="reg-field">
-        <label for="reg-elo">Elo-Zahl <span class="reg-optional">(freiwillig)</span></label>
-        <input id="reg-elo" name="elo" type="number" inputmode="numeric" min="100" max="3500" step="1" aria-describedby="reg-elo-error">
-        <p class="reg-field__error" id="reg-elo-error" data-error-for="elo" hidden></p>
-      </div>
-      <div class="reg-field">
-        <label for="reg-club">Schachclub <span class="reg-optional">(freiwillig)</span></label>
-        <input id="reg-club" name="club" type="text" maxlength="100" autocomplete="organization">
+      <!-- Shown only for the blitz tournament (Blitz or Both); js/site.js -->
+      <div class="reg-chess" data-reg-chess>
+        <div class="reg-field">
+          <label for="reg-elo">Elo-Zahl <span class="reg-req" aria-hidden="true">*</span></label>
+          <input id="reg-elo" name="elo" type="number" inputmode="numeric" min="100" max="3500" step="1" aria-describedby="reg-elo-error">
+          <div class="reg-none">
+            <input id="reg-elo-none" name="eloNone" type="checkbox" data-none-for="elo">
+            <label for="reg-elo-none">Keine Elo-Zahl</label>
+          </div>
+          <p class="reg-field__error" id="reg-elo-error" data-error-for="elo" hidden></p>
+        </div>
+        <div class="reg-field">
+          <label for="reg-club">Schachclub <span class="reg-req" aria-hidden="true">*</span></label>
+          <input id="reg-club" name="club" type="text" maxlength="100" autocomplete="organization" aria-describedby="reg-club-error">
+          <div class="reg-none">
+            <input id="reg-club-none" name="clubNone" type="checkbox" data-none-for="club">
+            <label for="reg-club-none">Kein Schachclub</label>
+          </div>
+          <p class="reg-field__error" id="reg-club-error" data-error-for="club" hidden></p>
+        </div>
       </div>
 
       <!-- Spam protection: real visitors never see or fill this field -->
@@ -205,7 +217,8 @@
       <span data-msg="name">Bitte gib deinen Vor- und Nachnamen ein.</span>
       <span data-msg="email">Bitte gib eine gültige E-Mail-Adresse ein.</span>
       <span data-msg="type">Bitte wähle aus, wie du teilnehmen möchtest.</span>
-      <span data-msg="elo">Bitte gib eine Elo-Zahl zwischen 100 und 3500 ein oder lass das Feld leer.</span>
+      <span data-msg="elo">Bitte gib deine Elo-Zahl (100 bis 3500) ein oder kreuze «Keine Elo-Zahl» an.</span>
+      <span data-msg="club">Bitte gib deinen Schachclub ein oder kreuze «Kein Schachclub» an.</span>
       <span data-msg="consent">Bitte stimme der Datenschutzerklärung zu, um dich anzumelden.</span>
       <span data-msg="sending">Wird gesendet …</span>
       <span data-msg="duplicate">Diese E-Mail-Adresse ist für diesen Anlass bereits angemeldet. Möchtest du deine Anmeldung ändern, schreib uns bitte an info@queensgambitzurich.ch.</span>
@@ -270,11 +283,11 @@
 
 <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
 
-<script src="/data/config.js?v=20261022-0900"></script>
-<script src="/js/i18n.js?v=20261022-0900"></script>
-<script src="/data/events.js?v=20261022-0900"></script>
-<script src="/js/event-schema.js?v=20261022-0900"></script>
-<script src="/js/site.js?v=20261022-0900"></script>
-<script src="/js/newsletter.js?v=20261022-0900"></script>
+<script src="/data/config.js?v=20261022-0930"></script>
+<script src="/js/i18n.js?v=20261022-0930"></script>
+<script src="/data/events.js?v=20261022-0930"></script>
+<script src="/js/event-schema.js?v=20261022-0930"></script>
+<script src="/js/site.js?v=20261022-0930"></script>
+<script src="/js/newsletter.js?v=20261022-0930"></script>
 </body>
 </html>

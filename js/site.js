@@ -515,6 +515,7 @@
     form.hidden = false; done.hidden = true;
     form.reset();
     clearErrors(form);
+    syncChessFields(form);
     form.dataset.eventId = ev.id;
     form.dataset.openedAt = String(Date.now());
     dlg._opener = opener;
@@ -528,6 +529,9 @@
     if (!dlg._wired) {
       dlg._wired = true;
       form.addEventListener("submit", function (e) { e.preventDefault(); submitRegistration(dlg, form, done, msgs); });
+      form.addEventListener("change", function (e) {
+        if (e.target === form.elements.type || e.target.hasAttribute("data-none-for")) syncChessFields(form);
+      });
       if (inline) return;
       dlg.querySelectorAll("[data-reg-close]").forEach(function (b) { b.addEventListener("click", function () { dlg.close(); }); });
       dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });   // click on backdrop
@@ -571,6 +575,23 @@
     var box = form.querySelector("[data-reg-alert]");
     box.hidden = true; box.textContent = "";
   }
+  /* Elo and chess club are asked only for the blitz tournament (Blitz or Both);
+     there they are required, unless "No Elo rating" / "No chess club" is ticked. */
+  function isChess(type) { return type === "blitz" || type === "both"; }
+  function syncChessFields(form) {
+    var box = form.querySelector("[data-reg-chess]");
+    if (!box) return;
+    var on = isChess(form.elements.type.value);
+    box.hidden = !on;
+    ["elo", "club"].forEach(function (name) {
+      var input = form.elements[name], none = form.querySelector('[data-none-for="' + name + '"]');
+      if (!input) return;
+      input.required = on && !(none && none.checked);
+      input.disabled = !!(none && none.checked);
+      if (input.disabled) input.value = "";
+    });
+  }
+
   function fieldError(form, name, text) {
     var f = form.elements[name], p = form.querySelector('[data-error-for="' + name + '"]');
     if (f && f.setAttribute) f.setAttribute("aria-invalid", "true");
@@ -583,14 +604,23 @@
       email: form.elements.email.value.trim(),
       type: form.elements.type.value,
       elo: form.elements.elo.value.trim(),
+      eloNone: !!(form.elements.eloNone && form.elements.eloNone.checked),
       club: form.elements.club ? form.elements.club.value.trim().replace(/\s+/g, " ").slice(0, 100) : "",
+      clubNone: !!(form.elements.clubNone && form.elements.clubNone.checked),
       consent: form.elements.consent.checked
     };
     var bad = [];
     if (v.name.length < 2 || v.name.length > 100) { fieldError(form, "name", msgs["name"]); bad.push("name"); }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email) || v.email.length > 254) { fieldError(form, "email", msgs["email"]); bad.push("email"); }
     if (["general", "blitz", "both"].indexOf(v.type) < 0) { fieldError(form, "type", msgs["type"]); bad.push("type"); }
-    if (v.elo !== "" && !(/^\d{1,4}$/.test(v.elo) && +v.elo >= 100 && +v.elo <= 3500)) { fieldError(form, "elo", msgs["elo"]); bad.push("elo"); }
+    if (isChess(v.type)) {
+      if (!v.eloNone && !(/^\d{1,4}$/.test(v.elo) && +v.elo >= 100 && +v.elo <= 3500)) { fieldError(form, "elo", msgs["elo"]); bad.push("elo"); }
+      if (!v.clubNone && v.club.length < 2) { fieldError(form, "club", msgs["club"]); bad.push("club"); }
+    } else {
+      v.elo = ""; v.eloNone = false; v.club = ""; v.clubNone = false;   // not asked for general attendance
+    }
+    if (v.eloNone) v.elo = "";
+    if (v.clubNone) v.club = "";
     if (!v.consent) { fieldError(form, "consent", msgs["consent"]); bad.push("consent"); }
     return { values: v, bad: bad };
   }
@@ -611,7 +641,9 @@
       email: r.values.email,
       type: r.values.type,
       elo: r.values.elo,
+      eloNone: r.values.eloNone,
       club: r.values.club,
+      clubNone: r.values.clubNone,
       lang: LANG,
       consent: true,
       website: form.elements.website.value,                       // honeypot: must stay empty

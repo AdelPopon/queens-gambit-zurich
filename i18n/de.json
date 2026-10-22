@@ -158,7 +158,6 @@
     "Please enter your full name.": "Bitte gib deinen Vor- und Nachnamen ein.",
     "Please enter a valid email address.": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "Please choose how you would like to take part.": "Bitte wähle aus, wie du teilnehmen möchtest.",
-    "Please enter a rating between 100 and 3500, or leave the field empty.": "Bitte gib eine Elo-Zahl zwischen 100 und 3500 ein oder lass das Feld leer.",
     "Please agree to the Privacy Policy to register.": "Bitte stimme der Datenschutzerklärung zu, um dich anzumelden.",
     "Sending…": "Wird gesendet …",
     "This email address is already registered for this event. If you need to change your registration, please email info@queensgambitzurich.ch.": "Diese E-Mail-Adresse ist für diesen Anlass bereits angemeldet. Möchtest du deine Anmeldung ändern, schreib uns bitte an info@queensgambitzurich.ch.",
@@ -240,7 +239,11 @@
     "{n} years": "{n} Jahre",
     "Registration for this workshop is closed.": "Die Anmeldung für diesen Workshop ist geschlossen.",
     "chess instruction, snacks and drinks and a mini workbook or chess puzzles at every session; the tournament with a trophy or prize on 31 October; the Chess Passport workbook and a certificate of participation with the full three-day package.": "an jedem Termin Schachunterricht, Snacks und Getränke sowie ein Mini-Arbeitsheft oder Schachrätsel; am 31. Oktober das Turnier mit einem Pokal oder Preis; mit dem ganzen Dreitagespaket das Chess-Passport-Arbeitsheft und ein Teilnahmezertifikat.",
-    "Chess club": "Schachclub"
+    "Chess club": "Schachclub",
+    "No Elo rating": "Keine Elo-Zahl",
+    "No chess club": "Kein Schachclub",
+    "Please enter your Elo rating (100 to 3500), or tick “No Elo rating”.": "Bitte gib deine Elo-Zahl (100 bis 3500) ein oder kreuze «Keine Elo-Zahl» an.",
+    "Please enter your chess club, or tick “No chess club”.": "Bitte gib deinen Schachclub ein oder kreuze «Kein Schachclub» an."
   },
   "kids_strings": {
     "Registration for three chess mornings for children aged 5–13. Choose one, two or all three sessions.": "Anmeldung für drei Schachvormittage für Kinder von 5 bis 13 Jahren. Wählen Sie einen, zwei oder alle drei Termine.",
