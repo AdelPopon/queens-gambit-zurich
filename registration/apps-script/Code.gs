@@ -90,7 +90,7 @@ function doPost(e) {
     }
     sheet.appendRow([
       timestamp, safe_(r.name), safe_(r.email), TYPES[r.type],
-      r.elo === '' ? '' : Number(r.elo), r.lang.toUpperCase(), 'Confirmed', safe_(r.club)
+      (r.elo === '' || r.elo === 'None') ? r.elo : Number(r.elo), r.lang.toUpperCase(), 'Confirmed', safe_(r.club)
     ]);
     SpreadsheetApp.flush();
     var last = sheet.getLastRow();
@@ -148,8 +148,16 @@ function validate_(x) {
   if (name.length < 2 || name.length > 100) return { ok: false, code: 'invalid' };
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, code: 'invalid' };
   if (!TYPES[type]) return { ok: false, code: 'invalid' };
-  if (elo !== '' && !(/^\d{1,4}$/.test(elo) && +elo >= 100 && +elo <= 3500)) return { ok: false, code: 'invalid' };
-  if (club.length > 100) return { ok: false, code: 'invalid' };
+  // Elo and chess club are asked only for the blitz tournament (Blitz or Both). There
+  // both are required, unless "No Elo rating" / "No chess club" is ticked (stored as "None").
+  if (type === 'blitz' || type === 'both') {
+    if (x.eloNone === true) elo = 'None';
+    else if (!(/^\d{1,4}$/.test(elo) && +elo >= 100 && +elo <= 3500)) return { ok: false, code: 'invalid' };
+    if (x.clubNone === true) club = 'None';
+    else if (club.length < 2 || club.length > 100) return { ok: false, code: 'invalid' };
+  } else {
+    elo = ''; club = '';
+  }
 
   return { ok: true, value: { eventId: x.eventId, name: name, email: email, type: type, elo: elo, club: club, lang: lang } };
 }
@@ -234,7 +242,7 @@ function sendConfirmation_(r) {
     'Zeit: ' + ev.time,
     'Ort: ' + ev.location,
     'Art der Teilnahme: ' + type
-  ].concat(r.club ? ['Schachclub: ' + r.club] : []).concat([
+  ].concat(r.club && r.club !== 'None' ? ['Schachclub: ' + r.club] : []).concat([
     '',
     'Die Teilnahme ist kostenlos.',
     '',
@@ -253,7 +261,7 @@ function sendConfirmation_(r) {
     'Time: ' + ev.time,
     'Location: ' + ev.location,
     'Participation type: ' + type
-  ].concat(r.club ? ['Chess club: ' + r.club] : []).concat([
+  ].concat(r.club && r.club !== 'None' ? ['Chess club: ' + r.club] : []).concat([
     '',
     'Participation is free of charge.',
     '',
@@ -282,8 +290,8 @@ function sendAdminNotice_(r, timestamp) {
     'Name: ' + r.name,
     'Email: ' + r.email,
     'Participation type: ' + TYPES[r.type],
-    'Elo rating: ' + (r.elo || 'not provided'),
-    'Chess club: ' + (r.club || 'not provided'),
+    'Elo rating: ' + (r.elo || 'not asked (general attendance)'),
+    'Chess club: ' + (r.club || 'not asked (general attendance)'),
     'Language: ' + r.lang.toUpperCase(),
     'Registered: ' + when + ' (Zürich time)',
     '',

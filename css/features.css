@@ -124,6 +124,13 @@ p.reg-dialog__title {
 .reg-field label { font-weight: 600; font-size: .9rem; }
 .reg-req { color: var(--g-blue); }
 .reg-optional { font-weight: 400; color: var(--muted); }
+/* Elo and chess club: only for the blitz tournament (shown by js/site.js) */
+.reg-chess { display: grid; gap: .9rem; }
+.reg-chess[hidden] { display: none; }
+.reg-none { display: flex; align-items: center; gap: .5rem; margin-top: .1rem; }
+.reg-none input { width: 18px; height: 18px; margin: 0; accent-color: var(--g-indigo); }
+.reg-none label { font-weight: 400; font-size: .9rem; }
+.reg-field input:disabled { opacity: .5; background: rgba(255, 255, 255, .5); }
 .reg-field input[type=text], .reg-field input[type=email], .reg-field input[type=number], .reg-field select {
   width: 100%; min-height: 46px; padding: .6rem .8rem;
   font: 400 1rem/1.3 var(--font-body); color: var(--g-ink);
