@@ -583,6 +583,7 @@
       email: form.elements.email.value.trim(),
       type: form.elements.type.value,
       elo: form.elements.elo.value.trim(),
+      club: form.elements.club ? form.elements.club.value.trim().replace(/\s+/g, " ").slice(0, 100) : "",
       consent: form.elements.consent.checked
     };
     var bad = [];
@@ -610,6 +611,7 @@
       email: r.values.email,
       type: r.values.type,
       elo: r.values.elo,
+      club: r.values.club,
       lang: LANG,
       consent: true,
       website: form.elements.website.value,                       // honeypot: must stay empty
