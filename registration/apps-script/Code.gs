@@ -48,7 +48,7 @@ var EVENTS = {
   }
 };
 
-var HEADERS = ['Registration Date', 'Full Name', 'Email Address', 'Participation Type', 'Elo Rating', 'Language', 'Registration Status'];
+var HEADERS = ['Registration Date', 'Full Name', 'Email Address', 'Participation Type', 'Elo Rating', 'Language', 'Registration Status', 'Chess Club'];
 var TYPES = { general: 'General', blitz: 'Blitz', both: 'Both' };
 var TYPE_LABELS = {
   en: { general: 'General attendance', blitz: 'Blitz tournament', both: 'General attendance and blitz tournament' },
@@ -90,7 +90,7 @@ function doPost(e) {
     }
     sheet.appendRow([
       timestamp, safe_(r.name), safe_(r.email), TYPES[r.type],
-      r.elo === '' ? '' : Number(r.elo), r.lang.toUpperCase(), 'Confirmed'
+      r.elo === '' ? '' : Number(r.elo), r.lang.toUpperCase(), 'Confirmed', safe_(r.club)
     ]);
     SpreadsheetApp.flush();
     var last = sheet.getLastRow();
@@ -143,13 +143,15 @@ function validate_(x) {
   var type = String(x.type || '');
   var elo = String(x.elo == null ? '' : x.elo).trim();
   var lang = x.lang === 'de' ? 'de' : 'en';
+  var club = String(x.club == null ? '' : x.club).replace(/\s+/g, ' ').trim();   // optional
 
   if (name.length < 2 || name.length > 100) return { ok: false, code: 'invalid' };
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, code: 'invalid' };
   if (!TYPES[type]) return { ok: false, code: 'invalid' };
   if (elo !== '' && !(/^\d{1,4}$/.test(elo) && +elo >= 100 && +elo <= 3500)) return { ok: false, code: 'invalid' };
+  if (club.length > 100) return { ok: false, code: 'invalid' };
 
-  return { ok: true, value: { eventId: x.eventId, name: name, email: email, type: type, elo: elo, lang: lang } };
+  return { ok: true, value: { eventId: x.eventId, name: name, email: email, type: type, elo: elo, club: club, lang: lang } };
 }
 
 function rateLimit_(email) {
@@ -186,6 +188,10 @@ function sheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SETTINGS.SHEET_NAME);
   if (!sheet) { setup(); sheet = ss.getSheetByName(SETTINGS.SHEET_NAME); }
+  else if (sheet.getLastColumn() < HEADERS.length) {
+    // A column was added in a later version: add its header, keep all data.
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold').setBackground('#E4E9FF');
+  }
   return sheet;
 }
 
@@ -227,7 +233,8 @@ function sendConfirmation_(r) {
     'Datum: ' + ev.date,
     'Zeit: ' + ev.time,
     'Ort: ' + ev.location,
-    'Art der Teilnahme: ' + type,
+    'Art der Teilnahme: ' + type
+  ].concat(r.club ? ['Schachclub: ' + r.club] : []).concat([
     '',
     'Die Teilnahme ist kostenlos.',
     '',
@@ -236,7 +243,7 @@ function sendConfirmation_(r) {
     'Wir freuen uns auf dich!',
     "Queen's Gambit Zürich",
     'https://queensgambitzurich.ch/'
-  ] : [
+  ]) : [
     'Hello ' + r.name,
     '',
     'Thank you for registering. This email confirms your place:',
@@ -245,7 +252,8 @@ function sendConfirmation_(r) {
     'Date: ' + ev.date,
     'Time: ' + ev.time,
     'Location: ' + ev.location,
-    'Participation type: ' + type,
+    'Participation type: ' + type
+  ].concat(r.club ? ['Chess club: ' + r.club] : []).concat([
     '',
     'Participation is free of charge.',
     '',
@@ -254,7 +262,7 @@ function sendConfirmation_(r) {
     'We look forward to seeing you!',
     "Queen's Gambit Zürich",
     'https://queensgambitzurich.ch/en/'
-  ];
+  ]);
   MailApp.sendEmail({
     to: r.email,
     subject: subject,
@@ -275,6 +283,7 @@ function sendAdminNotice_(r, timestamp) {
     'Email: ' + r.email,
     'Participation type: ' + TYPES[r.type],
     'Elo rating: ' + (r.elo || 'not provided'),
+    'Chess club: ' + (r.club || 'not provided'),
     'Language: ' + r.lang.toUpperCase(),
     'Registered: ' + when + ' (Zürich time)',
     '',
@@ -394,6 +403,6 @@ function getReady() {
 function testEmails() {
   var me = Session.getActiveUser().getEmail();
   ['en', 'de'].forEach(function (lang) {
-    sendConfirmation_({ eventId: 'chess-club-2026-11-29', name: 'Test Person', email: me, type: 'both', elo: '1500', lang: lang });
+    sendConfirmation_({ eventId: 'chess-club-2026-11-29', name: 'Test Person', email: me, type: 'both', elo: '1500', club: 'Test Chess Club', lang: lang });
   });
 }
