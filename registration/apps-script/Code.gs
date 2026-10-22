@@ -313,25 +313,78 @@ function setup() {
   sheet.setColumnWidths(1, HEADERS.length, 170);
   if (!sheet.getFilter()) sheet.getRange(1, 1, Math.max(sheet.getMaxRows(), 2), HEADERS.length).createFilter();
 
-  var sum = ss.getSheetByName(SETTINGS.SUMMARY_SHEET) || ss.insertSheet(SETTINGS.SUMMARY_SHEET, 1);
-  var R = "'" + SETTINGS.SHEET_NAME + "'";
-  sum.getRange('A1:B6').setValues([
-    ['Overview', ''],
-    ['Total registrations', '=COUNTA(' + R + '!C2:C)'],
-    ['General only', '=COUNTIF(' + R + '!D2:D,"General")'],
-    ['Blitz only', '=COUNTIF(' + R + '!D2:D,"Blitz")'],
-    ['Both', '=COUNTIF(' + R + '!D2:D,"Both")'],
-    ['Blitz tournament players (Blitz + Both)', '=COUNTIF(' + R + '!D2:D,"Blitz")+COUNTIF(' + R + '!D2:D,"Both")']
-  ]);
-  sum.getRange('A1').setFontWeight('bold');
-  sum.getRange('D2').setFormula('=IFERROR(SORT(FILTER({' + R + '!B2:B,' + R + '!E2:E},(' + R + '!D2:D="Blitz")+(' + R + '!D2:D="Both"))),"")');
-  sum.getRange('D1:E1').setValues([['Blitz tournament players', 'Elo']]).setFontWeight('bold');
-  sum.setColumnWidth(1, 300);
-  sum.setColumnWidth(4, 220);
+  buildSummary_(ss);
 
   var log = ss.getSheetByName(SETTINGS.LOG_SHEET) || ss.insertSheet(SETTINGS.LOG_SHEET);
   if (log.getLastRow() === 0) log.appendRow(['Time', 'Type', 'Detail', 'Email (masked)']);
   log.setFrozenRows(1);
+}
+
+/**
+ * Summary tab: totals per participation type and the list of blitz players.
+ * Works in every spreadsheet language: the counts use no argument separator at
+ * all, and the separator for the lists (";" in Italian or German, "," in
+ * English) is detected from the spreadsheet itself.
+ */
+function buildSummary_(ss) {
+  var sum = ss.getSheetByName(SETTINGS.SUMMARY_SHEET) || ss.insertSheet(SETTINGS.SUMMARY_SHEET, 1);
+  sum.getRange('A1:E' + Math.max(sum.getMaxRows(), 1)).clearContent();
+  var sep = separator_(sum);
+  var R = "'" + SETTINGS.SHEET_NAME + "'";
+  var type = R + '!D2:D', names = R + '!B2:B', elo = R + '!E2:E';
+  var count = function (t) { return 'SUMPRODUCT(--(' + type + '="' + t + '"))'; };
+  var blitz = '(' + type + '="Blitz")+(' + type + '="Both")';
+  var rows = [
+    ['Overview', ''],
+    ['Total registrations', '=COUNTA(' + R + '!C2:C)'],
+    ['General only', '=' + count('General')],
+    ['Blitz only', '=' + count('Blitz')],
+    ['Both', '=' + count('Both')],
+    ['Blitz tournament players (Blitz + Both)', '=' + count('Blitz') + '+' + count('Both')]
+  ];
+  rows.forEach(function (r, i) {
+    sum.getRange(i + 1, 1).setValue(r[0]);
+    if (r[1]) sum.getRange(i + 1, 2).setFormula(r[1]);
+  });
+  sum.getRange('A1').setFontWeight('bold');
+  sum.getRange('D1:E1').setValues([['Blitz tournament players', 'Elo']]).setFontWeight('bold');
+  sum.getRange('D2').setFormula('=IFERROR(FILTER(' + names + sep + blitz + ')' + sep + '"")');
+  sum.getRange('E2').setFormula('=IFERROR(FILTER(' + elo + sep + blitz + ')' + sep + '"")');
+  sum.setColumnWidth(1, 300);
+  sum.setColumnWidth(4, 220);
+}
+
+/* ";" when the spreadsheet writes decimals with a comma (Italian, German, ...), else ",". */
+function separator_(sheet) {
+  var cell = sheet.getRange('Z1');
+  cell.setFormula('=1/2');
+  SpreadsheetApp.flush();
+  var shown = String(cell.getDisplayValue());
+  cell.clearContent();
+  return shown.indexOf(',') > -1 ? ';' : ',';
+}
+
+/**
+ * Run once from the editor (Run ▸ getReady) before registrations open:
+ * repairs the Summary formulas and removes the test registrations (names
+ * marked "please delete" / "bitte löschen", or +regtest email addresses).
+ * Real registrations are never touched. Safe to run again.
+ */
+function getReady() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = sheet_();
+  var removed = 0;
+  for (var r = sheet.getLastRow(); r >= 2; r--) {
+    var name = String(sheet.getRange(r, 2).getValue());
+    var email = String(sheet.getRange(r, 3).getValue()).toLowerCase();
+    if (/please delete|bitte löschen/i.test(name) || /\+regtest/.test(email)) { sheet.deleteRow(r); removed++; }
+  }
+  buildSummary_(ss);
+  var extra = ss.getSheetByName('Foglio1') || ss.getSheetByName('Sheet1') || ss.getSheetByName('Tabelle1');
+  if (extra && extra.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(extra);
+  SpreadsheetApp.flush();
+  Logger.log('Test registrations removed: ' + removed + '. Summary rebuilt. Registrations now: ' +
+    Math.max(sheet.getLastRow() - 1, 0) + '.');
 }
 
 /**

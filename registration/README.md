@@ -56,7 +56,12 @@ emails (ideally a QGZ account rather than a personal one).
   Language (EN / DE), Registration Status (Confirmed). Use the filter arrows
   in the header row to show, for example, only Blitz and Both.
 - **Summary tab:** totals per participation type, number of blitz players, and
-  a live list of blitz players with their Elo rating.
+  a live list of blitz players with their Elo rating. The formulas work in any
+  spreadsheet language (Italian and German sheets use ";" as separator; the
+  script detects this). If the Summary ever shows #ERROR!, run `getReady`.
+- **Before registrations open:** run `getReady` once. It rebuilds the Summary
+  and removes test registrations (names marked "please delete" / "bitte
+  löschen", or +regtest addresses); real registrations are never touched.
 - **Export:** *File ▸ Download ▸ CSV or Microsoft Excel*.
 - **Log tab:** technical events (rejected spam, duplicates, email problems)
   with masked email addresses, for troubleshooting.
