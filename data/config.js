@@ -55,7 +55,11 @@ window.QGZ_CONFIG = {
   // keeps its fallback. Setup: registration/kids-chess/README.md
   kidsChess: {
     endpoint: "https://script.google.com/macros/s/AKfycbx6P4P_y_yHfGL5wGcaEjloJhFeifZsG_-OL1BXsmbYlqFBGk5rZOfVUz3WwWRLDLev/exec",
-    page: { en: "/en/kids/zollikon/", de: "/kids/zollikon/" }
+    page: { en: "/en/kids/zollikon/", de: "/kids/zollikon/" },
+    // false = registration closed: the registration page shows the "closed"
+    // message and the Register buttons become a "Registration closed" label.
+    // (Also set "Registration open" to No in the Sheet's Settings tab.)
+    open: false
   },
 
   // Newsletter (Mailchimp audience "Queen's Gambit Zürich", double opt-in).
@@ -76,6 +80,8 @@ window.QGZ_CONFIG = {
 
 // The Kids Chess "Register" button points to the registration page only once
 // the registration backend is connected.
-if (window.QGZ_CONFIG.kidsChess.endpoint) {
+if (window.QGZ_CONFIG.kidsChess.endpoint && window.QGZ_CONFIG.kidsChess.open !== false) {
   window.QGZ_CONFIG.links.kidsRegistration = window.QGZ_CONFIG.kidsChess.page;
 }
+// Links whose registration is closed: shown as a "Registration closed" label.
+window.QGZ_CONFIG.closedLinks = { kidsRegistration: window.QGZ_CONFIG.kidsChess.open === false };

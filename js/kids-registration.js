@@ -351,7 +351,7 @@
   }
 
   /* ---------- Start ---------- */
-  if (!ev || !sessions.length || !ENDPOINT) { showClosed("closed"); return; }
+  if (!ev || !sessions.length || !ENDPOINT || CONFIG.kidsChess.open === false) { showClosed("closed"); return; }
   build();
   form.hidden = false;
   root.classList.add("is-loading");
