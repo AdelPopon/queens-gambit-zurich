@@ -37,6 +37,13 @@
      when all its [data-link-group] children are hidden. */
   function applyLink(el) {
     var key = el.getAttribute("data-link");
+    if (CONFIG.closedLinks && CONFIG.closedLinks[key]) {   // registration closed: label instead of a button
+      var tag = document.createElement("span");
+      tag.className = "status status--planned";
+      tag.textContent = T("regClosed");
+      el.parentNode.replaceChild(tag, el);
+      return;
+    }
     var url = L(CONFIG.links && CONFIG.links[key]);   // may be { en, de }
     var fallback = el.getAttribute("data-fallback-href");
 
@@ -358,8 +365,8 @@
       a.setAttribute("href", section);
       a.setAttribute("data-fallback-href", section);   // no URL yet: link to the programme section
       a.setAttribute("data-fallback-label", T("details"));
-      applyLink(a);
       wrap.appendChild(a);
+      applyLink(a);   // after appending: a closed registration replaces the button
       li.appendChild(wrap);
     }
     return li;
