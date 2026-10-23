@@ -151,8 +151,8 @@ def build_home_de():
                         '<meta property="og:locale" content="de_CH">\n<meta property="og:locale:alternate" content="en_GB">')
     html = html.replace('"inLanguage": "en"', '"inLanguage": "de"')
     html = html.replace(
-        '"description": "Women\'s chess club and community in Zürich, Switzerland: regular meetings and coaching for all levels, plus Kids Chess, our educational programme for children."',
-        '"description": "Schachclub und Community für Frauen in Zürich, Schweiz: regelmässige Treffs und Coaching für alle Spielstärken, dazu Kids Chess, unser Bildungsprogramm für Kinder."')
+        '"description": "Women\'s chess in Switzerland: our club and community in Zürich offers regular meetings and coaching for all levels, plus Kids Chess for children."',
+        '"description": "Frauenschach in der Schweiz: Schachclub und Community in Zürich mit regelmässigen Treffs und Coaching für alle Spielstärken, dazu Kids Chess für Kinder."')
     for en_s, de_s in [
         ('"knowsAbout": ["Chess", "Women\'s chess", "Chess for children"]', '"knowsAbout": ["Schach", "Frauenschach", "Schach für Kinder"]'),
         ('"name": "Switzerland"', '"name": "Schweiz"'),
