@@ -56,7 +56,7 @@
 
       var obj = {
         "@type": "Event",
-        "name": ev.programme === "community" && !ev.special ? "Queen's Gambit Zürich: " + L(ev.title) : L(ev.title),
+        "name": ev.programme === "community" && !ev.special ? (lang === "de" ? "Queen's Gambit Zürich Schachclub: " : "Queen's Gambit Zürich Chess Club: ") + L(ev.title) : L(ev.title),
         "startDate": t0.length ? isoAt(first.date, t0[0]) : first.date,
         "eventStatus": "https://schema.org/EventScheduled",
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
