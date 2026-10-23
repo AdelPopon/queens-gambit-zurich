@@ -151,8 +151,21 @@ def build_home_de():
                         '<meta property="og:locale" content="de_CH">\n<meta property="og:locale:alternate" content="en_GB">')
     html = html.replace('"inLanguage": "en"', '"inLanguage": "de"')
     html = html.replace(
-        '"description": "Women\'s chess club and community in Zürich: regular meetings and coaching for all levels, plus Kids Chess, our educational programme for children."',
-        '"description": "Schachclub und Community für Frauen in Zürich: regelmässige Treffs und Coaching für alle Spielstärken, dazu Kids Chess, unser Bildungsprogramm für Kinder."')
+        '"description": "Women\'s chess club and community in Zürich, Switzerland: regular meetings and coaching for all levels, plus Kids Chess, our educational programme for children."',
+        '"description": "Schachclub und Community für Frauen in Zürich, Schweiz: regelmässige Treffs und Coaching für alle Spielstärken, dazu Kids Chess, unser Bildungsprogramm für Kinder."')
+    for en_s, de_s in [
+        ('"knowsAbout": ["Chess", "Women\'s chess", "Chess for children"]', '"knowsAbout": ["Schach", "Frauenschach", "Schach für Kinder"]'),
+        ('"name": "Switzerland"', '"name": "Schweiz"'),
+        ('"name": "Programmes"', '"name": "Programme"'),
+        ('"name": "Coaching Sessions"', '"name": "Coaching-Sessions"'),
+        ('"name": "Regular chess club meetings"', '"name": "Regelmässige Schachclub-Treffs"'),
+        ('"description": "Fridays from 19:00. All levels welcome."', '"description": "Freitags ab 19:00. Alle Spielstärken willkommen."'),
+        ('"description": "Sundays from 15:00. All levels welcome."', '"description": "Sonntags ab 15:00. Alle Spielstärken willkommen."'),
+        ('"description": "Our educational chess programme for children."', '"description": "Unser Bildungsprogramm für Kinder."'),
+        ('href="/en/kids/zollikon/"', 'href="/kids/zollikon/"'),
+    ]:
+        assert en_s in html, en_s
+        html = html.replace(en_s, de_s)
     html = html.replace('"slogan": "A place for women to play chess."', '"slogan": "Ein Ort, an dem Frauen Schach spielen."')
     html = html.replace('href="/en/privacy/"', 'href="/datenschutz/"')
     html = html.replace('href="/en/impressum/"', 'href="/impressum/"')
