@@ -12,6 +12,7 @@ const root = path.resolve(__dirname, "..");
 const [lang, todayIso, only, pageUrl] = process.argv.slice(2);
 const ctx = { window: {} };
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(path.join(root, "data/config.js"), "utf8"), ctx);
 vm.runInContext(fs.readFileSync(path.join(root, "data/events.js"), "utf8"), ctx);
 vm.runInContext(fs.readFileSync(path.join(root, "js/event-schema.js"), "utf8"), ctx);
 const W = ctx.window;
@@ -26,10 +27,11 @@ const day = (iso) => {
   return new Date(q[0], q[1] - 1, q[2]).toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short", year: "numeric" });
 };
 
-const schema = W.QGZ_buildEventSchema(events, { lang, today, only: only || null, pageUrl: pageUrl || null });
+const config = W.QGZ_CONFIG;
+const schema = W.QGZ_buildEventSchema(events, { lang, today, config, only: only || null, pageUrl: pageUrl || null });
 
 const list = [];
-W.QGZ_upcomingEvents(events, today).forEach(({ ev }) => {
+W.QGZ_upcomingEvents(events, today, config).forEach(({ ev }) => {
   ev.sessions.forEach((s) => {
     const q = s.date.split("-").map(Number);
     if (new Date(q[0], q[1] - 1, q[2]) < today) return;
