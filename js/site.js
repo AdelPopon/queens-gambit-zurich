@@ -379,7 +379,9 @@
     if (!listEl) return;
 
     var today = startOfToday();
-    var items = prepare(EVENTS, today);
+    var items = prepare(EVENTS, today).filter(function (x) {   // started + registration closed: not listed
+      return !window.QGZ_isListed || window.QGZ_isListed(x.ev, today, CONFIG);
+    });
     var expanded = false;
 
     function draw() {
@@ -419,7 +421,7 @@
     var s = document.getElementById("qgz-events-ld");
     if (!s || !window.QGZ_buildEventSchema) return;
     if (s.getAttribute("data-scope") === "event") return;   // single event page: static data stays
-    var graph = window.QGZ_buildEventSchema(EVENTS, { lang: LANG, today: startOfToday() });
+    var graph = window.QGZ_buildEventSchema(EVENTS, { lang: LANG, today: startOfToday(), config: CONFIG });
     if (!graph.length) { s.parentNode.removeChild(s); return; }
     s.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
   }

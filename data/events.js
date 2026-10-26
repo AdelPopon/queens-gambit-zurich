@@ -4,6 +4,8 @@
    Events are managed manually in this file.
 
    - Past events disappear automatically (based on each visitor's date).
+     An event with several dates disappears once its first date has passed,
+     unless its registration is still open.
    - Events are sorted by date automatically; order here does not matter.
    - Use ISO dates: "YYYY-MM-DD".
    - Set a field to null when the information is not confirmed yet; the page

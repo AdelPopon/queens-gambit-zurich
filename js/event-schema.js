@@ -22,14 +22,31 @@
     return dateStr + "T" + hhmm + ":00" + zurichOffset(parseDate(dateStr));
   }
 
-  /* Upcoming events (next session today or later), sorted by date. */
-  function upcoming(events, today) {
+  /* Registration still open on the website (WINZ-style form or a configured link)? */
+  function registrationOpen(ev, config) {
+    if (!config) return false;
+    if (ev.registration && config.registration && config.registration.endpoint) return true;
+    return !!(ev.linkKey && config.links && config.links[ev.linkKey] &&
+      !(config.closedLinks && config.closedLinks[ev.linkKey]));
+  }
+
+  /* Listed under "Upcoming": the event has a session today or later and has not
+     started yet. An event with several dates disappears once its first date has
+     passed, unless its registration is still open. */
+  function isListed(ev, today, config) {
+    var dates = ev.sessions.map(function (s) { return parseDate(s.date); });
+    var hasNext = dates.some(function (d) { return d >= today; });
+    return hasNext && (dates[0] >= today || registrationOpen(ev, config));
+  }
+
+  /* Upcoming events, sorted by date. */
+  function upcoming(events, today, config) {
     return events
+      .filter(function (ev) { return isListed(ev, today, config); })
       .map(function (ev) {
         var dates = ev.sessions.map(function (s) { return parseDate(s.date); });
-        return { ev: ev, next: dates.filter(function (d) { return d >= today; })[0] || null };
+        return { ev: ev, next: dates.filter(function (d) { return d >= today; })[0] };
       })
-      .filter(function (x) { return x.next; })
       .sort(function (a, b) { return a.next - b.next; });
   }
 
@@ -41,7 +58,7 @@
     var home = SITE + (lang === "en" ? "en/" : "");
     var list = opts.only
       ? events.filter(function (ev) { return ev.id === opts.only; }).map(function (ev) { return { ev: ev }; })
-      : upcoming(events, opts.today);
+      : upcoming(events, opts.today, opts.config);
 
     return list.map(function (item) {
       var ev = item.ev, first = ev.sessions[0], last = ev.sessions[ev.sessions.length - 1];
@@ -81,5 +98,6 @@
   }
 
   root.QGZ_upcomingEvents = upcoming;
+  root.QGZ_isListed = isListed;
   root.QGZ_buildEventSchema = buildEventSchema;
 })(typeof window !== "undefined" ? window : globalThis);
