@@ -42,3 +42,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-10-15_1506.zip` | `backup-2026-10-15_1506` | `48321a3` | 2026-10-15 15:06 | Before fixing the WINZ Summary formulas (Italian locale) |
 | `QGZ_Website_Backup_2026-10-16_1551.zip` | `backup-2026-10-16_1551` | `48321a3` | 2026-10-16 15:51 | Before the minimum-participants payment note on the Zollikon Kids Chess page and confirmation email |
 | `QGZ_Website_Backup_2026-10-26_1313.zip` | `backup-2026-10-26_1313` | `050e872` | 2026-10-26 13:13 | before hiding started events (main 050e872) |
+| `QGZ_Website_Backup_2026-11-08_1445.zip` | `backup-2026-11-08_1445` | `a5e84de` | 2026-11-08 14:45 | Before removing the Zollikon workshop and the language-switch position fix |
