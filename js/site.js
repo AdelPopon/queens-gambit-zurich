@@ -687,3 +687,63 @@
       });
   }
 })();
+
+/* ---------------------------------------------------------------------------
+   Language switch keeps the reader's place (EN <-> DE).
+   On click, the link gets "#<section>@<fraction>": the section at the top of
+   the screen and how far into it the reader is. The other language opens at
+   the same section and the same relative position (German and English texts
+   differ in length), then the address is tidied to "#<section>".
+   Nothing is stored in the browser.
+--------------------------------------------------------------------------- */
+(function () {
+  var sections = function () { return [].slice.call(document.querySelectorAll("main section[id]")); };
+  if (!sections().length) return;   // legal and registration pages: plain links
+  var headerH = function () {
+    var h = document.querySelector(".site-header");
+    return h ? h.getBoundingClientRect().height : 0;
+  };
+  var docTop = function (el) { return el.getBoundingClientRect().top + window.pageYOffset; };
+
+  function currentPlace() {
+    if (window.pageYOffset < 20) return "";
+    var line = window.pageYOffset + headerH() + 1, found = null;
+    sections().forEach(function (s) { if (docTop(s) <= line) found = s; });
+    if (!found) return "";
+    var frac = (line - docTop(found)) / Math.max(found.offsetHeight, 1);
+    return "#" + found.id + "@" + Math.min(Math.max(frac, 0), 1).toFixed(4);
+  }
+
+  document.querySelectorAll("[data-lang-link]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (a.getAttribute("aria-current") === "page") return;
+      a.href = a.getAttribute("href").split("#")[0] + currentPlace();
+    });
+  });
+
+  // Arriving from the other language
+  var m = /^#([A-Za-z][\w-]*)@(0(?:\.\d+)?|1(?:\.0+)?)$/.exec(location.hash);
+  if (!m) return;
+  var target = document.getElementById(m[1]);
+  if (history.replaceState) history.replaceState(null, "", location.pathname + location.search + (target ? "#" + m[1] : ""));
+  if (!target) return;
+  var frac = parseFloat(m[2]), moved = false;
+  function restore() {
+    if (moved) return;
+    var y = docTop(target) + frac * target.offsetHeight - headerH() - 1;
+    window.scrollTo({ top: Math.max(0, Math.round(y)), behavior: "instant" });
+  }
+  ["wheel", "touchstart", "keydown"].forEach(function (ev) {
+    window.addEventListener(ev, function () { moved = true; }, { once: true, passive: true });
+  });
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  restore();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(restore);
+  window.addEventListener("load", restore);
+  // Late layout changes (images, fonts, folded lists) during the first seconds
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(restore);
+    ro.observe(document.body);
+    setTimeout(function () { ro.disconnect(); }, 3000);
+  }
+})();

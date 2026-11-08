@@ -142,22 +142,5 @@
     };
   });
 
-  var kidsPilot = {
-    id: "zollikon-kids-chess-pilot-2026",
-    programme: "kids",
-    status: "workshop",
-    title: "Zollikon Kids Chess",
-    sessions: [
-      { date: "2026-10-24", time: "09:30–11:30", label: { en: "Learn & Discover", de: "Lernen & Entdecken" } },
-      { date: "2026-10-25", time: "09:30–11:30", label: { en: "Practice & Challenge", de: "Üben & Herausfordern" } },
-      { date: "2026-10-31", time: "09:00–12:00", label: { en: "Tournament & Awards", de: "Turnier & Preisverleihung" } }
-    ],
-    venue: "Combi Face",
-    address: "Oberdorfstrasse 37, 8702 Zollikon",
-    summary: { en: "Three mornings of chess for children aged 5–13.", de: "Drei Schachvormittage für Kinder von 5 bis 13 Jahren." },
-    linkKey: "kidsRegistration",
-    linkLabel: { en: "Register", de: "Anmelden" }
-  };
-
-  window.QGZ_EVENTS = communityMeetups.concat([kidsPilot]);
+  window.QGZ_EVENTS = communityMeetups;
 })();
