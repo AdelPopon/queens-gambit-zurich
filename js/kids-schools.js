@@ -22,7 +22,7 @@
   var MIN_WEEKS = 1, MAX_WEEKS = 52, DEFAULT_WEEKS = 12;
   var GROUP_FEE = 50, MIN_GROUPS = 2, MAX_PER_GROUP = 10;
   var U = 10000;                                  // 1 franc = 10'000 units
-  var EMAIL = "info@queensgambitzurich.ch";
+  var EMAIL = "kids@queensgambitzurich.ch";       // QGZ Kids contact (this page only)
 
   /* ---------- Pricing (pure functions, also used by the tests) ---------- */
   function groups(n) { return Math.max(MIN_GROUPS, Math.ceil(n / MAX_PER_GROUP)); }
@@ -148,8 +148,7 @@
       var kind = a.getAttribute("data-ksp-mail");
       var body = [M("mailHello"), "", M("mailSchool"), M("mailPerson"), M("mailPhone"), "",
                   M("mailEstimate", { n: r.children, w: r.weeks, total: chf(r.total) }), location.href, ""].join("\n");
-      var cfg = root.QGZ_CONFIG && root.QGZ_CONFIG.contact;
-      a.href = "mailto:" + ((cfg && cfg.email) || EMAIL) + "?subject=" + encodeURIComponent(M("mailSubject." + kind)) +
+      a.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(M("mailSubject." + kind)) +
                "&body=" + encodeURIComponent(body);
     });
   }
@@ -194,6 +193,26 @@
     input.addEventListener("blur", function () {
       if (String(input.value).trim() === "") { input.value = input === weeksIn ? DEFAULT_WEEKS : slider.value; render(); }
     });
+  });
+
+  /* Copy the QGZ Kids address (the site-wide copy button uses the general address) */
+  var copyBtn = document.querySelector("[data-ksp-copy]"), emailEl = document.querySelector("[data-ksp-email]");
+  var toastEl = document.querySelector("[data-toast]"), toastTimer;
+  function toast(text) {
+    if (!toastEl) return;
+    toastEl.textContent = text; toastEl.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { toastEl.hidden = true; }, 3200);
+  }
+  function selectEmail() {
+    if (!emailEl) return;
+    var range = document.createRange(); range.selectNodeContents(emailEl);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    toast(M("emailSelected"));
+  }
+  if (emailEl) emailEl.textContent = EMAIL;
+  if (copyBtn) copyBtn.addEventListener("click", function () {
+    try { navigator.clipboard.writeText(EMAIL).then(function () { toast(M("emailCopied")); }, selectEmail); }
+    catch (e) { selectEmail(); }
   });
 
   render();

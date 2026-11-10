@@ -21,7 +21,8 @@
     "Website",
     "Email",
     "Kids Chess · Workshop",
-    "Combi Face, Oberdorfstrasse 37, 8702 Zollikon"
+    "Combi Face, Oberdorfstrasse 37, 8702 Zollikon",
+    "kids@queensgambitzurich.ch"
   ],
   "strings": {
     "Queen's Gambit Zürich | Women's Chess Club &amp; Community in Zürich": "Queen's Gambit Zürich | Schachclub &amp; Community für Frauen in Zürich",
@@ -342,7 +343,6 @@
     "10 to 100 children": "10 bis 100 Kinder",
     "Billing": "Abrechnung",
     "Per teaching week held": "Pro durchgeführte Unterrichtswoche",
-    "The calculator needs JavaScript. For an estimate, please email info@queensgambitzurich.ch.": "Der Rechner benötigt JavaScript. Für eine Kostenschätzung schreiben Sie bitte an info@queensgambitzurich.ch.",
     "Number of children": "Anzahl Kinder",
     "10 to 100 children taking part at your school": "10 bis 100 teilnehmende Kinder an Ihrer Schule",
     "One child fewer": "Ein Kind weniger",
@@ -390,6 +390,9 @@
     "School:": "Schule:",
     "Contact person:": "Kontaktperson:",
     "Phone:": "Telefon:",
-    "Our estimate: {n} children, {w} teaching weeks, {total}": "Unsere Schätzung: {n} Kinder, {w} Unterrichtswochen, {total}"
+    "Our estimate: {n} children, {w} teaching weeks, {total}": "Unsere Schätzung: {n} Kinder, {w} Unterrichtswochen, {total}",
+    "The calculator needs JavaScript. For an estimate, please email kids@queensgambitzurich.ch.": "Der Rechner benötigt JavaScript. Für eine Kostenschätzung schreiben Sie bitte an kids@queensgambitzurich.ch.",
+    "Email address copied.": "E-Mail-Adresse kopiert.",
+    "Email address selected. Copy it with your keyboard or menu.": "E-Mail-Adresse markiert. Kopieren Sie sie mit der Tastatur oder über das Menü."
   }
 }
