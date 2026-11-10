@@ -10,6 +10,7 @@ then run the build. It needs Python 3 and Node.js (for the event data). It write
     impressum/, datenschutz/   legal pages (DE)   en/impressum/, en/privacy/ (EN)
     winz/, en/winz/            registration pages
     kids/zollikon/, en/kids/zollikon/   Kids Chess workshop registration
+    kids/schulen/, en/kids/schools/     Kids Chess school pricing calculator
     sitemap.xml                all pages with hreflang alternates
     and, in en/index.html and the pages above, the upcoming events for search
     engines and visitors without JavaScript (between the @events markers).
@@ -598,6 +599,50 @@ def kids_pages(home_html, lang):
 
 
 # --------------------------------------------------------------------------
+# 3c. QGZ Kids School Pricing Calculator: /kids/schulen/ (DE) and
+#     /en/kids/schools/ (EN). Page content: tools/kids_schools.html (English,
+#     translated with i18n/de.json, formal "Sie" via kids_strings).
+#     Calculation in the browser: js/kids-schools.js (no external service).
+#     Test: node tools/test_school_pricing.js
+# --------------------------------------------------------------------------
+SCHOOL_PAGES = {
+    "schools": {
+        "en": {"slug": "en/kids/schools", "title": "Kids Chess for schools: pricing calculator",
+               "description": "Estimate the cost of Kids Chess lessons at your school: groups by playing level, price per teaching week and total programme cost."},
+        "de": {"slug": "kids/schulen", "title": "Kids Chess für Schulen: Preisrechner",
+               "description": "Schätzen Sie die Kosten für Kids Chess Schachlektionen an Ihrer Schule: Gruppen nach Spielstärke, Preis pro Unterrichtswoche und Gesamtkosten."},
+    },
+}
+
+
+def school_pages(home_html, lang):
+    styles, scripts, header, footer = shell(home_html, lang, ("kids-registration", "kids-schools"))
+    v = re.search(r"\?v=([0-9-]+)", home_html).group(1)
+    scripts += f'\n<script src="/js/kids-schools.js?v={v}"></script>'
+    src = (ROOT / "tools" / "kids_schools.html").read_text()
+    src = re.sub(r"^<!--.*?-->\n", "", src, count=1, flags=re.S)       # source note
+    if lang == "de":
+        data = json.loads((ROOT / "i18n" / "de.json").read_text())
+        src, missing = translate_html(src, {**data["strings"], **data.get("kids_strings", {})}, set(data["_keep"]))
+        if missing:
+            sys.exit("Missing German translations in i18n/de.json (tools/kids_schools.html):\n  - " + "\n  - ".join(missing))
+    template = KIDS_PAGE.replace("(Kids Chess registration page) from tools/kids_registration.html",
+                                 "(School pricing calculator) from tools/kids_schools.html")
+    for cfg in SCHOOL_PAGES.values():
+        meta = cfg[lang]
+        en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
+        hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
+        page = template.format(
+            lang=lang, site=SITE, slug=meta["slug"], en_slug=en_slug, de_slug=de_slug,
+            title=meta["title"], description=meta["description"],
+            og_locale="de_CH" if lang == "de" else "en_GB", event_ld="",
+            header=hdr, footer=footer, styles=styles, scripts=scripts, content=src.rstrip())
+        out = ROOT / meta["slug"] / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page)
+
+
+# --------------------------------------------------------------------------
 # 4. Sitemap
 # --------------------------------------------------------------------------
 def sitemap(lastmod):
@@ -605,7 +650,8 @@ def sitemap(lastmod):
              ("en/impressum/", "impressum/", "yearly", "0.3"),
              ("en/privacy/", "datenschutz/", "yearly", "0.3"),
              ("en/winz/", "winz/", "weekly", "0.8")] + \
-            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "weekly", "0.8") for c in KIDS_PAGES.values()]
+            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "weekly", "0.8") for c in KIDS_PAGES.values()] + \
+            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "monthly", "0.6") for c in SCHOOL_PAGES.values()]
     rows = []
     for en, de, freq, prio in pairs:
         for loc in (de, en):
@@ -670,6 +716,8 @@ if __name__ == "__main__":
     registration_pages(de_html, "de")
     kids_pages(en_html, "en")
     kids_pages(de_html, "de")
+    school_pages(en_html, "en")
+    school_pages(de_html, "de")
     redirect_pages()
     sitemap(TODAY)
-    print("Built: index.html (DE), impressum/, datenschutz/, winz/, en/impressum/, en/privacy/, en/winz/, redirects, sitemap.xml")
+    print("Built: index.html (DE), impressum/, datenschutz/, winz/, en/impressum/, en/privacy/, en/winz/, kids/schulen/, en/kids/schools/, redirects, sitemap.xml")

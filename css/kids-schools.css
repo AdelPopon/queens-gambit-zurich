@@ -1,0 +1,122 @@
+/* ==========================================================================
+   Queen's Gambit Zürich · QGZ Kids School Pricing Calculator
+   Loaded only on /kids/schulen/ and /en/kids/schools/, after
+   css/kids-registration.css (shared Kids page header, facts, panel and
+   section titles). Site palette (Blue, Indigo & Ice) with the Kids Chess
+   yellow as a subtle highlight, as on the Kids registration page.
+   ========================================================================== */
+
+/* Four facts: two columns on phones, four in a row on wide screens */
+.ksp-facts > div:nth-child(2) { grid-column: auto; }
+@media (min-width: 720px) {
+  .ksp-facts { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---------- Calculator ---------- */
+.ksp-calc { display: grid; gap: 1.5rem; }
+.ksp-inputs { display: grid; gap: 1.5rem; }
+@media (min-width: 640px) {
+  .ksp-inputs { grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
+}
+.ksp-field { gap: .45rem; }
+.ksp-field label { font-size: 1rem; font-weight: 700; }
+.ksp-field__hint { margin: -.2rem 0 .15rem; color: var(--muted); font-size: var(--fs-small); }
+
+.ksp-stepper { display: grid; grid-template-columns: 48px 1fr 48px; gap: .5rem; max-width: 15rem; }
+.ksp-stepper__btn {
+  display: grid; place-items: center; min-height: 48px; padding: 0;
+  font: 600 1.4rem/1 var(--font-body); color: var(--g-blue); cursor: pointer;
+  background: var(--g-white); border: 1px solid rgba(57, 73, 171, .25); border-radius: var(--g-radius-sm);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.ksp-stepper__btn:hover { border-color: var(--g-blue); background: var(--g-ice); }
+.ksp-stepper__btn:focus-visible { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; }
+.reg-field .ksp-stepper input[type=number] {
+  min-height: 48px; text-align: center; font-size: 1.25rem; font-weight: 700;
+  font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield;
+}
+.ksp-stepper input::-webkit-outer-spin-button,
+.ksp-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.reg-field .ksp-stepper input[aria-invalid="true"] { border-color: #B3261E; box-shadow: 0 0 0 3px rgba(179, 38, 30, .12); }
+
+/* Slider: track filled up to the current value (--fill set by the script) */
+.ksp-slider {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 32px; margin: .35rem 0 0;
+  background: transparent; cursor: pointer; --fill: 11%;
+}
+.ksp-slider::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 99px;
+  background: linear-gradient(90deg, var(--g-blue) var(--fill), rgba(57, 73, 171, .16) var(--fill));
+}
+.ksp-slider::-moz-range-track { height: 8px; border-radius: 99px; background: rgba(57, 73, 171, .16); }
+.ksp-slider::-moz-range-progress { height: 8px; border-radius: 99px; background: var(--g-blue); }
+.ksp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 26px; height: 26px; margin-top: -9px; border-radius: 50%;
+  background: var(--g-white); border: 3px solid var(--g-blue); box-shadow: 0 2px 8px rgba(30, 64, 175, .25);
+}
+.ksp-slider::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--g-white); border: 3px solid var(--g-blue); box-shadow: 0 2px 8px rgba(30, 64, 175, .25);
+}
+.ksp-slider:focus-visible { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 4px; border-radius: 99px; }
+.ksp-slider__scale { display: flex; justify-content: space-between; color: var(--muted); font-size: var(--fs-label); font-weight: 600; }
+
+.ksp-notice {
+  margin: 0; padding: .8rem 1rem; border-radius: 14px; font-size: var(--fs-small);
+  background: var(--g-lavender); border-left: 4px solid var(--g-indigo); color: var(--g-ink);
+}
+
+/* ---------- Result ---------- */
+.ksp-result { display: grid; gap: 1.1rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); transition: opacity .15s ease; }
+.ksp-result.is-stale { opacity: .35; }
+.ksp-result__head {
+  display: grid; gap: .3rem; padding: 1.1rem 1.25rem; border-radius: 18px;
+  background: var(--kids-yellow-soft); border: 1px solid var(--kids-yellow);
+}
+.ksp-result__label { margin: 0; font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--g-indigo); }
+.ksp-result__total {
+  margin: 0; font-family: var(--font-heading); font-weight: 900; font-synthesis: none;
+  font-size: clamp(1.55rem, 7vw, 3rem); line-height: 1; letter-spacing: -0.03em; white-space: nowrap;
+  color: var(--g-ink); font-variant-numeric: tabular-nums;
+}
+.ksp-result__summary { margin: 0; color: var(--muted); font-size: var(--fs-small); font-weight: 600; }
+
+.ksp-breakdown { display: grid; margin: 0; }
+.ksp-breakdown > div {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: .7rem .15rem; border-bottom: 1px solid var(--rule);
+}
+.ksp-breakdown > div:last-child { border-bottom: 0; }
+.ksp-breakdown dt { color: var(--muted); }
+.ksp-breakdown dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ksp-breakdown__hint { display: block; font-size: var(--fs-label); font-weight: 500; color: var(--muted); }
+.ksp-breakdown__sum dt, .ksp-breakdown__sum dd { color: var(--g-ink); font-weight: 700; }
+.ksp-result__note { margin: 0; font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+/* ---------- Information below the calculator ---------- */
+.ksp-info, .ksp-contact { display: grid; gap: .9rem; }
+.ksp-info > p, .ksp-contact > p { margin: 0; max-width: 42rem; }
+.ksp-points { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 720px) { .ksp-points { grid-template-columns: repeat(3, 1fr); } }
+.ksp-points li, .ksp-included li {
+  padding: 1rem 1.1rem;
+  background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+  border-radius: var(--g-radius-sm); box-shadow: var(--glass-shadow);
+}
+.ksp-points h3 { margin: 0 0 .4rem; font-size: 1rem; font-family: var(--font-body); font-weight: 700; letter-spacing: 0; text-transform: none; line-height: 1.3; }
+.ksp-points p { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+
+.ksp-included { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .ksp-included { grid-template-columns: 1fr 1fr; } }
+.ksp-included li { position: relative; padding-left: 2.9rem; font-weight: 600; font-size: .95rem; }
+.ksp-included li::before {            /* tick in a Kids Chess yellow disc */
+  content: ""; position: absolute; left: 1rem; top: 1.05rem; width: 1.3rem; height: 1.3rem; border-radius: 50%;
+  background: var(--kids-yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%230070B4' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
+}
+
+.ksp-contact__row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; }
+.ksp-contact__email { margin: 0; font-weight: 700; font-size: 1.1rem; overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ksp-stepper__btn, .ksp-result { transition: none; }
+}
