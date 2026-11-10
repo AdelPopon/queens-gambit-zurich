@@ -633,6 +633,9 @@ def school_pages(home_html, lang):
                                  ).replace('<meta name="robots" content="index, follow">',
                                            '<meta name="robots" content="noindex, nofollow">')
     assert "noindex, nofollow" in template
+    # Link preview (WhatsApp, social media): QGZ Kids image on these pages only
+    template = template.replace("/assets/brand/qgz-social-1200x630.jpg", "/assets/brand/qgz-kids-social-1200x630.jpg")
+    assert "qgz-kids-social-1200x630.jpg" in template
     for cfg in SCHOOL_PAGES.values():
         meta = cfg[lang]
         en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
