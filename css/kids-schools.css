@@ -6,11 +6,9 @@
    yellow as a subtle highlight, as on the Kids registration page.
    ========================================================================== */
 
-/* Four facts: two columns on phones, four in a row on wide screens */
-.ksp-facts > div:nth-child(2) { grid-column: auto; }
-@media (min-width: 720px) {
-  .ksp-facts { grid-template-columns: repeat(4, 1fr); }
-}
+/* Compact page: tighter vertical rhythm than the registration page */
+.ksp .kreg__inner { gap: clamp(1.25rem, 3vw, 1.75rem); }
+.ksp .kreg__head { gap: .7rem; }
 
 /* ---------- Calculator ---------- */
 .ksp-calc { display: grid; gap: 1.5rem; }
@@ -97,49 +95,67 @@
   background: var(--g-ice); border-left: 4px solid var(--g-blue);
   font-size: var(--fs-small); font-weight: 600; line-height: 1.5; color: var(--g-ink);
 }
-.ksp-result__notes { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
-.ksp-result__notes li { font-size: .8rem; color: var(--muted); line-height: 1.5; }
-
-/* ---------- Information below the calculator ---------- */
-.ksp-info { display: grid; gap: .9rem; }
-.ksp-info > p { margin: 0; max-width: 42rem; }
-.ksp-points { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
-@media (min-width: 720px) { .ksp-points { grid-template-columns: repeat(3, 1fr); } }
-.ksp-points li, .ksp-included li {
-  padding: 1rem 1.1rem;
-  background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
-  border-radius: var(--g-radius-sm); box-shadow: var(--glass-shadow);
-}
-.ksp-points h3 { margin: 0 0 .4rem; font-size: 1rem; font-family: var(--font-body); font-weight: 700; letter-spacing: 0; text-transform: none; line-height: 1.3; }
-.ksp-points p { margin: 0; font-size: var(--fs-small); color: var(--muted); }
-
-.ksp-included { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
-@media (min-width: 640px) { .ksp-included { grid-template-columns: 1fr 1fr; } }
-.ksp-included li { position: relative; padding-left: 2.9rem; font-weight: 600; font-size: .95rem; }
-.ksp-included li::before {            /* tick in a Kids Chess yellow disc */
-  content: ""; position: absolute; left: 1rem; top: 1.05rem; width: 1.3rem; height: 1.3rem; border-radius: 50%;
-  background: var(--kids-yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%230070B4' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
+/* Key figures under the total */
+.ksp-keyfigures { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 0; }
+.ksp-keyfigures > div { display: grid; gap: .2rem; padding: .8rem 1rem; border: 1px solid var(--rule); border-radius: var(--g-radius-sm); background: var(--g-white); }
+.ksp-keyfigures dt { font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--muted); }
+.ksp-keyfigures dd { margin: 0; font-size: clamp(1.05rem, 1.2vw + .8rem, 1.3rem); font-weight: 700; color: var(--g-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ksp-result__groups { margin: -.35rem 0 0; font-size: var(--fs-small); color: var(--muted); }
+.ksp-provisional {
+  margin: 0; padding: .55rem .8rem; border-radius: 10px; font-size: var(--fs-small); font-weight: 600;
+  background: var(--kids-yellow-soft); border: 1px dashed var(--kids-yellow-strong); color: var(--g-ink);
 }
 
-/* ---------- Tailored solution (contact) ---------- */
+/* Expandable price breakdown and information (native <details>) */
+.ksp-details, .ksp-acc { border-top: 1px solid var(--rule); }
+.ksp-details > summary, .ksp-acc > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: 48px; padding: .6rem .15rem; cursor: pointer; list-style: none;
+  font-weight: 700; color: var(--g-blue);
+}
+.ksp-details > summary::-webkit-details-marker, .ksp-acc > summary::-webkit-details-marker { display: none; }
+.ksp-details > summary::after, .ksp-acc > summary::after {
+  content: ""; flex: none; width: .55rem; height: .55rem; margin-right: .3rem;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: translateY(-25%) rotate(45deg); transition: transform .15s ease;
+}
+.ksp-details[open] > summary::after, .ksp-acc[open] > summary::after { transform: translateY(25%) rotate(-135deg); }
+.ksp-details > summary:hover, .ksp-acc > summary:hover { color: var(--g-indigo); }
+.ksp-details > summary:focus-visible, .ksp-acc > summary:focus-visible { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; border-radius: 6px; }
+.ksp-details .ksp-breakdown { padding-bottom: .4rem; }
+.ksp-details > summary { font-size: .95rem; }
+
+/* ---------- Contact: directly under the calculator, light coral accent so it
+   stands out from the blue palette without shouting ---------- */
 .ksp-contact {
-  display: grid; gap: 1.25rem; padding: clamp(1.25rem, 4vw, 2rem);
-  background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
-  border-radius: 24px; box-shadow: 0 24px 60px rgba(30, 64, 175, .10), inset 0 1px 0 #fff;
+  --ksp-accent: #E8775A;          /* soft coral, used only here */
+  display: grid; gap: .9rem; padding: 1.1rem 1.25rem;
+  background: #FFF6F2; border: 1px solid #F7D6CB; border-left: 5px solid var(--ksp-accent);
+  border-radius: var(--g-radius-sm);
 }
-.ksp-contact__text { display: grid; gap: .6rem; }
-.ksp-contact__text p { margin: 0; max-width: 40rem; color: var(--muted); }
-.ksp-contact__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.ksp-contact__title {
+  margin: 0; font-family: var(--font-body); font-weight: 700; font-size: 1.05rem;
+  letter-spacing: 0; line-height: 1.35; text-transform: none; color: var(--g-ink);
+}
+.ksp-contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.ksp-contact__email { font-weight: 600; overflow-wrap: anywhere; }
+.ksp-copy {
+  padding: .35rem .7rem; font: 600 var(--fs-small)/1.2 var(--font-body); color: var(--g-blue); cursor: pointer;
+  background: transparent; border: 1px solid rgba(57, 73, 171, .25); border-radius: 99px;
+}
+.ksp-copy:hover { border-color: var(--g-blue); background: var(--g-white); }
+.ksp-copy:focus-visible { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; }
 @media (max-width: 479px) {
-  .ksp-contact__actions { flex-direction: column; }
-  .ksp-contact__actions .btn { justify-content: center; }
+  .ksp-contact__actions .btn { flex: 1 1 100%; justify-content: center; }
 }
-.ksp-contact__row {
-  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem;
-  padding-top: 1rem; border-top: 1px solid var(--rule);
-}
-.ksp-contact__email { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+/* ---------- Additional information ---------- */
+.ksp-more { display: grid; }
+.ksp-more__title { margin: 0 0 .4rem; font-size: clamp(1.15rem, 1vw + 1rem, 1.4rem); }
+.ksp-acc:last-child { border-bottom: 1px solid var(--rule); }
+.ksp-acc__body { padding: 0 .15rem 1rem; }
+.ksp-acc__body ul { display: grid; gap: .4rem; margin: 0; padding-left: 1.15rem; font-size: .95rem; color: var(--g-ink); max-width: 46rem; }
 
 @media (prefers-reduced-motion: reduce) {
-  .ksp-stepper__btn, .ksp-result { transition: none; }
+  .ksp-stepper__btn, .ksp-result, .ksp-details > summary::after, .ksp-acc > summary::after { transition: none; }
 }

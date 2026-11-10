@@ -27,7 +27,7 @@ for (const [n, g, pc, gf, wk] of table) {
   eq(`${n} groups`, r.groups, g);
   eq(`${n} exact price per child`, r.exact.pricePerChild, pc);
   eq(`${n} group fee`, r.groupFees, c(gf));
-  eq(`${n} exact price per week`, r.exact.weekly, wk);
+  eq(`${n} exact price per week`, r.exact.perLesson, wk);
 }
 
 // 2. PDF section 4: 50 children, 10–13 teaching weeks
@@ -49,7 +49,7 @@ const shown = [
 for (const [n, pc, wk, tot, per] of shown) {
   const r = P.calculate(n, 12);
   eq(`${n} shown price per child`, r.pricePerChild, c(pc));
-  eq(`${n} shown per week`, r.weekly, c(wk));
+  eq(`${n} shown per week`, r.perLesson, c(wk));
   eq(`${n}×12 payable`, r.total, c(tot));
   eq(`${n}×12 per child`, r.totalPerChild, c(per));
 }
@@ -77,10 +77,10 @@ for (const [n, w, exact, payable] of rounding) {
 //    weekly price rises with every child, payable is a multiple of 5 Rappen
 //    within 2.5 Rappen of the exact total, and per child = payable ÷ children.
 let prev = 0;
-for (let n = 10; n <= 100; n++) {
+for (let n = 5; n <= 100; n++) {
   const r1 = P.calculate(n, 1);
   checks++;
-  if (r1.groups < 2 || n / r1.groups < 5 || n / r1.groups > 10) { fails++; console.log(`FAIL ${n}: ${r1.groups} groups`); }
+  if (r1.groups < (n < 10 ? 1 : 2) || n / r1.groups < 5 || n / r1.groups > 10) { fails++; console.log(`FAIL ${n}: ${r1.groups} groups`); }
   checks++;
   if (r1.exact.weekly <= prev) { fails++; console.log(`FAIL ${n}: weekly price does not rise`); }
   prev = r1.exact.weekly;
@@ -94,7 +94,18 @@ for (let n = 10; n <= 100; n++) {
   }
 }
 
-// 6. Display format
+// 6. Provisional pricing for 5–9 children: CHF 15 per child + CHF 50 for one group
+for (let n = 5; n <= 9; n++) {
+  const r = P.calculate(n, 12);
+  eq(`${n} provisional flag`, r.provisional, true);
+  eq(`${n} one group`, r.groups, 1);
+  eq(`${n} price per lesson`, r.exact.perLesson, 15 * n + 50);
+  eq(`${n}×12 payable`, r.total, c((15 * n + 50) * 12));
+}
+eq("10 not provisional", P.calculate(10, 1).provisional, false);
+eq("5×1 per child", P.calculate(5, 1).totalPerChild, c(25));
+
+// 7. Display format
 eq("chf 1020", P.chf(102000), "CHF 1’020.00");
 eq("chf 14.38", P.chf(1438), "CHF 14.38");
 eq("chf 0.05", P.chf(5), "CHF 0.05");
