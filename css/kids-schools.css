@@ -155,6 +155,8 @@
 .ksp-acc:last-child { border-bottom: 1px solid var(--rule); }
 .ksp-acc__body { padding: 0 .15rem 1rem; }
 .ksp-acc__body ul { display: grid; gap: .4rem; margin: 0; padding-left: 1.15rem; font-size: .95rem; color: var(--g-ink); max-width: 46rem; }
+.ksp-acc__list strong { font-weight: 700; }
+.ksp-acc__note { margin: .6rem 0 0; font-size: var(--fs-small); color: var(--muted); max-width: 46rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .ksp-stepper__btn, .ksp-result, .ksp-details > summary::after, .ksp-acc > summary::after { transition: none; }
