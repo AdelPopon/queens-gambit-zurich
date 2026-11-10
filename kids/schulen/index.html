@@ -112,7 +112,7 @@
       </header>
 
       <div class="kreg__panel ksp-panel">
-        <noscript><p class="reg-form__alert">Der Rechner benötigt JavaScript. Für eine Kostenschätzung schreiben Sie bitte an info@queensgambitzurich.ch.</p></noscript>
+        <noscript><p class="reg-form__alert">Der Rechner benötigt JavaScript. Für eine Kostenschätzung schreiben Sie bitte an kids@queensgambitzurich.ch.</p></noscript>
 
         <div class="ksp-calc" data-ksp hidden>
           <form class="ksp-inputs" data-ksp-form novalidate>
@@ -178,6 +178,8 @@
             <span data-msg="mailPerson">Kontaktperson:</span>
             <span data-msg="mailPhone">Telefon:</span>
             <span data-msg="mailEstimate">Unsere Schätzung: {n} Kinder, {w} Unterrichtswochen, {total}</span>
+            <span data-msg="emailCopied">E-Mail-Adresse kopiert.</span>
+            <span data-msg="emailSelected">E-Mail-Adresse markiert. Kopieren Sie sie mit der Tastatur oder über das Menü.</span>
             <span data-msg="weeks">Bitte geben Sie eine ganze Zahl von Unterrichtswochen zwischen 1 und 52 ein.</span>
           </template>
         </div>
@@ -222,12 +224,12 @@
           <p>Jede Schule hat unterschiedliche Bedürfnisse. Falls unser Standardprogramm Ihre Anforderungen nicht vollständig abdeckt, kontaktieren Sie uns für eine individuelle Offerte.</p>
         </div>
         <div class="ksp-contact__actions">
-          <a class="btn btn--primary" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="meeting">Gespräch vereinbaren</a>
-          <a class="btn btn--ghost" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="offer">Individuelle Offerte anfragen</a>
+          <a class="btn btn--primary" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail="meeting">Gespräch vereinbaren</a>
+          <a class="btn btn--ghost" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail="offer">Individuelle Offerte anfragen</a>
         </div>
         <div class="ksp-contact__row">
-          <p class="ksp-contact__email" data-contact-email>info@queensgambitzurich.ch</p>
-          <button class="btn btn--ghost btn--sm" type="button" data-copy-email>E-Mail-Adresse kopieren</button>
+          <p class="ksp-contact__email" data-ksp-email>kids@queensgambitzurich.ch</p>
+          <button class="btn btn--ghost btn--sm" type="button" data-ksp-copy>E-Mail-Adresse kopieren</button>
         </div>
       </section>
     </div>
