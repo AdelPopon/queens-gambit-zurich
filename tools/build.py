@@ -637,6 +637,13 @@ def school_pages(home_html, lang):
         meta = cfg[lang]
         en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
         hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
+        # Kids Chess page: the header shows the Kids Chess logo (crown + thin
+        # wordmark) instead of the QGZ logo, as in the home page Kids section.
+        hdr = hdr.replace('<header class="site-header" id="top">', '<header class="site-header is-kids" id="top">', 1)
+        hdr = hdr.replace('<img class="brand__logo" src="/assets/brand/qgz-logo.png" alt=""',
+                          '<img class="brand__logo" src="/assets/brand/qgz-logo.png" alt="" hidden', 1)
+        hdr = hdr.replace('<span class="brand__kids" aria-hidden="true" hidden>', '<span class="brand__kids" aria-hidden="true">', 1)
+        assert 'brand__logo" src="/assets/brand/qgz-logo.png" alt="" hidden' in hdr and '<span class="brand__kids" aria-hidden="true">' in hdr
         page = template.format(
             lang=lang, site=SITE, slug=meta["slug"], en_slug=en_slug, de_slug=de_slug,
             title=meta["title"], description=meta["description"],
