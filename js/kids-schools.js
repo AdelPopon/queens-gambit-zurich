@@ -8,12 +8,12 @@
      Price per child P(N), 50–100 children: 12.50 − 0.05 × (N − 50)
      Group fee G(N) = 50 × max(2, roundup(N / 10))
      Price per teaching week T(N) = N × P(N) + G(N)
-     Total = T(N) × number of teaching weeks
+     Total = T(N) × number of teaching weeks, payable amount rounded to CHF 0.05
    N = children enrolled (10–100; above 100: individual quote).
 
    All amounts are calculated in ten-thousandths of a franc (integers), so
    the four-decimal prices per child stay exact. Amounts are rounded to the
-   centime only when they are shown. Nothing is sent or stored anywhere.
+   centime (payable total: CHF 0.05) only when they are shown. Nothing is sent or stored anywhere.
    ========================================================================== */
 (function (root) {
   "use strict";
@@ -22,6 +22,7 @@
   var MIN_WEEKS = 1, MAX_WEEKS = 52, DEFAULT_WEEKS = 12;
   var GROUP_FEE = 50, MIN_GROUPS = 2, MAX_PER_GROUP = 10;
   var U = 10000;                                  // 1 franc = 10'000 units
+  var EMAIL = "info@queensgambitzurich.ch";
 
   /* ---------- Pricing (pure functions, also used by the tests) ---------- */
   function groups(n) { return Math.max(MIN_GROUPS, Math.ceil(n / MAX_PER_GROUP)); }
@@ -30,32 +31,36 @@
     return n <= 50 ? 150000 - 625 * (n - 10) : 125000 - 500 * (n - 50);
   }
 
+  /* Rounding works on whole units, half up, so there is no floating-point drift.
+     The payable programme total is rounded to CHF 0.05 (5 Rappen); the other
+     amounts are shown to the centime. */
+  function toCentimes(units) { return Math.floor((units + 50) / 100); }
+  function toFiveRappen(units) { return Math.floor((units + 250) / 500) * 5; }   // in centimes
+
   function calculate(n, weeks) {
     var g = groups(n);
     var child = pricePerChildUnits(n);
     var groupFees = GROUP_FEE * g * U;
-    var weekly = n * child + groupFees;           // T(N)
-    var total = weekly * weeks;
+    var weekly = n * child + groupFees;           // T(N), exact
+    var total = weekly * weeks;                   // exact
+    var payable = toFiveRappen(total);            // final payable amount, centimes
     return {
       children: n, weeks: weeks, groups: g,
-      pricePerChild: child / U,                   // exact, up to 4 decimals
-      groupFees: groupFees / U,
-      weekly: weekly / U,
-      total: total / U,
-      totalPerChild: total / n / U
+      exact: { pricePerChild: child / U, weekly: weekly / U, total: total / U },
+      // Display amounts in centimes
+      pricePerChild: toCentimes(child),
+      groupFees: groupFees / 100,
+      weekly: toCentimes(weekly),
+      total: payable,
+      totalPerChild: Math.floor((payable * 2 + n) / (2 * n))   // payable ÷ children, to the centime (half up)
     };
   }
 
-  /* Swiss number format: CHF 1’020.00. "max" decimals for the price per child
-     (up to four, as in the pricing model), otherwise rounded to the centime. */
-  function chf(value, maxDecimals) {
-    var max = maxDecimals || 2;
-    var units = Math.round(value * Math.pow(10, max));
-    var s = (units / Math.pow(10, max)).toFixed(max);
-    if (max > 2) s = s.replace(/(\.\d\d\d*?)0+$/, "$1");     // keep at least two decimals
-    var parts = s.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "’");
-    return "CHF\u00A0" + parts.join(".");   // no line break after CHF
+  /* Swiss number format from centimes: CHF 1’020.00 */
+  function chf(centimes) {
+    var francs = String(Math.floor(centimes / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u2019");
+    var rest = String(centimes % 100);
+    return "CHF\u00A0" + francs + "." + (rest.length < 2 ? "0" + rest : rest);   // no line break after CHF
   }
 
   var API = { calculate: calculate, groups: groups, chf: chf,
@@ -126,14 +131,27 @@
     out("total").textContent = chf(r.total);
     out("summary").textContent = M(r.weeks === 1 ? "summary1" : "summaryN", { n: r.children, w: r.weeks, perChild: chf(r.totalPerChild) });
     out("groups").textContent = String(r.groups);
-    out("groupsHint").textContent = M("groupsHint", { n: r.groups, fee: chf(GROUP_FEE) });
-    out("pricePerChild").textContent = chf(r.pricePerChild, 4);
+    out("groupsHint").textContent = M("groupsHint", { n: r.groups, fee: chf(GROUP_FEE * 100) });
+    out("pricePerChild").textContent = chf(r.pricePerChild);
     out("groupFees").textContent = chf(r.groupFees);
     out("weekly").textContent = chf(r.weekly);
     out("totalLabel").textContent = M(r.weeks === 1 ? "totalLabel1" : "totalLabelN", { w: r.weeks });
     out("totalRow").textContent = chf(r.total);
     out("totalPerChild").textContent = chf(r.totalPerChild);
     remember(n, w);
+    contactLinks(r);
+  }
+
+  /* Contact buttons open an email with the current estimate filled in */
+  function contactLinks(r) {
+    [].forEach.call(document.querySelectorAll("[data-ksp-mail]"), function (a) {
+      var kind = a.getAttribute("data-ksp-mail");
+      var body = [M("mailHello"), "", M("mailSchool"), M("mailPerson"), M("mailPhone"), "",
+                  M("mailEstimate", { n: r.children, w: r.weeks, total: chf(r.total) }), location.href, ""].join("\n");
+      var cfg = root.QGZ_CONFIG && root.QGZ_CONFIG.contact;
+      a.href = "mailto:" + ((cfg && cfg.email) || EMAIL) + "?subject=" + encodeURIComponent(M("mailSubject." + kind)) +
+               "&body=" + encodeURIComponent(body);
+    });
   }
 
   /* The estimate travels with the address (?children=…&weeks=…), so the

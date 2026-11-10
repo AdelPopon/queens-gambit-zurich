@@ -61,7 +61,11 @@
               <div class="ksp-breakdown__sum"><dt data-ksp-out="totalLabel"></dt><dd data-ksp-out="totalRow"></dd></div>
               <div><dt>Programme cost per child</dt><dd data-ksp-out="totalPerChild"></dd></div>
             </dl>
-            <p class="ksp-result__note">This is a non-binding estimate, not an offer. All prices exclude any applicable VAT. The number of groups is based on total enrolment; the final group structure depends on the children's playing levels and will be confirmed with your school.</p>
+            <p class="ksp-disclaimer">This calculator provides an indicative cost estimate. Final pricing will be confirmed by QGZ Kids based on your school’s specific requirements.</p>
+            <ul class="ksp-result__notes" role="list">
+              <li>The number of groups is the standard calculation based on enrolment. The actual number may change depending on how the children are distributed across skill levels; the final group structure and price will be confirmed with your school.</li>
+              <li>The programme total is calculated from the exact prices and rounded to CHF 0.05. All prices exclude any applicable VAT.</li>
+            </ul>
           </div>
 
           <template data-ksp-messages>
@@ -73,6 +77,13 @@
             <span data-msg="childrenMin">The minimum enrolment is 10 children (two groups of at least five).</span>
             <span data-msg="childrenMax">For more than 100 children, we prepare an individual quote.</span>
             <span data-msg="contactLink">Contact us</span>
+            <span data-msg="mailSubject.meeting">Kids Chess for schools: meeting request</span>
+            <span data-msg="mailSubject.offer">Kids Chess for schools: custom offer request</span>
+            <span data-msg="mailHello">Hello QGZ Kids team,</span>
+            <span data-msg="mailSchool">School:</span>
+            <span data-msg="mailPerson">Contact person:</span>
+            <span data-msg="mailPhone">Phone:</span>
+            <span data-msg="mailEstimate">Our estimate: {n} children, {w} teaching weeks, {total}</span>
             <span data-msg="weeks">Please enter a whole number of teaching weeks between 1 and 52.</span>
           </template>
         </div>
@@ -91,7 +102,7 @@
           </li>
           <li>
             <h3>Groups by playing level</h3>
-            <p>There are always at least two groups (beginners and advanced), each with 5 to 10 children. When another group is needed, for example from 20 to 21 children, the cost rises a little more because an additional teacher is required.</p>
+            <p>Children learn in groups of 5 to 10 at their skill level (beginners or intermediate), in at least two groups. Two skill levels do not always mean two groups: 15 beginners and 5 intermediate children form three groups. Each additional group needs another teacher, so the cost then rises a little more.</p>
           </li>
         </ul>
       </section>
@@ -112,11 +123,17 @@
       </section>
 
       <section class="ksp-contact" id="contact" aria-labelledby="ksp-contact-title">
-        <h2 class="kreg-inc__title" id="ksp-contact-title">Request an offer</h2>
-        <p>We are happy to discuss your school's needs and prepare an offer.</p>
+        <div class="ksp-contact__text">
+          <h2 class="kreg-inc__title" id="ksp-contact-title">Looking for a tailored solution?</h2>
+          <p>Every school has different needs. If our standard programme does not fully match your requirements, contact us for a personalised offer.</p>
+        </div>
+        <div class="ksp-contact__actions">
+          <a class="btn btn--primary" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="meeting">Request a Meeting</a>
+          <a class="btn btn--ghost" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="offer">Request a Custom Offer</a>
+        </div>
         <div class="ksp-contact__row">
           <p class="ksp-contact__email" data-contact-email>info@queensgambitzurich.ch</p>
-          <button class="btn btn--ghost" type="button" data-copy-email>Copy email address</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-copy-email>Copy email address</button>
         </div>
       </section>
     </div>

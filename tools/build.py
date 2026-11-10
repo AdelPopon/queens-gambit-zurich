@@ -604,6 +604,8 @@ def kids_pages(home_html, lang):
 #     translated with i18n/de.json, formal "Sie" via kids_strings).
 #     Calculation in the browser: js/kids-schools.js (no external service).
 #     Test: node tools/test_school_pricing.js
+#     Shared by direct link only: noindex, nofollow, not in sitemap.xml and
+#     not linked from any other page.
 # --------------------------------------------------------------------------
 SCHOOL_PAGES = {
     "schools": {
@@ -627,7 +629,10 @@ def school_pages(home_html, lang):
         if missing:
             sys.exit("Missing German translations in i18n/de.json (tools/kids_schools.html):\n  - " + "\n  - ".join(missing))
     template = KIDS_PAGE.replace("(Kids Chess registration page) from tools/kids_registration.html",
-                                 "(School pricing calculator) from tools/kids_schools.html")
+                                 "(School pricing calculator) from tools/kids_schools.html"
+                                 ).replace('<meta name="robots" content="index, follow">',
+                                           '<meta name="robots" content="noindex, nofollow">')
+    assert "noindex, nofollow" in template
     for cfg in SCHOOL_PAGES.values():
         meta = cfg[lang]
         en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
@@ -650,8 +655,7 @@ def sitemap(lastmod):
              ("en/impressum/", "impressum/", "yearly", "0.3"),
              ("en/privacy/", "datenschutz/", "yearly", "0.3"),
              ("en/winz/", "winz/", "weekly", "0.8")] + \
-            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "weekly", "0.8") for c in KIDS_PAGES.values()] + \
-            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "monthly", "0.6") for c in SCHOOL_PAGES.values()]
+            [(c["en"]["slug"] + "/", c["de"]["slug"] + "/", "weekly", "0.8") for c in KIDS_PAGES.values()]
     rows = []
     for en, de, freq, prio in pairs:
         for loc in (de, en):

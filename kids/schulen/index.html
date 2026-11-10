@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kids Chess für Schulen: Preisrechner | Queen's Gambit Zürich</title>
 <meta name="description" content="Schätzen Sie die Kosten für Kids Chess Schachlektionen an Ihrer Schule: Gruppen nach Spielstärke, Preis pro Unterrichtswoche und Gesamtkosten.">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://queensgambitzurich.ch/kids/schulen/">
 <link rel="alternate" hreflang="en" href="https://queensgambitzurich.ch/en/kids/schools/">
 <link rel="alternate" hreflang="de" href="https://queensgambitzurich.ch/kids/schulen/">
@@ -155,7 +155,11 @@
               <div class="ksp-breakdown__sum"><dt data-ksp-out="totalLabel"></dt><dd data-ksp-out="totalRow"></dd></div>
               <div><dt>Programmkosten pro Kind</dt><dd data-ksp-out="totalPerChild"></dd></div>
             </dl>
-            <p class="ksp-result__note">Dies ist eine unverbindliche Schätzung, keine Offerte. Alle Preise verstehen sich exkl. allfälliger MWST. Die Anzahl Gruppen richtet sich nach der Gesamtzahl der Kinder; die definitive Gruppeneinteilung hängt von der Spielstärke der Kinder ab und wird mit Ihrer Schule abgestimmt.</p>
+            <p class="ksp-disclaimer">Dieser Rechner bietet eine unverbindliche Kostenschätzung. Der endgültige Preis wird von QGZ Kids auf Grundlage der individuellen Anforderungen Ihrer Schule bestätigt.</p>
+            <ul class="ksp-result__notes" role="list">
+              <li>Die Anzahl Gruppen ist die Standardberechnung nach Anzahl Kinder. Die tatsächliche Anzahl kann sich je nach Verteilung der Kinder auf die Spielstärken ändern; die definitive Gruppeneinteilung und der Preis werden mit Ihrer Schule abgestimmt.</li>
+              <li>Die Programmkosten werden aus den exakten Preisen berechnet und auf CHF 0.05 gerundet. Alle Preise verstehen sich exkl. allfälliger MWST.</li>
+            </ul>
           </div>
 
           <template data-ksp-messages>
@@ -167,6 +171,13 @@
             <span data-msg="childrenMin">Die Mindestteilnahme beträgt 10 Kinder (zwei Gruppen mit mindestens fünf Kindern).</span>
             <span data-msg="childrenMax">Für mehr als 100 Kinder erstellen wir Ihnen eine individuelle Offerte.</span>
             <span data-msg="contactLink">Kontakt aufnehmen</span>
+            <span data-msg="mailSubject.meeting">Kids Chess für Schulen: Anfrage für ein Gespräch</span>
+            <span data-msg="mailSubject.offer">Kids Chess für Schulen: Anfrage für eine individuelle Offerte</span>
+            <span data-msg="mailHello">Guten Tag QGZ Kids Team</span>
+            <span data-msg="mailSchool">Schule:</span>
+            <span data-msg="mailPerson">Kontaktperson:</span>
+            <span data-msg="mailPhone">Telefon:</span>
+            <span data-msg="mailEstimate">Unsere Schätzung: {n} Kinder, {w} Unterrichtswochen, {total}</span>
             <span data-msg="weeks">Bitte geben Sie eine ganze Zahl von Unterrichtswochen zwischen 1 und 52 ein.</span>
           </template>
         </div>
@@ -185,7 +196,7 @@
           </li>
           <li>
             <h3>Gruppen nach Spielstärke</h3>
-            <p>Es gibt immer mindestens zwei Gruppen (Anfänger und Fortgeschrittene) mit je 5 bis 10 Kindern. Wird eine weitere Gruppe nötig, zum Beispiel von 20 auf 21 Kinder, steigen die Kosten etwas stärker, weil eine zusätzliche Lehrperson benötigt wird.</p>
+            <p>Die Kinder lernen in Gruppen von 5 bis 10 Kindern auf ihrer Spielstärke (Anfänger oder Fortgeschrittene), in mindestens zwei Gruppen. Zwei Spielstärken bedeuten nicht immer zwei Gruppen: 15 Anfänger und 5 Fortgeschrittene bilden drei Gruppen. Jede weitere Gruppe braucht eine zusätzliche Lehrperson, deshalb steigen die Kosten dann etwas stärker.</p>
           </li>
         </ul>
       </section>
@@ -206,11 +217,17 @@
       </section>
 
       <section class="ksp-contact" id="contact" aria-labelledby="ksp-contact-title">
-        <h2 class="kreg-inc__title" id="ksp-contact-title">Offerte anfragen</h2>
-        <p>Gerne besprechen wir die Bedürfnisse Ihrer Schule und erstellen Ihnen eine Offerte.</p>
+        <div class="ksp-contact__text">
+          <h2 class="kreg-inc__title" id="ksp-contact-title">Sie wünschen eine individuelle Lösung?</h2>
+          <p>Jede Schule hat unterschiedliche Bedürfnisse. Falls unser Standardprogramm Ihre Anforderungen nicht vollständig abdeckt, kontaktieren Sie uns für eine individuelle Offerte.</p>
+        </div>
+        <div class="ksp-contact__actions">
+          <a class="btn btn--primary" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="meeting">Gespräch vereinbaren</a>
+          <a class="btn btn--ghost" href="mailto:info@queensgambitzurich.ch" data-ksp-mail="offer">Individuelle Offerte anfragen</a>
+        </div>
         <div class="ksp-contact__row">
           <p class="ksp-contact__email" data-contact-email>info@queensgambitzurich.ch</p>
-          <button class="btn btn--ghost" type="button" data-copy-email>E-Mail-Adresse kopieren</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-copy-email>E-Mail-Adresse kopieren</button>
         </div>
       </section>
     </div>

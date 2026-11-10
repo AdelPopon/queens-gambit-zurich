@@ -91,11 +91,18 @@
 .ksp-breakdown dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ksp-breakdown__hint { display: block; font-size: var(--fs-label); font-weight: 500; color: var(--muted); }
 .ksp-breakdown__sum dt, .ksp-breakdown__sum dd { color: var(--g-ink); font-weight: 700; }
-.ksp-result__note { margin: 0; font-size: .8rem; color: var(--muted); line-height: 1.5; }
+/* Non-binding estimate: visible, but quieter than the result */
+.ksp-disclaimer {
+  margin: 0; padding: .75rem 1rem; border-radius: var(--g-radius-sm);
+  background: var(--g-ice); border-left: 4px solid var(--g-blue);
+  font-size: var(--fs-small); font-weight: 600; line-height: 1.5; color: var(--g-ink);
+}
+.ksp-result__notes { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+.ksp-result__notes li { font-size: .8rem; color: var(--muted); line-height: 1.5; }
 
 /* ---------- Information below the calculator ---------- */
-.ksp-info, .ksp-contact { display: grid; gap: .9rem; }
-.ksp-info > p, .ksp-contact > p { margin: 0; max-width: 42rem; }
+.ksp-info { display: grid; gap: .9rem; }
+.ksp-info > p { margin: 0; max-width: 42rem; }
 .ksp-points { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
 @media (min-width: 720px) { .ksp-points { grid-template-columns: repeat(3, 1fr); } }
 .ksp-points li, .ksp-included li {
@@ -114,8 +121,24 @@
   background: var(--kids-yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%230070B4' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
 }
 
-.ksp-contact__row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; }
-.ksp-contact__email { margin: 0; font-weight: 700; font-size: 1.1rem; overflow-wrap: anywhere; }
+/* ---------- Tailored solution (contact) ---------- */
+.ksp-contact {
+  display: grid; gap: 1.25rem; padding: clamp(1.25rem, 4vw, 2rem);
+  background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+  border-radius: 24px; box-shadow: 0 24px 60px rgba(30, 64, 175, .10), inset 0 1px 0 #fff;
+}
+.ksp-contact__text { display: grid; gap: .6rem; }
+.ksp-contact__text p { margin: 0; max-width: 40rem; color: var(--muted); }
+.ksp-contact__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+@media (max-width: 479px) {
+  .ksp-contact__actions { flex-direction: column; }
+  .ksp-contact__actions .btn { justify-content: center; }
+}
+.ksp-contact__row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem;
+  padding-top: 1rem; border-top: 1px solid var(--rule);
+}
+.ksp-contact__email { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: reduce) {
   .ksp-stepper__btn, .ksp-result { transition: none; }
