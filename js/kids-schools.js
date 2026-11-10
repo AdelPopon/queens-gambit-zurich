@@ -7,9 +7,12 @@
      Price per child P(N), 10–50 children:  15.00 − 0.0625 × (N − 10)
      Price per child P(N), 50–100 children: 12.50 − 0.05 × (N − 50)
      Group fee G(N) = 50 × max(2, roundup(N / 10))
-     Price per teaching week T(N) = N × P(N) + G(N)
-     Total = T(N) × number of teaching weeks, payable amount rounded to CHF 0.05
-   N = children enrolled (10–100; above 100: individual quote).
+     Price per lesson T(N) = N × P(N) + G(N)   (one lesson per child per week,
+       so this is the model's price per teaching week)
+     Total = T(N) × number of lessons, payable amount rounded to CHF 0.05
+   PROVISIONAL, awaiting approval (not in the model): 5–9 children, one group:
+     P(N) = 15.00, G(N) = 50.
+   N = children enrolled (5–100; above 100: individual quote).
 
    All amounts are calculated in ten-thousandths of a franc (integers), so
    the four-decimal prices per child stay exact. Amounts are rounded to the
@@ -18,16 +21,18 @@
 (function (root) {
   "use strict";
 
-  var MIN_CHILDREN = 10, MAX_CHILDREN = 100;
-  var MIN_WEEKS = 1, MAX_WEEKS = 52, DEFAULT_WEEKS = 12;
+  var MIN_CHILDREN = 5, MODEL_MIN = 10, MAX_CHILDREN = 100;
+  var MIN_LESSONS = 1, MAX_LESSONS = 52, DEFAULT_LESSONS = 12;
   var GROUP_FEE = 50, MIN_GROUPS = 2, MAX_PER_GROUP = 10;
   var U = 10000;                                  // 1 franc = 10'000 units
   var EMAIL = "kids@queensgambitzurich.ch";       // QGZ Kids contact (this page only)
 
   /* ---------- Pricing (pure functions, also used by the tests) ---------- */
-  function groups(n) { return Math.max(MIN_GROUPS, Math.ceil(n / MAX_PER_GROUP)); }
+  function provisional(n) { return n < MODEL_MIN; }
+  function groups(n) { return provisional(n) ? 1 : Math.max(MIN_GROUPS, Math.ceil(n / MAX_PER_GROUP)); }
 
   function pricePerChildUnits(n) {                // P(N) × 10'000
+    if (provisional(n)) return 150000;            // provisional: CHF 15 for 5–9 children
     return n <= 50 ? 150000 - 625 * (n - 10) : 125000 - 500 * (n - 50);
   }
 
@@ -37,20 +42,20 @@
   function toCentimes(units) { return Math.floor((units + 50) / 100); }
   function toFiveRappen(units) { return Math.floor((units + 250) / 500) * 5; }   // in centimes
 
-  function calculate(n, weeks) {
+  function calculate(n, lessons) {
     var g = groups(n);
     var child = pricePerChildUnits(n);
     var groupFees = GROUP_FEE * g * U;
-    var weekly = n * child + groupFees;           // T(N), exact
-    var total = weekly * weeks;                   // exact
+    var perLesson = n * child + groupFees;        // T(N), exact
+    var total = perLesson * lessons;              // exact
     var payable = toFiveRappen(total);            // final payable amount, centimes
     return {
-      children: n, weeks: weeks, groups: g,
-      exact: { pricePerChild: child / U, weekly: weekly / U, total: total / U },
+      children: n, lessons: lessons, groups: g, provisional: provisional(n),
+      exact: { pricePerChild: child / U, perLesson: perLesson / U, total: total / U },
       // Display amounts in centimes
       pricePerChild: toCentimes(child),
       groupFees: groupFees / 100,
-      weekly: toCentimes(weekly),
+      perLesson: toCentimes(perLesson),
       total: payable,
       totalPerChild: Math.floor((payable * 2 + n) / (2 * n))   // payable ÷ children, to the centime (half up)
     };
@@ -65,7 +70,7 @@
 
   var API = { calculate: calculate, groups: groups, chf: chf,
               MIN_CHILDREN: MIN_CHILDREN, MAX_CHILDREN: MAX_CHILDREN,
-              MIN_WEEKS: MIN_WEEKS, MAX_WEEKS: MAX_WEEKS, DEFAULT_WEEKS: DEFAULT_WEEKS };
+              MIN_LESSONS: MIN_LESSONS, MAX_LESSONS: MAX_LESSONS, DEFAULT_LESSONS: DEFAULT_LESSONS };
   if (typeof module !== "undefined" && module.exports) { module.exports = API; return; }
   root.QGZ_SCHOOL_PRICING = API;
 
@@ -83,8 +88,8 @@
   }
 
   var q = function (sel) { return box.querySelector(sel); };
-  var childrenIn = q("[data-ksp-children]"), slider = q("[data-ksp-slider]"), weeksIn = q("[data-ksp-weeks]");
-  var result = q("[data-ksp-result]"), notice = q("[data-ksp-notice]");
+  var childrenIn = q("[data-ksp-children]"), slider = q("[data-ksp-slider]"), lessonsIn = q("[data-ksp-lessons]");
+  var result = q("[data-ksp-result]"), notice = q("[data-ksp-notice]"), provNote = q("[data-ksp-provisional]");
   var out = function (name) { return q('[data-ksp-out="' + name + '"]'); };
 
   box.hidden = false;
@@ -101,17 +106,17 @@
   }
 
   function render() {
-    var n = readInt(childrenIn), w = readInt(weeksIn);
-    var nOk = n >= MIN_CHILDREN && n <= MAX_CHILDREN, wOk = w >= MIN_WEEKS && w <= MAX_WEEKS;
+    var n = readInt(childrenIn), w = readInt(lessonsIn);
+    var nOk = n >= MIN_CHILDREN && n <= MAX_CHILDREN, wOk = w >= MIN_LESSONS && w <= MAX_LESSONS;
     setInvalid(childrenIn, !nOk);
-    setInvalid(weeksIn, !wOk);
+    setInvalid(lessonsIn, !wOk);
     if (nOk) slider.value = n;
     slider.style.setProperty("--fill", ((nOk ? n : Number(slider.value)) - MIN_CHILDREN) / (MAX_CHILDREN - MIN_CHILDREN) * 100 + "%");
 
     var problem = "";
     if (isNaN(n) || n < MIN_CHILDREN) problem = M("childrenMin");
     else if (n > MAX_CHILDREN) problem = M("childrenMax");
-    else if (!wOk) problem = M("weeks");
+    else if (!wOk) problem = M("lessons");
     notice.innerHTML = "";
     if (problem) {
       notice.textContent = problem;
@@ -128,35 +133,38 @@
     if (problem) return;
 
     var r = calculate(n, w);
+    var one = r.lessons === 1;
     out("total").textContent = chf(r.total);
-    out("summary").textContent = M(r.weeks === 1 ? "summary1" : "summaryN", { n: r.children, w: r.weeks, perChild: chf(r.totalPerChild) });
+    out("totalLabel").textContent = M(one ? "totalLabel1" : "totalLabelN", { n: r.children, w: r.lessons });
+    out("totalPerChild").textContent = chf(r.totalPerChild);
+    out("perLesson").textContent = chf(r.perLesson);
+    out("groupsLine").textContent = M(r.groups === 1 ? "groups1" : "groupsN", { n: r.groups });
+    provNote.hidden = !r.provisional;
     out("groups").textContent = String(r.groups);
     out("groupsHint").textContent = M("groupsHint", { n: r.groups, fee: chf(GROUP_FEE * 100) });
     out("pricePerChild").textContent = chf(r.pricePerChild);
     out("groupFees").textContent = chf(r.groupFees);
-    out("weekly").textContent = chf(r.weekly);
-    out("totalLabel").textContent = M(r.weeks === 1 ? "totalLabel1" : "totalLabelN", { w: r.weeks });
+    out("perLessonRow").textContent = chf(r.perLesson);
+    out("totalRowLabel").textContent = M(one ? "totalRowLabel1" : "totalRowLabelN", { w: r.lessons });
     out("totalRow").textContent = chf(r.total);
-    out("totalPerChild").textContent = chf(r.totalPerChild);
     remember(n, w);
     contactLinks(r);
   }
 
-  /* Contact buttons open an email with the current estimate filled in */
+  /* The offer button opens an email with the current estimate filled in */
   function contactLinks(r) {
     [].forEach.call(document.querySelectorAll("[data-ksp-mail]"), function (a) {
-      var kind = a.getAttribute("data-ksp-mail");
       var body = [M("mailHello"), "", M("mailSchool"), M("mailPerson"), M("mailPhone"), "",
-                  M("mailEstimate", { n: r.children, w: r.weeks, total: chf(r.total) }), location.href, ""].join("\n");
-      a.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(M("mailSubject." + kind)) +
+                  M("mailEstimate", { n: r.children, w: r.lessons, total: chf(r.total) }), location.href, ""].join("\n");
+      a.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(M("mailSubject")) +
                "&body=" + encodeURIComponent(body);
     });
   }
 
-  /* The estimate travels with the address (?children=…&weeks=…), so the
+  /* The estimate travels with the address (?children=…&lessons=…), so the
      language switch and a shared link open the same figures. */
   function remember(n, w) {
-    var qs = "?children=" + n + "&weeks=" + w;
+    var qs = "?children=" + n + "&lessons=" + w;
     try { history.replaceState(null, "", location.pathname + qs + location.hash); } catch (e) {}
     document.querySelectorAll("[data-lang-link]").forEach(function (a) {
       var href = a.getAttribute("href").split("#");
@@ -171,27 +179,27 @@
     render();
   }
 
-  // Start values: address, otherwise 20 children (any valid start value works) and 12 weeks
+  // Start values: address, otherwise 20 children and 12 lessons ("weeks" = links shared before 10 Nov 2026)
   var params = new URLSearchParams(location.search);
-  var pn = parseInt(params.get("children"), 10), pw = parseInt(params.get("weeks"), 10);
+  var pn = parseInt(params.get("children"), 10), pw = parseInt(params.get("lessons") || params.get("weeks"), 10);
   if (pn >= MIN_CHILDREN && pn <= MAX_CHILDREN) childrenIn.value = pn;
-  if (pw >= MIN_WEEKS && pw <= MAX_WEEKS) weeksIn.value = pw;
+  if (pw >= MIN_LESSONS && pw <= MAX_LESSONS) lessonsIn.value = pw;
 
   childrenIn.addEventListener("input", render);
-  weeksIn.addEventListener("input", render);
+  lessonsIn.addEventListener("input", render);
   slider.addEventListener("input", function () { childrenIn.value = slider.value; render(); });
   [].forEach.call(box.querySelectorAll("[data-ksp-step]"), function (btn) {
     btn.addEventListener("click", function () {
       var which = btn.getAttribute("data-ksp-step").split(":");
       var delta = which[1] === "+" ? 1 : -1;
       if (which[0] === "children") step(childrenIn, delta, MIN_CHILDREN, MAX_CHILDREN);
-      else step(weeksIn, delta, MIN_WEEKS, MAX_WEEKS);
+      else step(lessonsIn, delta, MIN_LESSONS, MAX_LESSONS);
     });
   });
   // Tidy invalid entries when leaving a field (e.g. an empty field back to the last valid value)
-  [childrenIn, weeksIn].forEach(function (input) {
+  [childrenIn, lessonsIn].forEach(function (input) {
     input.addEventListener("blur", function () {
-      if (String(input.value).trim() === "") { input.value = input === weeksIn ? DEFAULT_WEEKS : slider.value; render(); }
+      if (String(input.value).trim() === "") { input.value = input === lessonsIn ? DEFAULT_LESSONS : slider.value; render(); }
     });
   });
 

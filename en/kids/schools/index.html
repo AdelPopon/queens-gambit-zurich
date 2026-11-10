@@ -102,13 +102,7 @@
       <header class="kreg__head">
         <p class="eyebrow">Kids Chess · For schools</p>
         <h1 class="kreg__title" id="ksp-title">School pricing calculator</h1>
-        <p class="kreg__lead">Estimate the cost of chess lessons at your school. Enter the number of children and teaching weeks: the estimate updates immediately.</p>
-        <dl class="kreg__facts ksp-facts">
-          <div><dt>Lessons</dt><dd>One lesson per child per week</dd></div>
-          <div><dt>Groups</dt><dd>5 to 10 children, by playing level</dd></div>
-          <div><dt>Enrolment</dt><dd>10 to 100 children</dd></div>
-          <div><dt>Billing</dt><dd>Per teaching week held</dd></div>
-        </dl>
+        <p class="kreg__lead">Calculate the estimated cost of chess lessons for your school.</p>
       </header>
 
       <div class="kreg__panel ksp-panel">
@@ -118,23 +112,23 @@
           <form class="ksp-inputs" data-ksp-form novalidate>
             <div class="reg-field ksp-field">
               <label for="ksp-children">Number of children</label>
-              <p class="ksp-field__hint" id="ksp-children-hint">10 to 100 children taking part at your school</p>
+              <p class="ksp-field__hint" id="ksp-children-hint">5 to 100 children</p>
               <div class="ksp-stepper">
                 <button class="ksp-stepper__btn" type="button" data-ksp-step="children:-" aria-label="One child fewer">−</button>
-                <input id="ksp-children" type="number" inputmode="numeric" min="10" max="100" step="1" value="20" aria-describedby="ksp-children-hint" data-ksp-children>
+                <input id="ksp-children" type="number" inputmode="numeric" min="5" max="100" step="1" value="20" aria-describedby="ksp-children-hint" data-ksp-children>
                 <button class="ksp-stepper__btn" type="button" data-ksp-step="children:+" aria-label="One child more">+</button>
               </div>
-              <input class="ksp-slider" type="range" min="10" max="100" step="1" value="20" aria-label="Number of children" data-ksp-slider>
-              <div class="ksp-slider__scale" aria-hidden="true"><span>10</span><span>100</span></div>
+              <input class="ksp-slider" type="range" min="5" max="100" step="1" value="20" aria-label="Number of children" data-ksp-slider>
+              <div class="ksp-slider__scale" aria-hidden="true"><span>5</span><span>100</span></div>
             </div>
 
             <div class="reg-field ksp-field">
-              <label for="ksp-weeks">Teaching weeks</label>
-              <p class="ksp-field__hint" id="ksp-weeks-hint">Weeks in which lessons take place</p>
+              <label for="ksp-lessons">Number of lessons</label>
+              <p class="ksp-field__hint" id="ksp-lessons-hint">One lesson per child per week</p>
               <div class="ksp-stepper">
-                <button class="ksp-stepper__btn" type="button" data-ksp-step="weeks:-" aria-label="One week fewer">−</button>
-                <input id="ksp-weeks" type="number" inputmode="numeric" min="1" max="52" step="1" value="12" aria-describedby="ksp-weeks-hint" data-ksp-weeks>
-                <button class="ksp-stepper__btn" type="button" data-ksp-step="weeks:+" aria-label="One week more">+</button>
+                <button class="ksp-stepper__btn" type="button" data-ksp-step="lessons:-" aria-label="One lesson fewer">−</button>
+                <input id="ksp-lessons" type="number" inputmode="numeric" min="1" max="52" step="1" value="12" aria-describedby="ksp-lessons-hint" data-ksp-lessons>
+                <button class="ksp-stepper__btn" type="button" data-ksp-step="lessons:+" aria-label="One lesson more">+</button>
               </div>
             </div>
           </form>
@@ -143,94 +137,104 @@
 
           <div class="ksp-result" data-ksp-result aria-live="polite">
             <div class="ksp-result__head">
-              <p class="ksp-result__label">Estimated programme cost</p>
+              <p class="ksp-result__label">Your estimate</p>
               <p class="ksp-result__total" data-ksp-out="total"></p>
-              <p class="ksp-result__summary" data-ksp-out="summary"></p>
+              <p class="ksp-result__summary" data-ksp-out="totalLabel"></p>
             </div>
-            <dl class="ksp-breakdown">
-              <div><dt>Groups</dt><dd><span data-ksp-out="groups"></span><span class="ksp-breakdown__hint" data-ksp-out="groupsHint"></span></dd></div>
-              <div><dt>Price per child per week</dt><dd data-ksp-out="pricePerChild"></dd></div>
-              <div><dt>Group fees per week</dt><dd data-ksp-out="groupFees"></dd></div>
-              <div class="ksp-breakdown__sum"><dt>Total per week</dt><dd data-ksp-out="weekly"></dd></div>
-              <div class="ksp-breakdown__sum"><dt data-ksp-out="totalLabel"></dt><dd data-ksp-out="totalRow"></dd></div>
-              <div><dt>Programme cost per child</dt><dd data-ksp-out="totalPerChild"></dd></div>
+            <dl class="ksp-keyfigures">
+              <div><dt>Cost per child</dt><dd data-ksp-out="totalPerChild"></dd></div>
+              <div><dt>Price per lesson</dt><dd data-ksp-out="perLesson"></dd></div>
             </dl>
+            <p class="ksp-result__groups" data-ksp-out="groupsLine"></p>
+            <p class="ksp-provisional" data-ksp-provisional hidden>Provisional price for 5 to 9 children, subject to final approval.</p>
+
+            <details class="ksp-details">
+              <summary>View price breakdown</summary>
+              <dl class="ksp-breakdown">
+                <div><dt>Groups</dt><dd data-ksp-out="groups"></dd></div>
+                <div><dt>Price per child per lesson</dt><dd data-ksp-out="pricePerChild"></dd></div>
+                <div><dt>Group fees per lesson</dt><dd><span data-ksp-out="groupFees"></span><span class="ksp-breakdown__hint" data-ksp-out="groupsHint"></span></dd></div>
+                <div class="ksp-breakdown__sum"><dt>Price per lesson</dt><dd data-ksp-out="perLessonRow"></dd></div>
+                <div class="ksp-breakdown__sum"><dt data-ksp-out="totalRowLabel"></dt><dd data-ksp-out="totalRow"></dd></div>
+              </dl>
+            </details>
+
             <p class="ksp-disclaimer">This calculator provides an indicative cost estimate. Final pricing will be confirmed by QGZ Kids based on your school’s specific requirements.</p>
-            <ul class="ksp-result__notes" role="list">
-              <li>The number of groups is the standard calculation based on enrolment. The actual number may change depending on how the children are distributed across skill levels; the final group structure and price will be confirmed with your school.</li>
-              <li>The programme total is calculated from the exact prices and rounded to CHF 0.05. All prices exclude any applicable VAT.</li>
-            </ul>
           </div>
 
           <template data-ksp-messages>
-            <span data-msg="summary1">{n} children · 1 teaching week · {perChild} per child</span>
-            <span data-msg="summaryN">{n} children · {w} teaching weeks · {perChild} per child</span>
-            <span data-msg="groupsHint">{n} × {fee} per week</span>
-            <span data-msg="totalLabel1">Programme cost (1 week)</span>
-            <span data-msg="totalLabelN">Programme cost ({w} weeks)</span>
-            <span data-msg="childrenMin">The minimum enrolment is 10 children (two groups of at least five).</span>
+            <span data-msg="totalLabel1">{n} children · 1 lesson</span>
+            <span data-msg="totalLabelN">{n} children · {w} lessons</span>
+            <span data-msg="totalRowLabel1">Programme cost (1 lesson)</span>
+            <span data-msg="totalRowLabelN">Programme cost ({w} lessons)</span>
+            <span data-msg="groups1">1 group (standard calculation by number of children)</span>
+            <span data-msg="groupsN">{n} groups (standard calculation by number of children)</span>
+            <span data-msg="groupsHint">{n} × {fee}</span>
+            <span data-msg="childrenMin">The minimum enrolment is 5 children (one group).</span>
             <span data-msg="childrenMax">For more than 100 children, we prepare an individual quote.</span>
-            <span data-msg="contactLink">Contact us</span>
-            <span data-msg="mailSubject.meeting">Kids Chess for schools: meeting request</span>
-            <span data-msg="mailSubject.offer">Kids Chess for schools: custom offer request</span>
+            <span data-msg="contactLink">Request an offer</span>
+            <span data-msg="lessons">Please enter a whole number of lessons between 1 and 52.</span>
+            <span data-msg="mailSubject">Kids Chess for schools: offer request</span>
             <span data-msg="mailHello">Hello QGZ Kids team,</span>
             <span data-msg="mailSchool">School:</span>
             <span data-msg="mailPerson">Contact person:</span>
             <span data-msg="mailPhone">Phone:</span>
-            <span data-msg="mailEstimate">Our estimate: {n} children, {w} teaching weeks, {total}</span>
+            <span data-msg="mailEstimate">Our estimate: {n} children, {w} lessons, {total}</span>
             <span data-msg="emailCopied">Email address copied.</span>
             <span data-msg="emailSelected">Email address selected. Copy it with your keyboard or menu.</span>
-            <span data-msg="weeks">Please enter a whole number of teaching weeks between 1 and 52.</span>
           </template>
         </div>
       </div>
 
-      <section class="ksp-info" id="pricing" aria-labelledby="ksp-how-title">
-        <h2 class="kreg-inc__title" id="ksp-how-title">How pricing works</h2>
-        <ul class="ksp-points" role="list">
-          <li>
-            <h3>Charged per teaching week</h3>
-            <p>Each child has one chess lesson per week. The total is the weekly price multiplied by the number of teaching weeks that actually take place.</p>
-          </li>
-          <li>
-            <h3>Group fee and price per child</h3>
-            <p>The weekly price consists of CHF 50 per group for the teacher's time and a price per child that becomes lower the more children take part. All children at a school pay the same price.</p>
-          </li>
-          <li>
-            <h3>Groups by playing level</h3>
-            <p>Children learn in groups of 5 to 10 at their skill level (beginners or intermediate), in at least two groups. Two skill levels do not always mean two groups: 15 beginners and 5 intermediate children form three groups. Each additional group needs another teacher, so the cost then rises a little more.</p>
-          </li>
-        </ul>
-      </section>
-
-      <section class="kreg-inc" id="included" aria-labelledby="ksp-inc-title">
-        <h2 class="kreg-inc__title" id="ksp-inc-title">What's included</h2>
-        <ul class="ksp-included" role="list">
-          <li>Chess lessons by QGZ chess teachers</li>
-          <li>Organisation of groups by playing level</li>
-          <li>A free introductory session with a short quiz to assess each child's level</li>
-          <li>One free school-wide chess tournament per trimester, open to all students</li>
-        </ul>
-      </section>
-
-      <section class="ksp-info" id="invoice" aria-labelledby="ksp-invoice-title">
-        <h2 class="kreg-inc__title" id="ksp-invoice-title">Your final invoice</h2>
-        <p>The invoice is based on the confirmed number of enrolled children and the teaching weeks actually held. Lessons cancelled by the school (for example holidays or school events) are not charged; lessons cancelled by us are rescheduled or credited. The lesson dates are agreed with your school before the start.</p>
-      </section>
-
       <section class="ksp-contact" id="contact" aria-labelledby="ksp-contact-title">
-        <div class="ksp-contact__text">
-          <h2 class="kreg-inc__title" id="ksp-contact-title">Looking for a tailored solution?</h2>
-          <p>Every school has different needs. If our standard programme does not fully match your requirements, contact us for a personalised offer.</p>
-        </div>
+        <h2 class="ksp-contact__title" id="ksp-contact-title">Need something different? Request a personalised offer.</h2>
         <div class="ksp-contact__actions">
-          <a class="btn btn--primary" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail="meeting">Request a Meeting</a>
-          <a class="btn btn--ghost" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail="offer">Request a Custom Offer</a>
+          <a class="btn btn--primary" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail>Request an Offer</a>
+          <span class="ksp-contact__email" data-ksp-email>kids@queensgambitzurich.ch</span>
+          <button class="ksp-copy" type="button" data-ksp-copy>Copy email address</button>
         </div>
-        <div class="ksp-contact__row">
-          <p class="ksp-contact__email" data-ksp-email>kids@queensgambitzurich.ch</p>
-          <button class="btn btn--ghost btn--sm" type="button" data-ksp-copy>Copy email address</button>
-        </div>
+      </section>
+
+      <section class="ksp-more" aria-labelledby="ksp-more-title">
+        <h2 class="ksp-more__title" id="ksp-more-title">Additional information</h2>
+
+        <details class="ksp-acc">
+          <summary>How pricing works</summary>
+          <div class="ksp-acc__body">
+            <ul>
+              <li>The price per lesson consists of CHF 50 per group for the teacher and a price per child.</li>
+              <li>The price per child becomes lower the more children take part. All children at a school pay the same price.</li>
+              <li>Children learn in groups of 5 to 10 at their skill level: beginners or intermediate. One skill level can have several groups, for example 15 beginners and 5 intermediate children form three groups.</li>
+              <li>The calculator shows the standard number of groups by number of children. Depending on the skill levels, an additional group may be needed; the final group structure is confirmed with your school.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="ksp-acc">
+          <summary>What's included</summary>
+          <div class="ksp-acc__body">
+            <ul>
+              <li>Chess lessons by QGZ chess teachers</li>
+              <li>Organisation of groups by skill level</li>
+              <li>A free introductory session to assess each child's level</li>
+              <li>One free school chess tournament per trimester</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="ksp-acc">
+          <summary>Terms &#38; Conditions</summary>
+          <div class="ksp-acc__body">
+            <ul>
+              <li>The result is a non-binding estimate based on our standard pricing model, not an offer. The final price is confirmed by QGZ Kids in a written offer.</li>
+              <li>The invoice is based on the confirmed number of children and the lessons actually held.</li>
+              <li>Lessons cancelled by the school (for example holidays or school events) are not charged. Lessons cancelled by us are rescheduled or credited. Lesson dates are agreed with your school before the start.</li>
+              <li>All prices exclude any applicable VAT.</li>
+              <li>The programme cost is calculated from the exact prices and rounded to CHF 0.05.</li>
+              <li>Prices for 5 to 9 children are provisional and subject to final approval.</li>
+            </ul>
+          </div>
+        </details>
       </section>
     </div>
   </section>
