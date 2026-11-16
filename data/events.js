@@ -112,7 +112,9 @@
           item: { en: "Awards Ceremony", de: "Preisverleihung" } },
         { time: { en: "17:45 onwards", de: "Ab 17:45" }, duration: { en: "Open-ended", de: "Offenes Ende" },
           item: { en: "Stay, Play & Connect", de: "Bleiben, spielen & vernetzen" } }
-      ]
+      ],
+      scheduleNote: { en: "A small apéro is offered from 13:00 to 14:00, during the welcome and panel discussion.",
+                      de: "Von 13:00 bis 14:00 offerieren wir während der Begrüssung und der Podiumsdiskussion einen kleinen Apéro." }
     }
   };
   function weekday(iso) { var p = iso.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]).getDay(); }
@@ -136,6 +138,7 @@
       summary: f.summary || null,
       admission: f.admission || null,
       schedule: f.schedule || null,
+      scheduleNote: f.scheduleNote || null,
       registration: !!f.registration,
       registrationPage: f.registrationPage || null,
       free: true

@@ -60,6 +60,7 @@
 .programme tr:last-child td { border-bottom: 0; }
 .programme__time { white-space: nowrap; font-weight: 600; color: var(--g-ink); }
 .programme__duration { white-space: nowrap; color: var(--muted); }
+.programme__note { margin: .75rem .2rem 0; font-size: var(--fs-small); color: var(--g-ink); }
 
 /* Phones: each programme row stacks (time + duration, then the item) */
 @media (max-width: 599px) {

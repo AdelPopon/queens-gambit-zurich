@@ -240,6 +240,7 @@
       });
       table.appendChild(tbody);
       inner.appendChild(table);
+      if (ev.scheduleNote) inner.appendChild(el("p", "programme__note", L(ev.scheduleNote)));
       panel.appendChild(inner);
       panel.setAttribute("aria-hidden", "true");
       panel.inert = true;
