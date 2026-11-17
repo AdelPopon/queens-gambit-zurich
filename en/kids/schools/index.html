@@ -101,17 +101,17 @@
     <div class="container kreg__inner">
       <header class="kreg__head">
         <p class="eyebrow">Kids Chess · For schools</p>
-        <h1 class="kreg__title" id="ksp-title">School pricing calculator</h1>
+        <h1 class="kreg__title" id="ksp-title">Chess lessons for your school</h1>
         <p class="kreg__lead">Calculate the estimated cost of chess lessons for your school.</p>
       </header>
 
-      <div class="kreg__panel ksp-panel">
+      <div class="ksp-panel">
         <noscript><p class="reg-form__alert">The calculator needs JavaScript. For an estimate, please email kids@queensgambitzurich.ch.</p></noscript>
 
         <div class="ksp-calc" data-ksp hidden>
           <form class="ksp-inputs" data-ksp-form novalidate>
             <div class="reg-field ksp-field">
-              <label for="ksp-children">Number of children</label>
+              <label for="ksp-children"><svg class="ksp-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M2.5 19c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2M13.8 14.3c.8-.6 1.7-.9 2.7-.9 2.3 0 4 1.5 4.5 4.6"/></svg>Number of children</label>
               <p class="ksp-field__hint" id="ksp-children-hint">5 to 100 children</p>
               <div class="ksp-stepper">
                 <button class="ksp-stepper__btn" type="button" data-ksp-step="children:-" aria-label="One child fewer">−</button>
@@ -123,7 +123,7 @@
             </div>
 
             <div class="reg-field ksp-field">
-              <label for="ksp-lessons">Number of lessons</label>
+              <label for="ksp-lessons"><svg class="ksp-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Number of lessons</label>
               <p class="ksp-field__hint" id="ksp-lessons-hint">One lesson per child per week</p>
               <div class="ksp-stepper">
                 <button class="ksp-stepper__btn" type="button" data-ksp-step="lessons:-" aria-label="One lesson fewer">−</button>
@@ -131,21 +131,18 @@
                 <button class="ksp-stepper__btn" type="button" data-ksp-step="lessons:+" aria-label="One lesson more">+</button>
               </div>
             </div>
+            <p class="ksp-notice" role="status" data-ksp-notice hidden></p>
           </form>
 
-          <p class="ksp-notice" role="status" data-ksp-notice hidden></p>
-
           <div class="ksp-result" data-ksp-result aria-live="polite">
-            <div class="ksp-result__head">
-              <p class="ksp-result__label">Your estimate</p>
-              <p class="ksp-result__total" data-ksp-out="total"></p>
-              <p class="ksp-result__summary" data-ksp-out="totalLabel"></p>
+            <p class="ksp-result__label">Estimated cost per child</p>
+            <p class="ksp-result__main" data-ksp-out="totalPerChild"></p>
+            <p class="ksp-result__summary" data-ksp-out="totalLabel"></p>
+            <div class="ksp-result__total">
+              <span>Estimated school total</span>
+              <strong data-ksp-out="total"></strong>
             </div>
-            <dl class="ksp-keyfigures">
-              <div><dt>Cost per child</dt><dd data-ksp-out="totalPerChild"></dd></div>
-              <div><dt>Price per lesson</dt><dd data-ksp-out="perLesson"></dd></div>
-            </dl>
-            <p class="ksp-result__groups" data-ksp-out="groupsLine"></p>
+            <p class="ksp-result__groups"><svg class="ksp-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M2.5 19c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2M13.8 14.3c.8-.6 1.7-.9 2.7-.9 2.3 0 4 1.5 4.5 4.6"/></svg><span data-ksp-out="groupsLine"></span></p>
             <p class="ksp-provisional" data-ksp-provisional hidden>Provisional price for 5 to 9 children, subject to final approval.</p>
 
             <details class="ksp-details">
@@ -154,14 +151,12 @@
                 <div><dt>Groups</dt><dd data-ksp-out="groups"></dd></div>
                 <div><dt>Price per child per lesson</dt><dd data-ksp-out="pricePerChild"></dd></div>
                 <div><dt>Group fees per lesson</dt><dd><span data-ksp-out="groupFees"></span><span class="ksp-breakdown__hint" data-ksp-out="groupsHint"></span></dd></div>
-                <div class="ksp-breakdown__sum"><dt>Price per lesson</dt><dd data-ksp-out="perLessonRow"></dd></div>
                 <div class="ksp-breakdown__sum"><dt data-ksp-out="totalRowLabel"></dt><dd data-ksp-out="totalRow"></dd></div>
               </dl>
             </details>
 
-            <p class="ksp-disclaimer">This calculator provides an indicative cost estimate. Final pricing will be confirmed by QGZ Kids based on your school’s specific requirements.</p>
+            <p class="ksp-disclaimer"><svg class="ksp-icon ksp-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg><span>This calculator provides an indicative cost estimate. Final pricing will be confirmed by QGZ Kids based on your school’s specific requirements.</span></p>
           </div>
-
           <template data-ksp-messages>
             <span data-msg="totalLabel1">{n} children · 1 lesson</span>
             <span data-msg="totalLabelN">{n} children · {w} lessons</span>
@@ -187,11 +182,14 @@
       </div>
 
       <section class="ksp-contact" id="contact" aria-labelledby="ksp-contact-title">
-        <h2 class="ksp-contact__title" id="ksp-contact-title">Need something different? Request a personalised offer.</h2>
+        <div class="ksp-contact__text">
+          <h2 class="ksp-contact__title" id="ksp-contact-title">Every school is different.</h2>
+          <p>Tell us about your school and we’ll shape a programme around your goals, timetable and group sizes.</p>
+        </div>
         <div class="ksp-contact__actions">
-          <a class="btn btn--primary" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail>Request an Offer</a>
-          <span class="ksp-contact__email" data-ksp-email>kids@queensgambitzurich.ch</span>
-          <button class="ksp-copy" type="button" data-ksp-copy>Copy email address</button>
+          <a class="btn btn--primary ksp-contact__cta" href="mailto:kids@queensgambitzurich.ch" data-ksp-mail>Request a personalised offer<svg class="ksp-icon ksp-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <button class="ksp-email" type="button" data-ksp-copy aria-describedby="ksp-copy-hint"><svg class="ksp-icon ksp-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span data-ksp-email>kids@queensgambitzurich.ch</span></button>
+          <span class="ksp-email__hint" id="ksp-copy-hint">Copy email address</span>
         </div>
       </section>
 

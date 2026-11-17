@@ -326,7 +326,6 @@
     "I have read the": "Ich habe die",
     "and agree to them.": "gelesen und bin damit einverstanden.",
     "Kids Chess · For schools": "Kids Chess · Für Schulen",
-    "School pricing calculator": "Preisrechner für Schulen",
     "Lessons": "Lektionen",
     "One lesson per child per week": "Eine Lektion pro Kind und Woche",
     "Groups": "Gruppen",
@@ -348,9 +347,6 @@
     "Number of lessons": "Anzahl Lektionen",
     "One lesson fewer": "Eine Lektion weniger",
     "One lesson more": "Eine Lektion mehr",
-    "Your estimate": "Ihre Schätzung",
-    "Cost per child": "Kosten pro Kind",
-    "Price per lesson": "Preis pro Lektion",
     "Price per child per lesson": "Preis pro Kind und Lektion",
     "Group fees per lesson": "Gruppenbeiträge pro Lektion",
     "Provisional price for 5 to 9 children, subject to final approval.": "Provisorischer Preis für 5 bis 9 Kinder, vorbehaltlich definitiver Genehmigung.",
@@ -367,8 +363,6 @@
     "Please enter a whole number of lessons between 1 and 52.": "Bitte geben Sie eine ganze Zahl von Lektionen zwischen 1 und 52 ein.",
     "Kids Chess for schools: offer request": "Kids Chess für Schulen: Anfrage für eine Offerte",
     "Our estimate: {n} children, {w} lessons, {total}": "Unsere Schätzung: {n} Kinder, {w} Lektionen, {total}",
-    "Need something different? Request a personalised offer.": "Sie benötigen eine individuelle Lösung? Fordern Sie eine persönliche Offerte an.",
-    "Request an Offer": "Offerte anfragen",
     "The price per lesson consists of CHF 50 per group for the teacher and a price per child.": "Der Preis pro Lektion besteht aus CHF 50 pro Gruppe für die Lehrperson und einem Preis pro Kind.",
     "The price per child becomes lower the more children take part. All children at a school pay the same price.": "Der Preis pro Kind sinkt, je mehr Kinder teilnehmen. Alle Kinder einer Schule bezahlen denselben Preis.",
     "Children learn in groups of 5 to 10 at their skill level: beginners or intermediate. One skill level can have several groups, for example 15 beginners and 5 intermediate children form three groups.": "Die Kinder lernen in Gruppen von 5 bis 10 Kindern auf ihrer Spielstärke: Anfänger oder Fortgeschrittene. Eine Spielstärke kann mehrere Gruppen haben, zum Beispiel bilden 15 Anfänger und 5 Fortgeschrittene drei Gruppen.",
@@ -393,6 +387,12 @@
     "The calculator provides a non-binding estimate. Final pricing is confirmed through a written offer.": "Der Rechner liefert eine unverbindliche Schätzung. Der definitive Preis wird mit einer schriftlichen Offerte bestätigt.",
     "Invoicing is based on confirmed enrolment and lessons actually delivered.": "Die Rechnung basiert auf der bestätigten Anzahl Kinder und den tatsächlich durchgeführten Lektionen.",
     "Lessons cancelled by the school are not charged. Lessons cancelled by QGZ Kids are rescheduled or credited.": "Von der Schule abgesagte Lektionen werden nicht verrechnet. Von QGZ Kids abgesagte Lektionen werden nachgeholt oder gutgeschrieben.",
-    "Prices exclude any applicable VAT.": "Die Preise verstehen sich exkl. allfälliger MWST."
+    "Prices exclude any applicable VAT.": "Die Preise verstehen sich exkl. allfälliger MWST.",
+    "Chess lessons for your school": "Schachunterricht für Ihre Schule",
+    "Estimated cost per child": "Geschätzte Kosten pro Kind",
+    "Estimated school total": "Geschätzte Gesamtkosten für die Schule",
+    "Every school is different.": "Jede Schule ist anders.",
+    "Tell us about your school and we’ll shape a programme around your goals, timetable and group sizes.": "Erzählen Sie uns von Ihrer Schule. Wir gestalten ein Programm, das zu Ihren Zielen, Ihrem Stundenplan und Ihren Gruppengrössen passt.",
+    "Request a personalised offer": "Persönliche Offerte anfragen"
   }
 }
