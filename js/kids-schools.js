@@ -137,14 +137,12 @@
     out("total").textContent = chf(r.total);
     out("totalLabel").textContent = M(one ? "totalLabel1" : "totalLabelN", { n: r.children, w: r.lessons });
     out("totalPerChild").textContent = chf(r.totalPerChild);
-    out("perLesson").textContent = chf(r.perLesson);
     out("groupsLine").textContent = M(r.groups === 1 ? "groups1" : "groupsN", { n: r.groups });
     provNote.hidden = !r.provisional;
     out("groups").textContent = String(r.groups);
     out("groupsHint").textContent = M("groupsHint", { n: r.groups, fee: chf(GROUP_FEE * 100) });
     out("pricePerChild").textContent = chf(r.pricePerChild);
     out("groupFees").textContent = chf(r.groupFees);
-    out("perLessonRow").textContent = chf(r.perLesson);
     out("totalRowLabel").textContent = M(one ? "totalRowLabel1" : "totalRowLabelN", { w: r.lessons });
     out("totalRow").textContent = chf(r.total);
     remember(n, w);
