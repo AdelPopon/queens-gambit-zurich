@@ -187,6 +187,25 @@
 .ksp-acc__list strong { font-weight: 700; }
 .ksp-acc__note { margin: .6rem 0 0; font-size: var(--fs-small); color: var(--muted); max-width: 46rem; }
 
+/* ---------- Parent calculator (/kids/eltern/) ---------- */
+.kpp-pay { margin: 0; padding: 1.5rem 0 0; border: 0; border-top: 1px solid var(--ksp-line); display: grid; gap: .6rem; }
+.kpp-pay legend { padding: 0; margin-bottom: .6rem; font-size: 1.05rem; font-weight: 700; color: var(--g-ink); }
+.kpp-pay__opt {
+  display: flex; align-items: center; gap: .7rem; min-height: 48px; padding: .6rem 1rem; cursor: pointer;
+  background: var(--g-white); border: 1px solid rgba(57, 73, 171, .2); border-radius: 14px; font-weight: 600;
+}
+.kpp-pay__opt input { width: 1.15rem; height: 1.15rem; margin: 0; accent-color: var(--ksp-blue); }
+.kpp-pay__opt:has(input:checked) { border-color: var(--ksp-blue); background: var(--ksp-lav); }
+.kpp-pay__opt:has(input:focus-visible) { outline: 3px solid rgba(0, 112, 180, .45); outline-offset: 2px; }
+.kpp-pay__opt small { margin-left: .35rem; padding: .1rem .45rem; border-radius: 99px; background: var(--ksp-lav); color: var(--ksp-blue); font-size: .8rem; font-weight: 700; }
+.kpp-children { border-top: 1px solid var(--ksp-line); border-bottom: 1px solid var(--ksp-line); }
+.kpp-saving { display: grid; gap: .3rem; font-size: var(--fs-small); }
+.kpp-saving > div { display: flex; justify-content: space-between; gap: 1rem; }
+.kpp-saving span { color: var(--muted); }
+.kpp-saving s { color: var(--muted); font-variant-numeric: tabular-nums; }
+.kpp-saving strong { color: var(--ksp-blue); font-variant-numeric: tabular-nums; }
+.kpp-incentive { margin: 0; padding: .7rem .9rem; border-radius: 12px; background: rgba(255, 255, 255, .75); font-size: var(--fs-small); color: var(--g-ink); }
+
 @media (prefers-reduced-motion: reduce) {
   .ksp-stepper__btn, .ksp-result, .ksp-email, .ksp-details > summary::after, .ksp-acc > summary::after { transition: none; }
 }
