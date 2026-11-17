@@ -617,26 +617,48 @@ SCHOOL_PAGES = {
 }
 
 
+PARENT_PAGES = {
+    "parents": {
+        "en": {"slug": "en/kids/parents", "title": "Kids Chess for parents: price calculator",
+               "description": "Calculate the cost of Kids Chess lessons at school for your child: price per lesson, sibling discount and annual payment."},
+        "de": {"slug": "kids/eltern", "title": "Kids Chess für Eltern: Preisrechner",
+               "description": "Berechnen Sie die Kosten für Kids Chess Schachlektionen an der Schule Ihres Kindes: Preis pro Lektion, Geschwisterrabatt und Jahreszahlung."},
+    },
+}
+
+
 def school_pages(home_html, lang):
+    calc_pages(home_html, lang, SCHOOL_PAGES, "kids_schools.html", "kids-schools.js", "School pricing calculator")
+
+
+# Parent price calculator: /kids/eltern/ (DE) and /en/kids/parents/ (EN), same
+# page frame, styles and hiding as the school calculator.
+# Source tools/kids_parents.html, script js/kids-parents.js, test
+# node tools/test_parent_pricing.js
+def parent_pages(home_html, lang):
+    calc_pages(home_html, lang, PARENT_PAGES, "kids_parents.html", "kids-parents.js", "Parent price calculator")
+
+
+def calc_pages(home_html, lang, pages, source, script, label):
     styles, scripts, header, footer = shell(home_html, lang, ("kids-registration", "kids-schools"))
     v = re.search(r"\?v=([0-9-]+)", home_html).group(1)
-    scripts += f'\n<script src="/js/kids-schools.js?v={v}"></script>'
-    src = (ROOT / "tools" / "kids_schools.html").read_text()
+    scripts += f'\n<script src="/js/{script}?v={v}"></script>'
+    src = (ROOT / "tools" / source).read_text()
     src = re.sub(r"^<!--.*?-->\n", "", src, count=1, flags=re.S)       # source note
     if lang == "de":
         data = json.loads((ROOT / "i18n" / "de.json").read_text())
         src, missing = translate_html(src, {**data["strings"], **data.get("kids_strings", {})}, set(data["_keep"]))
         if missing:
-            sys.exit("Missing German translations in i18n/de.json (tools/kids_schools.html):\n  - " + "\n  - ".join(missing))
+            sys.exit(f"Missing German translations in i18n/de.json (tools/{source}):\n  - " + "\n  - ".join(missing))
     template = KIDS_PAGE.replace("(Kids Chess registration page) from tools/kids_registration.html",
-                                 "(School pricing calculator) from tools/kids_schools.html"
+                                 f"({label}) from tools/{source}"
                                  ).replace('<meta name="robots" content="index, follow">',
                                            '<meta name="robots" content="noindex, nofollow">')
     assert "noindex, nofollow" in template
     # Link preview (WhatsApp, social media): QGZ Kids image on these pages only
     template = template.replace("/assets/brand/qgz-social-1200x630.jpg", "/assets/brand/qgz-kids-social-1200x630.jpg")
     assert "qgz-kids-social-1200x630.jpg" in template
-    for cfg in SCHOOL_PAGES.values():
+    for cfg in pages.values():
         meta = cfg[lang]
         en_slug, de_slug = cfg["en"]["slug"], cfg["de"]["slug"]
         hdr = set_lang_switch(header, lang, f"/{en_slug}/", f"/{de_slug}/")
@@ -732,6 +754,8 @@ if __name__ == "__main__":
     kids_pages(de_html, "de")
     school_pages(en_html, "en")
     school_pages(de_html, "de")
+    parent_pages(en_html, "en")
+    parent_pages(de_html, "de")
     redirect_pages()
     sitemap(TODAY)
     print("Built: index.html (DE), impressum/, datenschutz/, winz/, en/impressum/, en/privacy/, en/winz/, kids/schulen/, en/kids/schools/, redirects, sitemap.xml")
