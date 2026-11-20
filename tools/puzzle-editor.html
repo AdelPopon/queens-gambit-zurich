@@ -45,7 +45,18 @@
 /* ---------- Layout ---------- */
 .pz-main { display: grid; gap: clamp(1rem, 3vw, 2rem); align-items: start; }
 @media (min-width: 900px) {
-  .pz-main { grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); }
+  .pz-main { grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); grid-template-rows: auto 1fr; grid-template-areas: "board panel" "board actions"; }
+  .pz-board-wrap { grid-area: board; }
+  .pz-panel { grid-area: panel; }
+  .pz-main > .pz-actions { grid-area: actions; align-self: start; }
+}
+/* Phones and tablets: board, then the buttons, then the text */
+@media (max-width: 899px) {
+  .pz-main { gap: .75rem; }
+  .pz-main > .pz-actions { order: 1; grid-template-columns: 1fr 1fr 1.35fr; padding-top: 0; width: 100%; max-width: 640px; margin-inline: auto; }
+  .pz-main > .pz-actions [data-pz-next] { grid-column: auto; }
+  .pz-main > .pz-actions .btn { min-height: 52px; padding-inline: .5rem; font-size: .92rem; }
+  .pz-panel { order: 2; }
 }
 .pz-board-wrap { width: 100%; max-width: min(640px, calc(100svh - var(--header-h) - 2rem)); margin-inline: auto; scroll-margin-top: calc(var(--header-h) + 1rem); }
 .pz-main { scroll-margin-top: calc(var(--header-h) + 1rem); }

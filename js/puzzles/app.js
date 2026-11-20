@@ -64,11 +64,13 @@
         '<div class="pz-options" data-pz-options hidden></div>' +
         '<p class="pz-feedback" data-pz-feedback role="status" aria-live="polite"></p>' +
         '<p class="pz-explain" data-pz-explain hidden></p>' +
-        '<div class="pz-actions">' +
-          '<button class="btn btn--ghost" type="button" data-pz-hint></button>' +
-          '<button class="btn btn--ghost" type="button" data-pz-reset></button>' +
-          '<button class="btn btn--primary" type="button" data-pz-next></button>' +
-        '</div>' +
+      '</div>' +
+      // Buttons sit right under the board on phones (no scrolling needed)
+      // and under the text panel on wide screens.
+      '<div class="pz-actions">' +
+        '<button class="btn btn--ghost" type="button" data-pz-hint></button>' +
+        '<button class="btn btn--ghost" type="button" data-pz-reset></button>' +
+        '<button class="btn btn--primary" type="button" data-pz-next></button>' +
       '</div>' +
     '</div>';
   var $ = function (s) { return app.querySelector(s); };
