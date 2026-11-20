@@ -45,3 +45,4 @@ Before every change to the website:
 | `QGZ_Website_Backup_2026-11-08_1445.zip` | `backup-2026-11-08_1445` | `a5e84de` | 2026-11-08 14:45 | Before removing the Zollikon workshop and the language-switch position fix |
 | `QGZ_Website_Backup_2026-11-16_1314.zip` | `backup-2026-11-16_1314` | `451183c` | 2026-11-16 13:14 | Before adding the apéro note to the WINZ programme |
 | `QGZ_Website_Backup_2026-11-20_2027.zip` | `backup-2026-11-20_2027` | `5733faa` | 2026-11-20 20:27 | Before publishing QGZ Chess Puzzles with 122 exercises (PR #51) |
+| `QGZ_Website_Backup_2026-11-20_2059.zip` | `backup-2026-11-20_2059` | `1724304` | 2026-11-20 20:59 | Before moving the puzzle buttons under the board on phones |
