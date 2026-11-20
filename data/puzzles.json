@@ -1,0 +1,5861 @@
+{
+ "version": 1,
+ "categories": [
+  {
+   "id": "pieces",
+   "title": {
+    "en": "Learn the Pieces",
+    "de": "Die Figuren kennenlernen"
+   },
+   "description": {
+    "en": "How each piece moves and captures.",
+    "de": "Wie jede Figur zieht und schlägt."
+   }
+  },
+  {
+   "id": "safe",
+   "title": {
+    "en": "Find the Safe Square",
+    "de": "Das sichere Feld finden"
+   },
+   "description": {
+    "en": "Recognise danger.",
+    "de": "Gefahren erkennen."
+   }
+  },
+  {
+   "id": "attack",
+   "title": {
+    "en": "Attack and Defend",
+    "de": "Angreifen und verteidigen"
+   },
+   "description": {
+    "en": "Spot threats and protect your pieces.",
+    "de": "Drohungen erkennen und Figuren schützen."
+   }
+  },
+  {
+   "id": "mate",
+   "title": {
+    "en": "Check and Checkmate",
+    "de": "Schach und Matt"
+   },
+   "description": {
+    "en": "Basic mating patterns.",
+    "de": "Einfache Mattbilder."
+   }
+  },
+  {
+   "id": "tactics",
+   "title": {
+    "en": "Chess Tactics",
+    "de": "Taktik"
+   },
+   "description": {
+    "en": "Forks, pins, skewers and discovered attacks.",
+    "de": "Gabel, Fesselung, Spiess und Abzug."
+   }
+  },
+  {
+   "id": "challenge",
+   "title": {
+    "en": "Chess Challenges",
+    "de": "Herausforderungen"
+   },
+   "description": {
+    "en": "Combinations over several moves.",
+    "de": "Kombinationen über mehrere Züge."
+   }
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pawn-first-move",
+   "category": "pieces",
+   "level": 1,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/8/8/8/8/8/4P3/8 w - - 0 1",
+   "goal": {
+    "en": "The pawn's first move",
+    "de": "Der erste Zug des Bauern"
+   },
+   "task": {
+    "en": "Move the pawn two squares forward.",
+    "de": "Ziehe den Bauern zwei Felder nach vorne."
+   },
+   "solutions": [
+    [
+     "e2e4"
+    ]
+   ],
+   "explanation": {
+    "en": "From its starting square a pawn may move two squares. After that, only one square at a time.",
+    "de": "Von seinem Startfeld darf der Bauer zwei Felder ziehen. Danach immer nur eins."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "On its first move, a pawn may go one or two squares forward.",
+      "de": "Beim ersten Zug darf ein Bauer ein oder zwei Felder nach vorne ziehen."
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-moves",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/3R4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "How the rook moves",
+    "de": "So zieht der Turm"
+   },
+   "task": {
+    "en": "Tap every square the rook can move to.",
+    "de": "Tippe auf alle Felder, auf die der Turm ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d4",
+    "squares": [
+     "a4",
+     "b4",
+     "c4",
+     "d1",
+     "d2",
+     "d3",
+     "d5",
+     "d6",
+     "d7",
+     "d8",
+     "e4",
+     "f4",
+     "g4",
+     "h4"
+    ]
+   },
+   "explanation": {
+    "en": "The rook can move as far as it likes along its row and its column.",
+    "de": "Der Turm darf beliebig weit auf seiner Reihe und seiner Linie ziehen."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ]
+  },
+  {
+   "id": "knight-moves",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/3N4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "How the knight jumps",
+    "de": "So springt der Springer"
+   },
+   "task": {
+    "en": "Tap every square the knight can jump to.",
+    "de": "Tippe auf alle Felder, auf die der Springer springen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d4",
+    "squares": [
+     "b3",
+     "b5",
+     "c2",
+     "c6",
+     "e2",
+     "e6",
+     "f3",
+     "f5"
+    ]
+   },
+   "explanation": {
+    "en": "From the middle of the board the knight can reach 8 squares. It may jump over other pieces.",
+    "de": "Aus der Mitte des Bretts erreicht der Springer 8 Felder. Er darf über andere Figuren springen."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one square to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-corner",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/8/8/8/R7 w - - 0 1",
+   "goal": {
+    "en": "The rook in the corner",
+    "de": "Der Turm in der Ecke"
+   },
+   "task": {
+    "en": "Tap every square the rook can move to.",
+    "de": "Tippe auf alle Felder, auf die der Turm ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "a1",
+    "squares": [
+     "a2",
+     "a3",
+     "a4",
+     "a5",
+     "a6",
+     "a7",
+     "a8",
+     "b1",
+     "c1",
+     "d1",
+     "e1",
+     "f1",
+     "g1",
+     "h1"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The rook can reach 14 squares here. Even from the corner it controls a whole row and a whole column.",
+    "de": "Der Turm erreicht hier 14 Felder. Auch aus der Ecke kontrolliert er eine ganze Reihe und eine ganze Linie."
+   }
+  },
+  {
+   "id": "bishop-moves",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/5B2/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "How the bishop moves",
+    "de": "So zieht der Läufer"
+   },
+   "task": {
+    "en": "Tap every square the bishop can move to.",
+    "de": "Tippe auf alle Felder, auf die der Läufer ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "f4",
+    "squares": [
+     "b8",
+     "c1",
+     "c7",
+     "d2",
+     "d6",
+     "e3",
+     "e5",
+     "g3",
+     "g5",
+     "h2",
+     "h6"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The bishop moves diagonally, as far as it likes.",
+      "de": "Der Läufer zieht schräg, so weit er will."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The bishop can reach 11 squares here. A bishop always stays on squares of the same colour.",
+    "de": "Der Läufer erreicht hier 11 Felder. Ein Läufer bleibt immer auf Feldern derselben Farbe."
+   }
+  },
+  {
+   "id": "king-moves",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/4K3/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "How the king moves",
+    "de": "So zieht der König"
+   },
+   "task": {
+    "en": "Tap every square the king can move to.",
+    "de": "Tippe auf alle Felder, auf die der König ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "d3",
+     "d4",
+     "d5",
+     "e3",
+     "e5",
+     "f3",
+     "f4",
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The king moves one square in any direction.",
+      "de": "Der König zieht ein Feld in jede Richtung."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king can reach 8 squares here. The king is slow but important: one step at a time.",
+    "de": "Der König erreicht hier 8 Felder. Der König ist langsam, aber wichtig: immer nur ein Schritt."
+   }
+  },
+  {
+   "id": "knight-corner",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/8/8/8/N7 w - - 0 1",
+   "goal": {
+    "en": "A knight in the corner",
+    "de": "Ein Springer in der Ecke"
+   },
+   "task": {
+    "en": "Tap every square the knight can jump to.",
+    "de": "Tippe auf alle Felder, auf die der Springer springen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "a1",
+    "squares": [
+     "b3",
+     "c2"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The knight can reach 2 squares here. Knights are much stronger in the middle of the board!",
+    "de": "Der Springer erreicht hier 2 Felder. In der Mitte des Bretts ist der Springer viel stärker!"
+   }
+  },
+  {
+   "id": "pawn-squares",
+   "category": "pieces",
+   "level": 1,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/8/8/3P4/8 w - - 0 1",
+   "goal": {
+    "en": "Where can the pawn go?",
+    "de": "Wohin kann der Bauer?"
+   },
+   "task": {
+    "en": "Tap every square the pawn can move to.",
+    "de": "Tippe auf alle Felder, auf die der Bauer ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d2",
+    "squares": [
+     "d3",
+     "d4"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn moves forward, but captures diagonally.",
+      "de": "Ein Bauer zieht nach vorne, schlägt aber schräg."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The pawn can reach 2 squares here. From its starting square, a pawn may move one or two squares forward.",
+    "de": "Der Bauer erreicht hier 2 Felder. Von seinem Startfeld darf ein Bauer ein oder zwei Felder vorwärts ziehen."
+   }
+  },
+  {
+   "id": "rook-captures",
+   "category": "pieces",
+   "level": 1,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/2n5/6p1/8/8/8/2R5/8 w - - 0 1",
+   "goal": {
+    "en": "The rook captures",
+    "de": "Der Turm schlägt"
+   },
+   "task": {
+    "en": "Capture the black knight with the rook.",
+    "de": "Schlage den schwarzen Springer mit dem Turm."
+   },
+   "solutions": [
+    [
+     "c2c7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The rook moves straight up the c-file to c7. The pawn on g6 is not on its lines.",
+    "de": "Der Turm zieht gerade die c-Linie hinauf bis c7. Der Bauer auf g6 steht nicht auf seinen Linien."
+   }
+  },
+  {
+   "id": "bishop-captures",
+   "category": "pieces",
+   "level": 1,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/6r1/8/8/8/8/1B2n3/8 w - - 0 1",
+   "goal": {
+    "en": "The bishop captures",
+    "de": "Der Läufer schlägt"
+   },
+   "task": {
+    "en": "Capture the black rook with the bishop.",
+    "de": "Schlage den schwarzen Turm mit dem Läufer."
+   },
+   "solutions": [
+    [
+     "b2g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The bishop moves diagonally, as far as it likes.",
+      "de": "Der Läufer zieht schräg, so weit er will."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The bishop travels along the long diagonal from b2 to g7.",
+    "de": "Der Läufer zieht über die lange Diagonale von b2 nach g7."
+   }
+  },
+  {
+   "id": "bishop-blocked",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/8/p3P3/8/2B5 w - - 0 1",
+   "goal": {
+    "en": "The bishop: blocked and capturing",
+    "de": "Der Läufer: blockiert und schlagen"
+   },
+   "task": {
+    "en": "Tap every square the bishop can move to.",
+    "de": "Tippe auf alle Felder, auf die der Läufer ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "c1",
+    "squares": [
+     "a3",
+     "b2",
+     "d2"
+    ]
+   },
+   "explanation": {
+    "en": "The bishop stops in front of its own pieces, but it can capture an enemy piece by moving onto its square.",
+    "de": "Der Läufer hält vor eigenen Figuren an. Eine gegnerische Figur kann er schlagen, indem er auf ihr Feld zieht."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Your own pawn blocks the way. Enemy pieces can be captured.",
+      "de": "Der eigene Bauer versperrt den Weg. Gegnerische Figuren darf der Läufer schlagen."
+     }
+    }
+   ]
+  },
+  {
+   "id": "queen-captures",
+   "category": "pieces",
+   "level": 2,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/6n1/8/8/2p5/8/8/Q7 w - - 0 1",
+   "goal": {
+    "en": "The queen captures",
+    "de": "Die Dame schlägt"
+   },
+   "task": {
+    "en": "Capture the knight with the queen.",
+    "de": "Schlage den Springer mit der Dame."
+   },
+   "solutions": [
+    [
+     "a1g7"
+    ]
+   ],
+   "explanation": {
+    "en": "The queen travels diagonally all the way from a1 to g7. The pawn on c4 is not on any of her lines.",
+    "de": "Die Dame zieht schräg von a1 bis g7. Der Bauer auf c4 steht auf keiner ihrer Linien."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The queen moves like a rook and like a bishop.",
+      "de": "Die Dame zieht wie ein Turm und wie ein Läufer."
+     }
+    }
+   ]
+  },
+  {
+   "id": "queen-moves",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/8/3Q4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "The strongest piece",
+    "de": "Die stärkste Figur"
+   },
+   "task": {
+    "en": "Tap every square the queen can move to.",
+    "de": "Tippe auf alle Felder, auf die die Dame ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d4",
+    "squares": [
+     "a1",
+     "a4",
+     "a7",
+     "b2",
+     "b4",
+     "b6",
+     "c3",
+     "c4",
+     "c5",
+     "d1",
+     "d2",
+     "d3",
+     "d5",
+     "d6",
+     "d7",
+     "d8",
+     "e3",
+     "e4",
+     "e5",
+     "f2",
+     "f4",
+     "f6",
+     "g1",
+     "g4",
+     "g7",
+     "h4",
+     "h8"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The queen moves like a rook and like a bishop together.",
+      "de": "Die Dame zieht wie Turm und Läufer zusammen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The queen can reach 27 squares here. That is why the queen is the strongest piece.",
+    "de": "Die Dame erreicht hier 27 Felder. Darum ist die Dame die stärkste Figur."
+   }
+  },
+  {
+   "id": "rook-blocked",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/4P3/8/1n2R1P1/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Rook: blocked or capture?",
+    "de": "Turm: blockiert oder schlagen?"
+   },
+   "task": {
+    "en": "Tap every square the rook can move to.",
+    "de": "Tippe auf alle Felder, auf die der Turm ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "b4",
+     "c4",
+     "d4",
+     "e1",
+     "e2",
+     "e3",
+     "e5",
+     "f4"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The rook can reach 8 squares here. Your own pieces block the way. The black knight on b4 can be captured.",
+    "de": "Der Turm erreicht hier 8 Felder. Eigene Figuren versperren den Weg. Den schwarzen Springer auf b4 kann er schlagen."
+   }
+  },
+  {
+   "id": "knight-own-pieces",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/4p3/7P/5N2/3P4/8 w - - 0 1",
+   "goal": {
+    "en": "Knight: not onto your own pieces",
+    "de": "Springer: nicht auf eigene Figuren"
+   },
+   "task": {
+    "en": "Tap every square the knight can jump to.",
+    "de": "Tippe auf alle Felder, auf die der Springer springen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "f3",
+    "squares": [
+     "d4",
+     "e1",
+     "e5",
+     "g1",
+     "g5",
+     "h2"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The knight can reach 6 squares here. It cannot land on its own pawns, but it may capture the black pawn on e5.",
+    "de": "Der Springer erreicht hier 6 Felder. Er darf nicht auf eigene Bauern springen, aber den schwarzen Bauern auf e5 schlagen."
+   }
+  },
+  {
+   "id": "king-at-edge",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/6P1/7K/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "The king at the edge",
+    "de": "Der König am Rand"
+   },
+   "task": {
+    "en": "Tap every square the king can move to.",
+    "de": "Tippe auf alle Felder, auf die der König ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "h5",
+    "squares": [
+     "g4",
+     "g5",
+     "h4",
+     "h6"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The king moves one square in any direction.",
+      "de": "Der König zieht ein Feld in jede Richtung."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king can reach 4 squares here. At the edge the king has fewer squares, and its own pawn blocks one more.",
+    "de": "Der König erreicht hier 4 Felder. Am Rand hat der König weniger Felder, und sein eigener Bauer versperrt noch eines."
+   }
+  },
+  {
+   "id": "pawn-captures",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/8/3npb2/4P3/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Pawns capture diagonally",
+    "de": "Bauern schlagen schräg"
+   },
+   "task": {
+    "en": "Tap every square the pawn can move to.",
+    "de": "Tippe auf alle Felder, auf die der Bauer ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "d5",
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn moves forward, but captures diagonally.",
+      "de": "Ein Bauer zieht nach vorne, schlägt aber schräg."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The pawn can reach 2 squares here. It cannot move forward because e5 is blocked, but it can capture diagonally.",
+    "de": "Der Bauer erreicht hier 2 Felder. Er kann nicht vorwärts, weil e5 besetzt ist. Er kann aber schräg schlagen."
+   }
+  },
+  {
+   "id": "black-knight",
+   "category": "pieces",
+   "level": 2,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/2n5/8/8/8/8/8 b - - 0 1",
+   "orientation": "w",
+   "goal": {
+    "en": "The black knight",
+    "de": "Der schwarze Springer"
+   },
+   "task": {
+    "en": "Tap every square the black knight can jump to.",
+    "de": "Tippe auf alle Felder, auf die der schwarze Springer springen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "c6",
+    "squares": [
+     "a5",
+     "a7",
+     "b4",
+     "b8",
+     "d4",
+     "d8",
+     "e5",
+     "e7"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The knight can reach 8 squares here. Black pieces move exactly like white ones.",
+    "de": "Der Springer erreicht hier 8 Felder. Schwarze Figuren ziehen genau gleich wie weisse."
+   }
+  },
+  {
+   "id": "knight-captures",
+   "category": "pieces",
+   "level": 2,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/8/3rb3/8/2p1N3/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "The knight captures",
+    "de": "Der Springer schlägt"
+   },
+   "task": {
+    "en": "Capture the black rook with the knight.",
+    "de": "Schlage den schwarzen Turm mit dem Springer."
+   },
+   "solutions": [
+    [
+     "e4d6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Only the rook on d6 is one knight jump away. The bishop and the pawn are not.",
+    "de": "Nur der Turm auf d6 ist einen Springersprung entfernt. Läufer und Bauer nicht."
+   }
+  },
+  {
+   "id": "king-captures",
+   "category": "pieces",
+   "level": 2,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/8/5r2/8/8/2nK4/8/8 w - - 0 1",
+   "goal": {
+    "en": "The king captures",
+    "de": "Der König schlägt"
+   },
+   "task": {
+    "en": "Capture the black knight with the king.",
+    "de": "Schlage den schwarzen Springer mit dem König."
+   },
+   "solutions": [
+    [
+     "d3c3"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The king moves one square in any direction.",
+      "de": "Der König zieht ein Feld in jede Richtung."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king can capture a piece right next to it, if that piece is not protected.",
+    "de": "Der König kann eine Figur direkt neben sich schlagen, wenn sie nicht geschützt ist."
+   }
+  },
+  {
+   "id": "pawn-takes-rook",
+   "category": "pieces",
+   "level": 2,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/8/8/2npr3/3P4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Which capture is better?",
+    "de": "Welches Schlagen ist besser?"
+   },
+   "task": {
+    "en": "Capture the black rook with the pawn.",
+    "de": "Schlage den schwarzen Turm mit dem Bauern."
+   },
+   "solutions": [
+    [
+     "d4e5"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn moves forward, but captures diagonally.",
+      "de": "Ein Bauer zieht nach vorne, schlägt aber schräg."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The pawn on d4 can capture on c5 or on e5. The rook is worth more than the knight!",
+    "de": "Der Bauer auf d4 kann auf c5 oder auf e5 schlagen. Der Turm ist mehr wert als der Springer!"
+   }
+  },
+  {
+   "id": "promotion",
+   "category": "pieces",
+   "level": 2,
+   "type": "moves",
+   "rules": "free",
+   "fen": "8/1P6/8/8/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Promotion",
+    "de": "Umwandlung"
+   },
+   "task": {
+    "en": "Move the pawn to the last row. It becomes a queen!",
+    "de": "Ziehe den Bauern auf die letzte Reihe. Er wird zur Dame!"
+   },
+   "solutions": [
+    [
+     "b7b8q"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn that reaches the other side may become a queen.",
+      "de": "Ein Bauer, der die andere Seite erreicht, darf zur Dame werden."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "A pawn on the last row turns into a new piece, usually a queen.",
+    "de": "Ein Bauer auf der letzten Reihe verwandelt sich in eine neue Figur, meist in eine Dame."
+   }
+  },
+  {
+   "id": "bishop-crowded",
+   "category": "pieces",
+   "level": 3,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/8/1P3r2/8/3B4/4P3/1p6/8 w - - 0 1",
+   "goal": {
+    "en": "Bishop in a crowd",
+    "de": "Läufer im Gedränge"
+   },
+   "task": {
+    "en": "Tap every square the bishop can move to.",
+    "de": "Tippe auf alle Felder, auf die der Läufer ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d4",
+    "squares": [
+     "b2",
+     "c3",
+     "c5",
+     "e5",
+     "f6"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The bishop moves diagonally, as far as it likes.",
+      "de": "Der Läufer zieht schräg, so weit er will."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The bishop can reach 5 squares here. It stops in front of its own pieces and can capture black ones.",
+    "de": "Der Läufer erreicht hier 5 Felder. Er hält vor eigenen Figuren an und kann schwarze Figuren schlagen."
+   }
+  },
+  {
+   "id": "queen-crowded",
+   "category": "pieces",
+   "level": 3,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/7b/4P3/8/1r2Q1N1/5P2/2p5/8 w - - 0 1",
+   "goal": {
+    "en": "Queen in a crowd",
+    "de": "Dame im Gedränge"
+   },
+   "task": {
+    "en": "Tap every square the queen can move to.",
+    "de": "Tippe auf alle Felder, auf die die Dame ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "a8",
+     "b4",
+     "b7",
+     "c2",
+     "c4",
+     "c6",
+     "d3",
+     "d4",
+     "d5",
+     "e1",
+     "e2",
+     "e3",
+     "e5",
+     "f4",
+     "f5",
+     "g6",
+     "h7"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The queen moves like a rook and like a bishop together.",
+      "de": "Die Dame zieht wie Turm und Läufer zusammen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The queen can reach 17 squares here. She stops in front of her own pieces and can capture black ones.",
+    "de": "Die Dame erreicht hier 17 Felder. Sie hält vor eigenen Figuren an und kann schwarze Figuren schlagen."
+   }
+  },
+  {
+   "id": "rook-crowded",
+   "category": "pieces",
+   "level": 3,
+   "type": "squares",
+   "rules": "free",
+   "fen": "8/3P4/8/1P1R1bn1/8/8/3p4/8 w - - 0 1",
+   "goal": {
+    "en": "Rook in a crowd",
+    "de": "Turm im Gedränge"
+   },
+   "task": {
+    "en": "Tap every square the rook can move to.",
+    "de": "Tippe auf alle Felder, auf die der Turm ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d5",
+    "squares": [
+     "c5",
+     "d2",
+     "d3",
+     "d4",
+     "d6",
+     "e5",
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The rook can reach 7 squares here. It stops in front of its own pieces and can capture black ones.",
+    "de": "Der Turm erreicht hier 7 Felder. Er hält vor eigenen Figuren an und kann schwarze Figuren schlagen."
+   }
+  },
+  {
+   "id": "queen-long-diagonal",
+   "category": "pieces",
+   "level": 3,
+   "type": "moves",
+   "rules": "free",
+   "fen": "n7/7r/8/8/7P/8/8/7Q w - - 0 1",
+   "goal": {
+    "en": "The long diagonal",
+    "de": "Die lange Diagonale"
+   },
+   "task": {
+    "en": "Capture the black knight with the queen.",
+    "de": "Schlage den schwarzen Springer mit der Dame."
+   },
+   "solutions": [
+    [
+     "h1a8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The queen moves like a rook and like a bishop together.",
+      "de": "Die Dame zieht wie Turm und Läufer zusammen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The diagonal from h1 to a8 is open. On the h-file your own pawn blocks the way to the rook.",
+    "de": "Die Diagonale von h1 nach a8 ist frei. Auf der h-Linie versperrt dein eigener Bauer den Weg zum Turm."
+   }
+  },
+  {
+   "id": "king-safe-squares",
+   "category": "safe",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/8/r7/4K3/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Squares under attack",
+    "de": "Angegriffene Felder"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "d3",
+     "d4",
+     "e3",
+     "f3",
+     "f4"
+    ]
+   },
+   "explanation": {
+    "en": "The king may never move to a square the enemy attacks. The rook guards the 5th row, so the king has five safe squares.",
+    "de": "Der König darf nie auf ein Feld ziehen, das der Gegner angreift. Der Turm bewacht die 5. Reihe, darum bleiben dem König fünf sichere Felder."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The black rook controls the whole 5th row.",
+      "de": "Der schwarze Turm kontrolliert die ganze 5. Reihe."
+     }
+    }
+   ]
+  },
+  {
+   "id": "is-it-check",
+   "category": "safe",
+   "level": 1,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "4k3/8/8/8/1b6/8/8/4K3 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "explanation": {
+    "en": "Yes: the bishop on b4 attacks the king along the diagonal b4–e1.",
+    "de": "Ja: Der Läufer auf b4 greift den König über die Diagonale b4–e1 an."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Follow the bishop's diagonals.",
+      "de": "Folge den Diagonalen des Läufers."
+     }
+    }
+   ]
+  },
+  {
+   "id": "king-safe-bishop",
+   "category": "safe",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/8/6b1/8/8/4K3/8 w - - 0 1",
+   "goal": {
+    "en": "Avoid the bishop",
+    "de": "Weg vom Läufer"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e2",
+    "squares": [
+     "d1",
+     "d3",
+     "e1",
+     "f1",
+     "f2",
+     "f3"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at which squares the black pieces attack.",
+      "de": "Schau, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king has 6 safe squares. The bishop on g5 attacks d2 and e3.",
+    "de": "Der König hat 6 sichere Felder. Der Läufer auf g5 greift d2 und e3 an."
+   }
+  },
+  {
+   "id": "king-safe-knight",
+   "category": "safe",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/4n3/8/4K3/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Avoid the knight",
+    "de": "Weg vom Springer"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e4",
+    "squares": [
+     "d3",
+     "d5",
+     "e3",
+     "e5",
+     "f3",
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at which squares the black pieces attack.",
+      "de": "Schau, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king has 6 safe squares. The knight on e6 attacks d4 and f4.",
+    "de": "Der König hat 6 sichere Felder. Der Springer auf e6 greift d4 und f4 an."
+   }
+  },
+  {
+   "id": "check-rook",
+   "category": "safe",
+   "level": 1,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "7k/4r3/8/8/8/8/8/4K3 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: the rook on e7 attacks the king along the e-file.",
+    "de": "Ja: Der Turm auf e7 greift den König über die e-Linie an."
+   }
+  },
+  {
+   "id": "check-knight",
+   "category": "safe",
+   "level": 1,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "k7/8/8/8/8/5n2/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: the knight on f3 attacks g1 with its L-jump.",
+    "de": "Ja: Der Springer auf f3 greift g1 mit seinem L-Sprung an."
+   }
+  },
+  {
+   "id": "rook-escape",
+   "category": "safe",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "7k/8/8/4p3/3R4/8/8/K7 w - - 0 1",
+   "goal": {
+    "en": "Get out of danger",
+    "de": "Raus aus der Gefahr"
+   },
+   "task": {
+    "en": "Your rook is attacked. Move it to a safe square.",
+    "de": "Der Turm wird angegriffen. Ziehe ihn auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "d4d5"
+    ],
+    [
+     "d4d6"
+    ],
+    [
+     "d4d7"
+    ],
+    [
+     "d4d8"
+    ],
+    [
+     "d4e4"
+    ],
+    [
+     "d4g4"
+    ],
+    [
+     "d4h4"
+    ],
+    [
+     "d4d3"
+    ],
+    [
+     "d4d2"
+    ],
+    [
+     "d4d1"
+    ],
+    [
+     "d4c4"
+    ],
+    [
+     "d4b4"
+    ],
+    [
+     "d4a4"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check which squares the black pieces attack.",
+      "de": "Prüfe, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Safe squares: a4, b4, c4, d1, d2, d3, d5, d6, d7, d8, e4, g4 and h4. On f4 the rook could be captured.",
+    "de": "Sichere Felder: a4, b4, c4, d1, d2, d3, d5, d6, d7, d8, e4, g4 und h4. Auf f4 könnte der Turm geschlagen werden."
+   }
+  },
+  {
+   "id": "knight-escape",
+   "category": "safe",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "2b3k1/1p6/8/4p3/3N4/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Escape from attack",
+    "de": "Der Bedrohung ausweichen"
+   },
+   "task": {
+    "en": "The knight is attacked. Move it to a safe square.",
+    "de": "Der Springer wird angegriffen. Ziehe ihn auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "d4b3"
+    ],
+    [
+     "d4b5"
+    ],
+    [
+     "d4c2"
+    ],
+    [
+     "d4e2"
+    ],
+    [
+     "d4f3"
+    ]
+   ],
+   "explanation": {
+    "en": "Safe squares are b3, b5, c2, e2 and f3. On c6, e6 or f5 the knight could be captured.",
+    "de": "Sichere Felder sind b3, b5, c2, e2 und f3. Auf c6, e6 oder f5 könnte der Springer geschlagen werden."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The pawns and the bishop also guard squares.",
+      "de": "Auch die Bauern und der Läufer bewachen Felder."
+     }
+    }
+   ]
+  },
+  {
+   "id": "king-safe-pawns",
+   "category": "safe",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/2p2p2/8/3K4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Pawns guard squares too",
+    "de": "Auch Bauern bewachen Felder"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "d4",
+    "squares": [
+     "c3",
+     "c4",
+     "c5",
+     "d3",
+     "e3",
+     "e4"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at which squares the black pieces attack.",
+      "de": "Schau, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king has 6 safe squares. Black pawns attack diagonally downwards, so d5 and e5 are not safe.",
+    "de": "Der König hat 6 sichere Felder. Schwarze Bauern greifen schräg nach unten an, darum sind d5 und e5 nicht sicher."
+   }
+  },
+  {
+   "id": "king-safe-queen",
+   "category": "safe",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/8/7q/8/8/8/4K3 w - - 0 1",
+   "goal": {
+    "en": "Avoid the queen",
+    "de": "Weg von der Dame"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e1",
+    "squares": [
+     "d2",
+     "f1",
+     "f2"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at which squares the black pieces attack.",
+      "de": "Schau, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king has 3 safe squares. Along her diagonal the queen attacks e2 and d1.",
+    "de": "Der König hat 3 sichere Felder. Über ihre Diagonale greift die Dame e2 und d1 an."
+   }
+  },
+  {
+   "id": "check-blocked",
+   "category": "safe",
+   "level": 2,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "k3r3/8/8/8/8/8/4P3/4K3 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No: the pawn on e2 stands in between and blocks the rook.",
+    "de": "Nein: Der Bauer auf e2 steht dazwischen und blockiert den Turm."
+   }
+  },
+  {
+   "id": "check-pawn",
+   "category": "safe",
+   "level": 2,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "7k/8/8/4p3/3K4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: a black pawn attacks diagonally forward, from e5 to d4.",
+    "de": "Ja: Ein schwarzer Bauer greift schräg nach vorne an, von e5 auf d4."
+   }
+  },
+  {
+   "id": "check-pawn-front",
+   "category": "safe",
+   "level": 2,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "7k/8/8/3p4/3K4/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No: a pawn never attacks the square straight in front of it.",
+    "de": "Nein: Ein Bauer greift nie das Feld direkt vor sich an."
+   }
+  },
+  {
+   "id": "queen-escape",
+   "category": "safe",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "7k/6pp/5n2/3Q4/8/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Save the queen",
+    "de": "Rette die Dame"
+   },
+   "task": {
+    "en": "Your queen is attacked. Move it to a safe square.",
+    "de": "Die Dame wird angegriffen. Ziehe sie auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "d5c6"
+    ],
+    [
+     "d5b7"
+    ],
+    [
+     "d5a8"
+    ],
+    [
+     "d5d6"
+    ],
+    [
+     "d5d8"
+    ],
+    [
+     "d5e6"
+    ],
+    [
+     "d5f7"
+    ],
+    [
+     "d5e5"
+    ],
+    [
+     "d5f5"
+    ],
+    [
+     "d5g5"
+    ],
+    [
+     "d5f3"
+    ],
+    [
+     "d5g2"
+    ],
+    [
+     "d5h1"
+    ],
+    [
+     "d5d4"
+    ],
+    [
+     "d5d3"
+    ],
+    [
+     "d5d2"
+    ],
+    [
+     "d5d1"
+    ],
+    [
+     "d5c4"
+    ],
+    [
+     "d5b3"
+    ],
+    [
+     "d5a2"
+    ],
+    [
+     "d5c5"
+    ],
+    [
+     "d5b5"
+    ],
+    [
+     "d5a5"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check which squares the black pieces attack.",
+      "de": "Prüfe, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Safe squares: a2, a5, a8, b3, b5, b7, c4, c5, c6, d1, d2, d3, d4, d6, d8, e5, e6, f3, f5, f7, g2, g5 and h1. On d7, e4, g8 or h5 the queen could be captured.",
+    "de": "Sichere Felder: a2, a5, a8, b3, b5, b7, c4, c5, c6, d1, d2, d3, d4, d6, d8, e5, e6, f3, f5, f7, g2, g5 und h1. Auf d7, e4, g8 oder h5 könnte die Dame geschlagen werden."
+   }
+  },
+  {
+   "id": "bishop-escape",
+   "category": "safe",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/4n3/8/1p6/2B5/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Save the bishop",
+    "de": "Rette den Läufer"
+   },
+   "task": {
+    "en": "Your bishop is attacked. Move it to a safe square.",
+    "de": "Der Läufer wird angegriffen. Ziehe ihn auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "c4b5"
+    ],
+    [
+     "c4e6"
+    ],
+    [
+     "c4d3"
+    ],
+    [
+     "c4e2"
+    ],
+    [
+     "c4f1"
+    ],
+    [
+     "c4b3"
+    ],
+    [
+     "c4a2"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check which squares the black pieces attack.",
+      "de": "Prüfe, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Safe squares: a2, b3, b5, d3, e2, e6 and f1. On d5, f7 or g8 the bishop could be captured.",
+    "de": "Sichere Felder: a2, b3, b5, d3, e2, e6 und f1. Auf d5, f7 oder g8 könnte der Läufer geschlagen werden."
+   }
+  },
+  {
+   "id": "capture-checker",
+   "category": "safe",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/8/8/8/8/5n2/5PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Out of check: capture!",
+    "de": "Raus aus dem Schach: schlagen!"
+   },
+   "task": {
+    "en": "Your king is in check. Capture the piece that gives check!",
+    "de": "Dein König steht im Schach. Schlage die Figur, die Schach gibt!"
+   },
+   "solutions": [
+    [
+     "g2f3"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "First find the piece that attacks your king.",
+      "de": "Finde zuerst die Figur, die deinen König angreift."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The pawn on g2 captures the knight, and the check is over.",
+    "de": "Der Bauer auf g2 schlägt den Springer, und das Schach ist vorbei."
+   }
+  },
+  {
+   "id": "king-safe-two",
+   "category": "safe",
+   "level": 3,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/r7/4K3/8/8/2n5/8 w - - 0 1",
+   "goal": {
+    "en": "Two attackers",
+    "de": "Zwei Angreifer"
+   },
+   "task": {
+    "en": "Tap every square where the white king can move safely.",
+    "de": "Tippe auf alle Felder, auf die der weisse König sicher ziehen kann."
+   },
+   "answer": {
+    "mode": "all",
+    "from": "e5",
+    "squares": [
+     "d5",
+     "e4",
+     "f4",
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at which squares the black pieces attack.",
+      "de": "Schau, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king has 4 safe squares. The rook guards the whole 6th row and the knight guards d4.",
+    "de": "Der König hat 4 sichere Felder. Der Turm bewacht die ganze 6. Reihe und der Springer d4."
+   }
+  },
+  {
+   "id": "check-queen-blocked",
+   "category": "safe",
+   "level": 3,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "7k/q7/8/8/8/8/5PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No: the queen aims at g1, but the pawn on f2 blocks her diagonal.",
+    "de": "Nein: Die Dame zielt auf g1, aber der Bauer auf f2 versperrt ihre Diagonale."
+   }
+  },
+  {
+   "id": "check-long-diagonal",
+   "category": "safe",
+   "level": 3,
+   "type": "choice",
+   "rules": "legal",
+   "check": "inCheck",
+   "fen": "6kb/8/8/8/8/8/8/K7 w - - 0 1",
+   "goal": {
+    "en": "Recognising check",
+    "de": "Schach erkennen"
+   },
+   "task": {
+    "en": "Is the white king in check?",
+    "de": "Steht der weisse König im Schach?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look at every black piece: does it attack the king?",
+      "de": "Schau dir jede schwarze Figur an: Greift sie den König an?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: the bishop attacks along the whole long diagonal from h8 to a1.",
+    "de": "Ja: Der Läufer greift über die ganze lange Diagonale von h8 bis a1 an."
+   }
+  },
+  {
+   "id": "knight-escape-2",
+   "category": "safe",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/4b3/8/3p4/4N3/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Where is the knight safe?",
+    "de": "Wo ist der Springer sicher?"
+   },
+   "task": {
+    "en": "Your knight is attacked. Move it to a safe square.",
+    "de": "Der Springer wird angegriffen. Ziehe ihn auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "e4g3"
+    ],
+    [
+     "e4f2"
+    ],
+    [
+     "e4d2"
+    ],
+    [
+     "e4c3"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check which squares the black pieces attack.",
+      "de": "Prüfe, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Safe squares: c3, d2, f2 and g3. On c5, d6, f6 or g5 the knight could be captured.",
+    "de": "Sichere Felder: c3, d2, f2 und g3. Auf c5, d6, f6 oder g5 könnte der Springer geschlagen werden."
+   }
+  },
+  {
+   "id": "rook-escape-2",
+   "category": "safe",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/1b3ppp/8/8/3n4/5R2/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Two attackers, one rook",
+    "de": "Zwei Angreifer, ein Turm"
+   },
+   "task": {
+    "en": "Your rook is attacked. Move it to a safe square.",
+    "de": "Der Turm wird angegriffen. Ziehe ihn auf ein sicheres Feld."
+   },
+   "solutions": [
+    [
+     "f3f4"
+    ],
+    [
+     "f3g3"
+    ],
+    [
+     "f3h3"
+    ],
+    [
+     "f3f2"
+    ],
+    [
+     "f3f1"
+    ],
+    [
+     "f3e3"
+    ],
+    [
+     "f3d3"
+    ],
+    [
+     "f3c3"
+    ],
+    [
+     "f3a3"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check which squares the black pieces attack.",
+      "de": "Prüfe, welche Felder die schwarzen Figuren angreifen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Safe squares: a3, c3, d3, e3, f1, f2, f4, g3 and h3. On b3, f5, f6 or f7 the rook could be captured.",
+    "de": "Sichere Felder: a3, c3, d3, e3, f1, f2, f4, g3 und h3. Auf b3, f5, f6 oder f7 könnte der Turm geschlagen werden."
+   }
+  },
+  {
+   "id": "capture-checker-2",
+   "category": "safe",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/8/8/1b6/8/2N5/3PqP2/4K3 w - - 0 1",
+   "goal": {
+    "en": "Who may capture?",
+    "de": "Wer darf schlagen?"
+   },
+   "task": {
+    "en": "Your king is in check. Capture the piece that gives check!",
+    "de": "Dein König steht im Schach. Schlage die Figur, die Schach gibt!"
+   },
+   "solutions": [
+    [
+     "c3e2"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "First find the piece that attacks your king.",
+      "de": "Finde zuerst die Figur, die deinen König angreift."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The king may not capture the queen, because the bishop on b5 protects her. The knight can!",
+    "de": "Der König darf die Dame nicht schlagen, weil der Läufer auf b5 sie schützt. Der Springer schon!"
+   }
+  },
+  {
+   "id": "which-piece-attacked",
+   "category": "attack",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/5r2/2n5/8/2B5/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Spotting attacks",
+    "de": "Angriffe erkennen"
+   },
+   "task": {
+    "en": "Which black piece does the bishop attack? Tap it.",
+    "de": "Welche schwarze Figur greift der Läufer an? Tippe darauf."
+   },
+   "answer": {
+    "mode": "one",
+    "squares": [
+     "f7"
+    ]
+   },
+   "explanation": {
+    "en": "The bishop attacks the rook on f7 along the diagonal c4–f7. The knight on c6 is safe.",
+    "de": "Der Läufer greift den Turm auf f7 über die Diagonale c4–f7 an. Der Springer auf c6 ist sicher."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Follow the bishop's diagonals from c4.",
+      "de": "Folge den Diagonalen des Läufers von c4 aus."
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-attacks",
+   "category": "attack",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/3n2p1/8/8/b2R4/8/8/7K w - - 0 1",
+   "goal": {
+    "en": "Who is under attack?",
+    "de": "Wer wird angegriffen?"
+   },
+   "task": {
+    "en": "Tap every black piece the rook attacks.",
+    "de": "Tippe auf alle schwarzen Figuren, die der Turm angreift."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "a4",
+     "d7"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The rook moves in straight lines: up, down, left and right.",
+      "de": "Der Turm zieht gerade: nach oben, unten, links und rechts."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The rook attacks the bishop on a4 and the knight on d7.",
+    "de": "Der Turm greift den Läufer auf a4 und den Springer auf d7 an."
+   }
+  },
+  {
+   "id": "knight-attacks",
+   "category": "attack",
+   "level": 1,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/3r4/p5b1/4N3/8/8/8/K7 w - - 0 1",
+   "goal": {
+    "en": "What does the knight attack?",
+    "de": "Was greift der Springer an?"
+   },
+   "task": {
+    "en": "Tap every black piece the knight attacks.",
+    "de": "Tippe auf alle schwarzen Figuren, die der Springer angreift."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "d7",
+     "g6"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The knight jumps in an L: two squares one way, then one to the side.",
+      "de": "Der Springer springt wie ein L: zwei Felder in eine Richtung, dann eins zur Seite."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The knight attacks the rook on d7 and the bishop on g6.",
+    "de": "Der Springer greift den Turm auf d7 und den Läufer auf g6 an."
+   }
+  },
+  {
+   "id": "free-capture-rook",
+   "category": "attack",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "k7/2p5/3b4/8/8/8/8/1K1R3n w - - 0 1",
+   "goal": {
+    "en": "Capture for free",
+    "de": "Gratis schlagen"
+   },
+   "task": {
+    "en": "Capture a black piece that is not protected.",
+    "de": "Schlage eine schwarze Figur, die nicht geschützt ist."
+   },
+   "solutions": [
+    [
+     "d1h1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Before you capture, ask: can Black capture back?",
+      "de": "Frage dich vor dem Schlagen: Kann Schwarz zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rxh1 wins the knight for free. On d6 the pawn on c7 would capture back.",
+    "de": "Txh1 gewinnt den Springer gratis. Auf d6 würde der Bauer auf c7 zurückschlagen."
+   }
+  },
+  {
+   "id": "defend-the-knight",
+   "category": "attack",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4r1k1/5ppp/8/8/4N3/8/3P1PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Defending a piece",
+    "de": "Eine Figur verteidigen"
+   },
+   "task": {
+    "en": "The rook attacks your knight. Protect the knight with a pawn.",
+    "de": "Der Turm greift deinen Springer an. Schütze den Springer mit einem Bauern."
+   },
+   "solutions": [
+    [
+     "d2d3"
+    ],
+    [
+     "f2f3"
+    ]
+   ],
+   "explanation": {
+    "en": "After d3 or f3 a pawn protects the knight. If the rook captures it, the pawn captures back.",
+    "de": "Nach d3 oder f3 schützt ein Bauer den Springer. Schlägt der Turm, schlägt der Bauer zurück."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn protects the squares diagonally in front of it.",
+      "de": "Ein Bauer schützt die Felder schräg vor sich."
+     }
+    }
+   ]
+  },
+  {
+   "id": "queen-attacks",
+   "category": "attack",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/3r4/7b/n7/5P2/7K/3Q4 w - - 0 1",
+   "goal": {
+    "en": "What does the queen attack?",
+    "de": "Was greift die Dame an?"
+   },
+   "task": {
+    "en": "Tap every black piece the queen attacks.",
+    "de": "Tippe auf alle schwarzen Figuren, die die Dame angreift."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "a4",
+     "d6"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The queen moves like a rook and like a bishop together.",
+      "de": "Die Dame zieht wie Turm und Läufer zusammen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The queen attacks the knight on a4 and the rook on d6.",
+    "de": "Die Dame greift den Springer auf a4 und den Turm auf d6 an."
+   }
+  },
+  {
+   "id": "pawn-attacks",
+   "category": "attack",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "7k/8/8/1b1nrp2/2P2P2/8/8/K7 w - - 0 1",
+   "goal": {
+    "en": "Pawns attack too",
+    "de": "Auch Bauern greifen an"
+   },
+   "task": {
+    "en": "Which black pieces can your pawns capture? Tap them all.",
+    "de": "Welche schwarzen Figuren können deine Bauern schlagen? Tippe auf alle."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "b5",
+     "d5",
+     "e5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn moves forward, but captures diagonally.",
+      "de": "Ein Bauer zieht nach vorne, schlägt aber schräg."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Your pawns can capture the bishop on b5, the knight on d5 and the rook on e5. The pawn on f5 is blocked, not attacked.",
+    "de": "Deine Bauern können den Läufer auf b5, den Springer auf d5 und den Turm auf e5 schlagen. Der Bauer auf f5 ist blockiert, nicht angegriffen."
+   }
+  },
+  {
+   "id": "who-attacks-queen",
+   "category": "attack",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "3r3k/8/b2p4/5n2/3Q4/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Find the attacker",
+    "de": "Finde den Angreifer"
+   },
+   "task": {
+    "en": "Which black piece attacks your queen? Tap it.",
+    "de": "Welche schwarze Figur greift deine Dame an? Tippe darauf."
+   },
+   "answer": {
+    "mode": "one",
+    "squares": [
+     "f5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The pawn on d6 blocks the rook.",
+      "de": "Der Bauer auf d6 blockiert den Turm."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "The knight on f5 attacks the queen. The rook on d8 is blocked by its own pawn.",
+    "de": "Der Springer auf f5 greift die Dame an. Der Turm auf d8 ist durch den eigenen Bauern blockiert."
+   }
+  },
+  {
+   "id": "loose-pieces",
+   "category": "attack",
+   "level": 2,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "r5k1/pp3ppp/2n5/8/4b3/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Loose pieces",
+    "de": "Ungeschützte Figuren"
+   },
+   "task": {
+    "en": "Which black pieces are not protected? Tap them all.",
+    "de": "Welche schwarzen Figuren sind nicht geschützt? Tippe auf alle."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "a8",
+     "b7",
+     "e4"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A piece is protected if another black piece could capture back on its square.",
+      "de": "Eine Figur ist geschützt, wenn eine andere schwarze Figur auf ihrem Feld zurückschlagen könnte."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Not protected: the rook on a8, the pawn on b7 and the bishop on e4. Loose pieces are easy targets!",
+    "de": "Nicht geschützt: der Turm auf a8, der Bauer auf b7 und der Läufer auf e4. Ungeschützte Figuren sind leichte Ziele!"
+   }
+  },
+  {
+   "id": "free-capture-bishop",
+   "category": "attack",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/5r2/n7/8/2B5/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Which piece is free?",
+    "de": "Welche Figur ist gratis?"
+   },
+   "task": {
+    "en": "Capture a black piece that is not protected.",
+    "de": "Schlage eine schwarze Figur, die nicht geschützt ist."
+   },
+   "solutions": [
+    [
+     "c4a6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Before you capture, ask: can Black capture back?",
+      "de": "Frage dich vor dem Schlagen: Kann Schwarz zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bxa6 wins the knight. The rook on f7 is protected by the king.",
+    "de": "Lxa6 gewinnt den Springer. Der Turm auf f7 wird vom König geschützt."
+   }
+  },
+  {
+   "id": "free-capture-knight",
+   "category": "attack",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/1p3p2/2r1b3/1n6/3N4/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Knight hunting",
+    "de": "Springerjagd"
+   },
+   "task": {
+    "en": "Capture a black piece that is not protected.",
+    "de": "Schlage eine schwarze Figur, die nicht geschützt ist."
+   },
+   "solutions": [
+    [
+     "d4b5"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Before you capture, ask: can Black capture back?",
+      "de": "Frage dich vor dem Schlagen: Kann Schwarz zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Nxb5 wins the knight for free. The rook and the bishop are protected by pawns.",
+    "de": "Sxb5 gewinnt den Springer gratis. Turm und Läufer werden von Bauern geschützt."
+   }
+  },
+  {
+   "id": "defend-bishop",
+   "category": "attack",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4r1k1/5ppp/8/8/4B3/8/3P1PPP/R5K1 w - - 0 1",
+   "goal": {
+    "en": "Protect the bishop",
+    "de": "Schütze den Läufer"
+   },
+   "task": {
+    "en": "Your bishop is attacked. Protect it with another piece!",
+    "de": "Dein Läufer wird angegriffen. Schütze ihn mit einer anderen Figur!"
+   },
+   "solutions": [
+    [
+     "d2d3"
+    ],
+    [
+     "f2f3"
+    ],
+    [
+     "a1a4"
+    ],
+    [
+     "a1e1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Which piece could capture back on that square?",
+      "de": "Welche Figur könnte auf diesem Feld zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Good protecting moves: d3, f3, Ra4 and Re1. Now the rook would lose itself if it captured.",
+    "de": "Gute Schutzzüge: d3, f3, Ta4 und Te1. Jetzt würde der Turm beim Schlagen selbst verloren gehen."
+   }
+  },
+  {
+   "id": "unprotected-piece",
+   "category": "attack",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/5ppp/4p3/3n3n/8/8/5PPP/3Q2K1 w - - 0 1",
+   "goal": {
+    "en": "Capture what is not protected",
+    "de": "Ungeschützte Figuren schlagen"
+   },
+   "task": {
+    "en": "Win a knight with the queen. Careful: only one is unprotected.",
+    "de": "Gewinne mit der Dame einen Springer. Achtung: Nur einer ist ungeschützt."
+   },
+   "solutions": [
+    [
+     "d1h5"
+    ]
+   ],
+   "explanation": {
+    "en": "The knight on d5 is protected by the pawn on e6. The knight on h5 is not, so the queen takes it for free.",
+    "de": "Der Springer auf d5 wird vom Bauern auf e6 geschützt. Der Springer auf h5 nicht, also schlägt die Dame ihn gratis."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Check which knight a black pawn protects.",
+      "de": "Prüfe, welchen Springer ein schwarzer Bauer schützt."
+     }
+    }
+   ]
+  },
+  {
+   "id": "all-attacked",
+   "category": "attack",
+   "level": 3,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "6k1/8/q6n/2p1r3/6b1/R4N2/1B6/6K1 w - - 0 1",
+   "goal": {
+    "en": "See the whole board",
+    "de": "Das ganze Brett sehen"
+   },
+   "task": {
+    "en": "Tap every black piece that White attacks.",
+    "de": "Tippe auf alle schwarzen Figuren, die Weiss angreift."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "a6",
+     "e5"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Check the rook, the bishop and the knight one after the other.",
+      "de": "Prüfe nacheinander Turm, Läufer und Springer."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "White attacks the queen on a6 and the rook on e5.",
+    "de": "Weiss greift die Dame auf a6 und den Turm auf e5 an."
+   }
+  },
+  {
+   "id": "loose-pieces-2",
+   "category": "attack",
+   "level": 3,
+   "type": "squares",
+   "rules": "legal",
+   "fen": "1n1qk2r/6p1/p4n2/2bp4/8/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Find the weak spots",
+    "de": "Finde die Schwachstellen"
+   },
+   "task": {
+    "en": "Which black pieces are not protected? Tap them all.",
+    "de": "Welche schwarzen Figuren sind nicht geschützt? Tippe auf alle."
+   },
+   "answer": {
+    "mode": "all",
+    "squares": [
+     "c5",
+     "g7",
+     "h8"
+    ]
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A piece is protected if another black piece could capture back on its square.",
+      "de": "Eine Figur ist geschützt, wenn eine andere schwarze Figur auf ihrem Feld zurückschlagen könnte."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Not protected: the bishop on c5, the pawn on g7 and the rook on h8. Loose pieces are easy targets!",
+    "de": "Nicht geschützt: der Läufer auf c5, der Bauer auf g7 und der Turm auf h8. Ungeschützte Figuren sind leichte Ziele!"
+   }
+  },
+  {
+   "id": "free-capture-queen",
+   "category": "attack",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "2b3k1/3r1pp1/7p/n7/8/8/3Q1PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Careful with the queen",
+    "de": "Vorsicht mit der Dame"
+   },
+   "task": {
+    "en": "Capture a black piece that is not protected.",
+    "de": "Schlage eine schwarze Figur, die nicht geschützt ist."
+   },
+   "solutions": [
+    [
+     "d2a5"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Before you capture, ask: can Black capture back?",
+      "de": "Frage dich vor dem Schlagen: Kann Schwarz zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qxa5 wins the knight. On d7 the bishop would capture back, and on h6 the pawn on g7.",
+    "de": "Dxa5 gewinnt den Springer. Auf d7 würde der Läufer zurückschlagen, auf h6 der Bauer auf g7."
+   }
+  },
+  {
+   "id": "defend-knight-2",
+   "category": "attack",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "2r3k1/5ppp/8/2N5/8/8/1P3PPP/3Q2K1 w - - 0 1",
+   "goal": {
+    "en": "Many ways to protect",
+    "de": "Viele Wege zu schützen"
+   },
+   "task": {
+    "en": "Your knight is attacked. Protect it with another piece!",
+    "de": "Dein Springer wird angegriffen. Schütze ihn mit einer anderen Figur!"
+   },
+   "solutions": [
+    [
+     "b2b4"
+    ],
+    [
+     "d1c2"
+    ],
+    [
+     "d1d4"
+    ],
+    [
+     "d1d5"
+    ],
+    [
+     "d1d6"
+    ],
+    [
+     "d1h5"
+    ],
+    [
+     "d1c1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Which piece could capture back on that square?",
+      "de": "Welche Figur könnte auf diesem Feld zurückschlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Good protecting moves: b4, Qc2, Qd4, Qd5, Qd6, Qh5 and Qc1. A pawn or the queen can do the job.",
+    "de": "Gute Schutzzüge: b4, Dc2, Dd4, Dd5, Dd6, Dh5 und Dc1. Ein Bauer oder die Dame können das übernehmen."
+   }
+  },
+  {
+   "id": "back-rank-mate",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "6k1/5ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1",
+   "goal": {
+    "en": "Back-rank mate",
+    "de": "Grundreihenmatt"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "d1d8"
+    ]
+   ],
+   "explanation": {
+    "en": "Rd8 is checkmate: the king cannot escape because its own pawns block the way.",
+    "de": "Td8 ist matt: Der König kann nicht flüchten, weil seine eigenen Bauern den Weg versperren."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "The black king is trapped behind its own pawns.",
+      "de": "Der schwarze König ist hinter seinen eigenen Bauern eingesperrt."
+     }
+    }
+   ]
+  },
+  {
+   "id": "is-it-mate",
+   "category": "mate",
+   "level": 1,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "3R2k1/5ppp/8/8/8/8/5PPP/6K1 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Is this checkmate?",
+    "de": "Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "explanation": {
+    "en": "Yes. The rook gives check along the 8th row, and the king has no free square.",
+    "de": "Ja. Der Turm gibt Schach auf der 8. Reihe, und der König hat kein freies Feld."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the rook?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Turm schlagen?"
+     }
+    }
+   ]
+  },
+  {
+   "id": "back-rank-queenside",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "1k6/ppp5/8/8/8/8/8/4R1K1 w - - 0 1",
+   "goal": {
+    "en": "Back-rank mate",
+    "de": "Grundreihenmatt"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "e1e8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The king is trapped behind its own pawns.",
+      "de": "Der König ist hinter seinen eigenen Bauern eingesperrt."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Re8# is checkmate: the king is attacked and cannot escape.",
+    "de": "Te8# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "queen-back-rank",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "6k1/5ppp/8/8/8/8/2Q2PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "The queen on the back rank",
+    "de": "Die Dame auf der Grundreihe"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "c2c8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The king is trapped behind its own pawns.",
+      "de": "Der König ist hinter seinen eigenen Bauern eingesperrt."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qc8# is checkmate: the king is attacked and cannot escape.",
+    "de": "Dc8# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "queen-kiss",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "4k3/8/4K3/7Q/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "The queen with her king",
+    "de": "Die Dame mit ihrem König"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "h5h8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Put the queen right next to the black king, protected by your king.",
+      "de": "Stelle die Dame direkt neben den schwarzen König, geschützt von deinem König."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qh8# is checkmate: the king is attacked and cannot escape.",
+    "de": "Dh8# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "two-rooks-final",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/R7/1R6/8/8/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Two rooks",
+    "de": "Zwei Türme"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "b6b8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "One rook already guards the 7th row.",
+      "de": "Ein Turm bewacht schon die 7. Reihe."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rb8# is checkmate: the king is attacked and cannot escape.",
+    "de": "Tb8# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "mate-yes-queen",
+   "category": "mate",
+   "level": 1,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "k7/1Q6/1K6/8/8/8/8/8 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Black is to move. Is this checkmate?",
+    "de": "Schwarz ist am Zug. Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the attacker?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Angreifer schlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: the queen gives check, your king protects her, and the black king has no square left.",
+    "de": "Ja: Die Dame gibt Schach, dein König schützt sie, und der schwarze König hat kein Feld mehr."
+   }
+  },
+  {
+   "id": "give-check-rook",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/8/8/8/8/8/8/R5K1 w - - 0 1",
+   "goal": {
+    "en": "Give check",
+    "de": "Schach geben"
+   },
+   "task": {
+    "en": "Give check with the rook.",
+    "de": "Gib Schach mit dem Turm."
+   },
+   "solutions": [
+    [
+     "a1a8"
+    ],
+    [
+     "a1e1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check means: the king is attacked.",
+      "de": "Schach bedeutet: Der König wird angegriffen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Checks here: Ra8+ and Re1+. A check must always be answered.",
+    "de": "Schachgebote hier: Ta8+ und Te1+. Auf ein Schach muss man immer reagieren."
+   }
+  },
+  {
+   "id": "give-check-knight",
+   "category": "mate",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/p7/8/8/4N3/8/P7/6K1 w - - 0 1",
+   "goal": {
+    "en": "Check with the knight",
+    "de": "Schach mit dem Springer"
+   },
+   "task": {
+    "en": "Give check with the knight.",
+    "de": "Gib Schach mit dem Springer."
+   },
+   "solutions": [
+    [
+     "e4d6"
+    ],
+    [
+     "e4f6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Check means: the king is attacked.",
+      "de": "Schach bedeutet: Der König wird angegriffen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Checks here: Nd6+ and Nf6+. A check must always be answered.",
+    "de": "Schachgebote hier: Sd6+ und Sf6+. Auf ein Schach muss man immer reagieren."
+   }
+  },
+  {
+   "id": "queen-and-king-mate",
+   "category": "mate",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/Q7/6K1/8/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Queen and king together",
+    "de": "Dame und König zusammen"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "a7g7"
+    ],
+    [
+     "a7h7"
+    ],
+    [
+     "a7a8"
+    ],
+    [
+     "a7b8"
+    ]
+   ],
+   "explanation": {
+    "en": "Several moves give checkmate here, for example Qg7 or Qh7: the queen attacks the king and your king protects her.",
+    "de": "Hier sind mehrere Züge matt, zum Beispiel Dg7 oder Dh7: Die Dame greift den König an und dein König schützt sie."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Your king protects the queen when she comes close to the black king.",
+      "de": "Dein König schützt die Dame, wenn sie nah an den schwarzen König kommt."
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-king-edge",
+   "category": "mate",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "8/8/8/5K1k/8/8/8/R7 w - - 0 1",
+   "goal": {
+    "en": "Rook and king",
+    "de": "Turm und König"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "a1h1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Your king takes away the escape squares.",
+      "de": "Dein König nimmt die Fluchtfelder weg."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rh1# is checkmate: the king is attacked and cannot escape.",
+    "de": "Th1# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "smothered-final",
+   "category": "mate",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Smothered by its own pieces",
+    "de": "Von eigenen Figuren eingeschlossen"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "g5f7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Only a knight can give check here.",
+      "de": "Hier kann nur ein Springer Schach geben."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Nf7# is checkmate: the king is attacked and cannot escape.",
+    "de": "Sf7# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "queen-bishop-mate",
+   "category": "mate",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "6k1/5p1p/6pQ/8/8/8/1B6/6K1 w - - 0 1",
+   "goal": {
+    "en": "Queen and bishop together",
+    "de": "Dame und Läufer zusammen"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "h6g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The bishop on b2 protects the square g7.",
+      "de": "Der Läufer auf b2 schützt das Feld g7."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qg7# is checkmate: the king is attacked and cannot escape.",
+    "de": "Dg7# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "black-back-rank",
+   "category": "mate",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "3r2k1/8/8/8/8/8/6PP/7K b - - 0 1",
+   "goal": {
+    "en": "Black gives mate",
+    "de": "Schwarz setzt matt"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "d8d1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The white king is stuck behind its own pawns.",
+      "de": "Der weisse König steckt hinter seinen eigenen Bauern fest."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rd1# is checkmate: the king is attacked and cannot escape.",
+    "de": "Td1# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "mate-no-escape",
+   "category": "mate",
+   "level": 2,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "R5k1/5pp1/8/8/8/8/8/6K1 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Black is to move. Is this checkmate?",
+    "de": "Schwarz ist am Zug. Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the attacker?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Angreifer schlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No: the king can escape to h7.",
+    "de": "Nein: Der König kann nach h7 flüchten."
+   }
+  },
+  {
+   "id": "mate-no-capture",
+   "category": "mate",
+   "level": 2,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "6k1/5pQp/8/8/8/8/8/6K1 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Black is to move. Is this checkmate?",
+    "de": "Schwarz ist am Zug. Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the attacker?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Angreifer schlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No: the queen is not protected, so the king simply captures her.",
+    "de": "Nein: Die Dame ist nicht geschützt, also schlägt der König sie einfach."
+   }
+  },
+  {
+   "id": "arabian-mate",
+   "category": "mate",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/8/5N2/8/8/8/8/K5R1 w - - 0 1",
+   "goal": {
+    "en": "The Arabian mate",
+    "de": "Das arabische Matt"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "g1g8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Rook and knight work together in the corner.",
+      "de": "Turm und Springer arbeiten in der Ecke zusammen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rg8# is checkmate: the king is attacked and cannot escape.",
+    "de": "Tg8# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "pawn-mate",
+   "category": "mate",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/5K1p/6P1/8/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Even a pawn can give mate",
+    "de": "Auch ein Bauer kann matt setzen"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "g6g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Which pawn move gives check?",
+      "de": "Welcher Bauernzug gibt Schach?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "g7# is checkmate: the king is attacked and cannot escape.",
+    "de": "g7# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "black-smothered",
+   "category": "mate",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "6k1/8/8/8/4n3/8/6PP/6RK b - - 0 1",
+   "goal": {
+    "en": "Smothered mate for Black",
+    "de": "Ersticktes Matt für Schwarz"
+   },
+   "task": {
+    "en": "Checkmate in one move.",
+    "de": "Setze matt in einem Zug."
+   },
+   "solutions": [
+    [
+     "e4f2"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The white king has no free square. Find the knight check.",
+      "de": "Der weisse König hat kein freies Feld. Finde das Springerschach."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Nf2# is checkmate: the king is attacked and cannot escape.",
+    "de": "Sf2# ist matt: Der König wird angegriffen und kann nicht flüchten."
+   }
+  },
+  {
+   "id": "stalemate",
+   "category": "mate",
+   "level": 3,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "k7/2Q5/1K6/8/8/8/8/8 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Black is to move. Is this checkmate?",
+    "de": "Schwarz ist am Zug. Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "no"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the attacker?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Angreifer schlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "No! The king is not in check, but it has no move. That is stalemate, a draw.",
+    "de": "Nein! Der König steht nicht im Schach, hat aber keinen Zug. Das ist Patt, also unentschieden."
+   }
+  },
+  {
+   "id": "mate-yes-smothered",
+   "category": "mate",
+   "level": 3,
+   "type": "choice",
+   "rules": "legal",
+   "check": "isMate",
+   "fen": "6rk/5Npp/8/8/8/8/8/6K1 b - - 0 1",
+   "goal": {
+    "en": "Recognising checkmate",
+    "de": "Matt erkennen"
+   },
+   "task": {
+    "en": "Black is to move. Is this checkmate?",
+    "de": "Schwarz ist am Zug. Ist das matt?"
+   },
+   "options": [
+    {
+     "id": "yes",
+     "label": {
+      "en": "Yes",
+      "de": "Ja"
+     }
+    },
+    {
+     "id": "no",
+     "label": {
+      "en": "No",
+      "de": "Nein"
+     }
+    }
+   ],
+   "answer": {
+    "choice": "yes"
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Can the king move, block the check or capture the attacker?",
+      "de": "Kann der König ziehen, das Schach blockieren oder den Angreifer schlagen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Yes: the knight gives check and the king is surrounded by its own pieces.",
+    "de": "Ja: Der Springer gibt Schach, und der König ist von seinen eigenen Figuren umzingelt."
+   }
+  },
+  {
+   "id": "knight-fork",
+   "category": "tactics",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "r3k3/8/8/1N6/8/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "The fork",
+    "de": "Die Gabel"
+   },
+   "task": {
+    "en": "Attack the king and the rook at the same time.",
+    "de": "Greife König und Turm gleichzeitig an."
+   },
+   "solutions": [
+    [
+     "b5c7",
+     "*",
+     "c7a8"
+    ]
+   ],
+   "explanation": {
+    "en": "Nc7+ attacks the king and the rook together. The king has to move, and the knight captures the rook.",
+    "de": "Sc7+ greift König und Turm zugleich an. Der König muss ziehen, und der Springer schlägt den Turm."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Look for a knight jump that gives check.",
+      "de": "Suche einen Springersprung, der Schach gibt."
+     }
+    }
+   ]
+  },
+  {
+   "id": "fork-king-queen",
+   "category": "tactics",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "2q3k1/5ppp/8/3N4/8/8/5PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Fork: king and queen",
+    "de": "Gabel: König und Dame"
+   },
+   "task": {
+    "en": "Find the knight jump that attacks the king and the queen.",
+    "de": "Finde den Springersprung, der König und Dame angreift."
+   },
+   "solutions": [
+    [
+     "d5e7",
+     "g8h8",
+     "e7c8"
+    ],
+    [
+     "d5e7",
+     "g8f8",
+     "e7c8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Look for a check that also hits c8.",
+      "de": "Suche ein Schach, das auch c8 trifft."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Ne7+ forks king and queen. After the king moves, the knight takes the queen.",
+    "de": "Se7+ ist eine Gabel gegen König und Dame. Nachdem der König gezogen hat, schlägt der Springer die Dame."
+   }
+  },
+  {
+   "id": "fork-king-rook",
+   "category": "tactics",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/1r6/8/8/2N5/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Fork: king and rook",
+    "de": "Gabel: König und Turm"
+   },
+   "task": {
+    "en": "Check the king with the knight and win the rook.",
+    "de": "Gib mit dem Springer Schach und gewinne den Turm."
+   },
+   "solutions": [
+    [
+     "c4d6",
+     "e8f8",
+     "d6b7"
+    ],
+    [
+     "c4d6",
+     "e8e7",
+     "d6b7"
+    ],
+    [
+     "c4d6",
+     "e8d7",
+     "d6b7"
+    ],
+    [
+     "c4d6",
+     "e8d8",
+     "d6b7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "From d6 the knight attacks e8 and b7.",
+      "de": "Von d6 aus greift der Springer e8 und b7 an."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Nd6+ forks king and rook. After the king moves, Nxb7 wins the rook.",
+    "de": "Sd6+ ist eine Gabel gegen König und Turm. Nach dem Königszug gewinnt Sxb7 den Turm."
+   }
+  },
+  {
+   "id": "pawn-fork-knights",
+   "category": "tactics",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/8/3n1n2/8/4P3/8/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Pawn fork",
+    "de": "Bauerngabel"
+   },
+   "task": {
+    "en": "Attack both knights with one pawn move.",
+    "de": "Greife beide Springer mit einem Bauernzug an."
+   },
+   "solutions": [
+    [
+     "e4e5",
+     "d6e8",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6e4",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "f6e8",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "f6e4",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8h8",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8h8",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "g8h7",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8h7",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "g8g7",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8f7",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8f8",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "g8f8",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6b7",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6c8",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6f7",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6f5",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6c4",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "d6b5",
+     "e5f6"
+    ],
+    [
+     "e4e5",
+     "f6d7",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "f6h7",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "f6h5",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "f6g4",
+     "e5d6"
+    ],
+    [
+     "e4e5",
+     "f6d5",
+     "e5d6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "A pawn attacks the two squares diagonally in front of it.",
+      "de": "Ein Bauer greift die beiden Felder schräg vor sich an."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "e5 attacks both knights. Only one can escape, so White wins a piece.",
+    "de": "e5 greift beide Springer an. Nur einer kann flüchten, also gewinnt Weiss eine Figur."
+   }
+  },
+  {
+   "id": "pin-and-attack",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/1p3ppp/2n5/1B6/3P4/8/5PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "The pin",
+    "de": "Die Fesselung"
+   },
+   "task": {
+    "en": "The black knight cannot move, or its king would be in check. Attack it with a pawn!",
+    "de": "Der schwarze Springer darf nicht ziehen, sonst stünde sein König im Schach. Greife ihn mit einem Bauern an!"
+   },
+   "solutions": [
+    [
+     "d4d5"
+    ]
+   ],
+   "explanation": {
+    "en": "After d5 a pawn attacks the pinned knight. It cannot run away, so Black loses it.",
+    "de": "Nach d5 greift ein Bauer den gefesselten Springer an. Er kann nicht fliehen, also verliert Schwarz ihn."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Which pawn can move forward and attack c6?",
+      "de": "Welcher Bauer kann vorrücken und c6 angreifen?"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-skewer",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "8/8/2k4q/8/8/8/5PPP/R5K1 w - - 0 1",
+   "goal": {
+    "en": "The skewer",
+    "de": "Der Spiess"
+   },
+   "task": {
+    "en": "Give check so that the queen behind the king is lost.",
+    "de": "Gib Schach, sodass die Dame hinter dem König verloren geht."
+   },
+   "solutions": [
+    [
+     "a1a6",
+     "*",
+     "a6h6"
+    ]
+   ],
+   "explanation": {
+    "en": "Ra6+ forces the king to step aside. Then the rook captures the queen on h6.",
+    "de": "Ta6+ zwingt den König zur Seite. Danach schlägt der Turm die Dame auf h6."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A rook check along the 6th row hits the king first, then the queen.",
+      "de": "Ein Turmschach auf der 6. Reihe trifft zuerst den König, dann die Dame."
+     }
+    }
+   ]
+  },
+  {
+   "id": "pawn-fork-protected",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/6p1/2n1b3/8/3P4/8/8/3Q2K1 w - - 0 1",
+   "goal": {
+    "en": "Protected pawn fork",
+    "de": "Geschützte Bauerngabel"
+   },
+   "task": {
+    "en": "Attack two black pieces at once with a pawn.",
+    "de": "Greife mit einem Bauern zwei schwarze Figuren gleichzeitig an."
+   },
+   "solutions": [
+    [
+     "d4d5",
+     "c6d8",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "e6d7",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "e6d5",
+     "d1d5"
+    ],
+    [
+     "d4d5",
+     "g8h8",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g8h8",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "g8h7",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g8h7",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "g8f7",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g8f8",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g8f8",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "g7g6",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g7g6",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "g7g5",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "g7g5",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6a7",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6b8",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6e7",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6e5",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6d4",
+     "d1d4"
+    ],
+    [
+     "d4d5",
+     "c6b4",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "c6a5",
+     "d5e6"
+    ],
+    [
+     "d4d5",
+     "e6c8",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "e6f7",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "e6f5",
+     "d5c6"
+    ],
+    [
+     "d4d5",
+     "e6g4",
+     "d1g4"
+    ],
+    [
+     "d4d5",
+     "e6h3",
+     "d5c6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Which pawn can step between the knight and the bishop?",
+      "de": "Welcher Bauer kann zwischen Springer und Läufer vorrücken?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "d5 attacks the knight and the bishop. If the bishop takes, the queen takes back. Black loses a piece.",
+    "de": "d5 greift Springer und Läufer an. Schlägt der Läufer, schlägt die Dame zurück. Schwarz verliert eine Figur."
+   }
+  },
+  {
+   "id": "queen-fork",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/8/8/8/7r/8/8/3Q2K1 w - - 0 1",
+   "goal": {
+    "en": "Queen fork",
+    "de": "Damengabel"
+   },
+   "task": {
+    "en": "Give check and attack the rook at the same time.",
+    "de": "Gib Schach und greife gleichzeitig den Turm an."
+   },
+   "solutions": [
+    [
+     "d1e1",
+     "e8f8",
+     "e1h4"
+    ],
+    [
+     "d1e1",
+     "e8f7",
+     "e1h4"
+    ],
+    [
+     "d1e1",
+     "e8d7",
+     "e1h4"
+    ],
+    [
+     "d1e1",
+     "e8d8",
+     "e1h4"
+    ],
+    [
+     "d1e1",
+     "h4e4",
+     "e1e4"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Look along the e-file and the diagonals.",
+      "de": "Schau auf die e-Linie und die Diagonalen."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qe1+ attacks the king and, along the diagonal, the rook on h4. Careful: after Qa4+ the rook would capture the queen!",
+    "de": "De1+ greift den König und über die Diagonale den Turm auf h4 an. Vorsicht: Nach Da4+ würde der Turm die Dame schlagen!"
+   }
+  },
+  {
+   "id": "queen-fork-diagonal",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "r7/7k/8/8/8/8/8/4Q1K1 w - - 0 1",
+   "goal": {
+    "en": "Fork on the long diagonal",
+    "de": "Gabel auf der langen Diagonale"
+   },
+   "task": {
+    "en": "Check the king and attack the rook in one move.",
+    "de": "Gib Schach und greife mit demselben Zug den Turm an."
+   },
+   "solutions": [
+    [
+     "e1e4",
+     "h7g8",
+     "e4a8"
+    ],
+    [
+     "e1e4",
+     "h7h8",
+     "e4a8"
+    ],
+    [
+     "e1e4",
+     "h7h6",
+     "e4a8"
+    ],
+    [
+     "e1e4",
+     "h7g7",
+     "e4a8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The long diagonal from a8 to h1 is the key.",
+      "de": "Die lange Diagonale von a8 nach h1 ist der Schlüssel."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qe4+ attacks the king on h7 and the rook on a8 at the same time.",
+    "de": "De4+ greift gleichzeitig den König auf h7 und den Turm auf a8 an."
+   }
+  },
+  {
+   "id": "bishop-fork",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/8/8/8/r7/3B4/8/6K1 w - - 0 1",
+   "goal": {
+    "en": "Bishop fork",
+    "de": "Läufergabel"
+   },
+   "task": {
+    "en": "Give check with the bishop and attack the rook too.",
+    "de": "Gib mit dem Läufer Schach und greife auch den Turm an."
+   },
+   "solutions": [
+    [
+     "d3b5",
+     "e8f8",
+     "b5a4"
+    ],
+    [
+     "d3b5",
+     "e8f7",
+     "b5a4"
+    ],
+    [
+     "d3b5",
+     "e8e7",
+     "b5a4"
+    ],
+    [
+     "d3b5",
+     "e8d8",
+     "b5a4"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "From b5 the bishop sees e8 and a4.",
+      "de": "Von b5 aus sieht der Läufer e8 und a4."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bb5+ forks king and rook. After the king moves, Bxa4 wins the rook.",
+    "de": "Lb5+ ist eine Gabel gegen König und Turm. Nach dem Königszug gewinnt Lxa4 den Turm."
+   }
+  },
+  {
+   "id": "double-attack",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6k1/6pp/8/n7/8/8/6PP/3Q2K1 w - - 0 1",
+   "goal": {
+    "en": "Double attack",
+    "de": "Doppelangriff"
+   },
+   "task": {
+    "en": "Give check and attack the loose knight.",
+    "de": "Gib Schach und greife den ungeschützten Springer an."
+   },
+   "solutions": [
+    [
+     "d1d5",
+     "g8f8",
+     "d5a5"
+    ],
+    [
+     "d1d5",
+     "g8h8",
+     "d5a8"
+    ],
+    [
+     "d1d5",
+     "g8h8",
+     "d5d8"
+    ],
+    [
+     "d1d8",
+     "g8f7",
+     "d8a5"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The knight on a5 has no protection.",
+      "de": "Der Springer auf a5 hat keinen Schutz."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qd5+ or Qd8+ checks the king and attacks the knight on a5. After the king moves, the queen takes the knight.",
+    "de": "Dd5+ oder Dd8+ gibt Schach und greift den Springer auf a5 an. Nach dem Königszug schlägt die Dame den Springer."
+   }
+  },
+  {
+   "id": "pin-attack-pawns",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/p7/8/8/4n3/8/3P1P2/4R1K1 w - - 0 1",
+   "goal": {
+    "en": "Attack the pinned piece",
+    "de": "Die gefesselte Figur angreifen"
+   },
+   "task": {
+    "en": "The knight on e4 is pinned to its king. Attack it with a pawn!",
+    "de": "Der Springer auf e4 ist an seinen König gefesselt. Greife ihn mit einem Bauern an!"
+   },
+   "solutions": [
+    [
+     "d2d3",
+     "e8f8",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "e8f8",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "e8f7",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "e8f7",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "e8e7",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "e8e7",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "e8d7",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "e8d7",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "e8d8",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "e8d8",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "a7a6",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "a7a6",
+     "e1e4"
+    ],
+    [
+     "d2d3",
+     "a7a5",
+     "d3e4"
+    ],
+    [
+     "d2d3",
+     "a7a5",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "e8f8",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "e8f8",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "e8f7",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "e8f7",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "e8e7",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "e8e7",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "e8d7",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "e8d7",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "e8d8",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "e8d8",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "a7a6",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "a7a6",
+     "e1e4"
+    ],
+    [
+     "f2f3",
+     "a7a5",
+     "f3e4"
+    ],
+    [
+     "f2f3",
+     "a7a5",
+     "e1e4"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Which pawn can attack e4 in one move?",
+      "de": "Welcher Bauer kann e4 mit einem Zug angreifen?"
+     }
+    }
+   ],
+   "explanation": {
+    "en": "After d3 or f3 the knight is attacked but may not move away. Black loses it.",
+    "de": "Nach d3 oder f3 wird der Springer angegriffen, darf aber nicht wegziehen. Schwarz verliert ihn."
+   }
+  },
+  {
+   "id": "pin-the-queen",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/8/8/4q3/8/8/5K2/1R6 w - - 0 1",
+   "goal": {
+    "en": "Pin the queen",
+    "de": "Die Dame fesseln"
+   },
+   "task": {
+    "en": "Pin the queen to her king and win her.",
+    "de": "Fessle die Dame an ihren König und gewinne sie."
+   },
+   "solutions": [
+    [
+     "b1e1",
+     "e5e7",
+     "e1e7"
+    ],
+    [
+     "b1e1",
+     "e5e1",
+     "f2e1"
+    ],
+    [
+     "b1e1",
+     "e8f8",
+     "e1e5"
+    ],
+    [
+     "b1e1",
+     "e8f7",
+     "e1e5"
+    ],
+    [
+     "b1e1",
+     "e8e7",
+     "e1e5"
+    ],
+    [
+     "b1e1",
+     "e8d7",
+     "e1e5"
+    ],
+    [
+     "b1e1",
+     "e8d8",
+     "e1e5"
+    ],
+    [
+     "b1e1",
+     "e5e6",
+     "e1e6"
+    ],
+    [
+     "b1e1",
+     "e5e4",
+     "e1e4"
+    ],
+    [
+     "b1e1",
+     "e5e3",
+     "f2e3"
+    ],
+    [
+     "b1e1",
+     "e5e3",
+     "e1e3"
+    ],
+    [
+     "b1e1",
+     "e5e2",
+     "f2e2"
+    ],
+    [
+     "b1e1",
+     "e5e2",
+     "e1e2"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Put your rook on the same file as the queen and the king.",
+      "de": "Stelle deinen Turm auf dieselbe Linie wie Dame und König."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Re1 pins the queen. She cannot leave the e-file, and if she takes the rook, your king takes back.",
+    "de": "Te1 fesselt die Dame. Sie kann die e-Linie nicht verlassen, und schlägt sie den Turm, schlägt dein König zurück."
+   }
+  },
+  {
+   "id": "bishop-skewer",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "6r1/8/8/3k4/8/8/8/3B3K w - - 0 1",
+   "goal": {
+    "en": "Bishop skewer",
+    "de": "Läuferspiess"
+   },
+   "task": {
+    "en": "Give check with the bishop and win the rook behind the king.",
+    "de": "Gib mit dem Läufer Schach und gewinne den Turm hinter dem König."
+   },
+   "solutions": [
+    [
+     "d1b3",
+     "d5c6",
+     "b3g8"
+    ],
+    [
+     "d1b3",
+     "d5d6",
+     "b3g8"
+    ],
+    [
+     "d1b3",
+     "d5e5",
+     "b3g8"
+    ],
+    [
+     "d1b3",
+     "d5e4",
+     "b3g8"
+    ],
+    [
+     "d1b3",
+     "d5d4",
+     "b3g8"
+    ],
+    [
+     "d1b3",
+     "d5c5",
+     "b3g8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The king and the rook could stand on the same diagonal.",
+      "de": "König und Turm stehen auf einer gemeinsamen Diagonale."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bb3+ forces the king off the diagonal, then the bishop takes the rook on g8.",
+    "de": "Lb3+ zwingt den König von der Diagonale, dann schlägt der Läufer den Turm auf g8."
+   }
+  },
+  {
+   "id": "rank-skewer",
+   "category": "tactics",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "8/8/8/8/4k2q/8/8/R5K1 w - - 0 1",
+   "goal": {
+    "en": "Skewer on the rank",
+    "de": "Spiess auf der Reihe"
+   },
+   "task": {
+    "en": "Check the king so that the queen behind it is lost.",
+    "de": "Gib dem König Schach, sodass die Dame dahinter verloren geht."
+   },
+   "solutions": [
+    [
+     "a1a4",
+     "e4d5",
+     "a4h4"
+    ],
+    [
+     "a1a4",
+     "e4e5",
+     "a4h4"
+    ],
+    [
+     "a1a4",
+     "e4f5",
+     "a4h4"
+    ],
+    [
+     "a1a4",
+     "e4f3",
+     "a4h4"
+    ],
+    [
+     "a1a4",
+     "e4e3",
+     "a4h4"
+    ],
+    [
+     "a1a4",
+     "e4d3",
+     "a4h4"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "King and queen stand on the 4th row.",
+      "de": "König und Dame stehen auf der 4. Reihe."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Ra4+ drives the king off the 4th row. Then the rook captures the queen on h4.",
+    "de": "Ta4+ vertreibt den König von der 4. Reihe. Dann schlägt der Turm die Dame auf h4."
+   }
+  },
+  {
+   "id": "discovered-check",
+   "category": "tactics",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "4k3/5ppp/3q4/8/4N3/8/5PPP/4R1K1 w - - 0 1",
+   "goal": {
+    "en": "The discovered attack",
+    "de": "Der Abzugsangriff"
+   },
+   "task": {
+    "en": "Move the knight away with check and win the queen.",
+    "de": "Ziehe den Springer mit Schach weg und gewinne die Dame."
+   },
+   "solutions": [
+    [
+     "e4d6"
+    ]
+   ],
+   "explanation": {
+    "en": "Nxd6+ captures the queen and opens the e-file for the rook at the same time: check! Black cannot take back.",
+    "de": "Sxd6+ schlägt die Dame und öffnet gleichzeitig die e-Linie für den Turm: Schach! Schwarz kann nicht zurückschlagen."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "When the knight moves, the rook on e1 gives check.",
+      "de": "Wenn der Springer zieht, gibt der Turm auf e1 Schach."
+     }
+    }
+   ]
+  },
+  {
+   "id": "discovered-bishop",
+   "category": "tactics",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "7k/3q3p/8/4N3/8/8/1B6/6K1 w - - 0 1",
+   "goal": {
+    "en": "Discovered check",
+    "de": "Abzugsschach"
+   },
+   "task": {
+    "en": "Move the knight, give check with the bishop, and win the queen.",
+    "de": "Ziehe den Springer, gib mit dem Läufer Schach und gewinne die Dame."
+   },
+   "solutions": [
+    [
+     "e5d7",
+     "h8g8",
+     "d7b8"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "d7f6"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "d7e5"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "d7c5"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "d7b6"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2a3"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2c3"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2d4"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2e5"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2f6"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2c1"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "b2a1"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "g1f2"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "g1g2"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "g1h2"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "g1h1"
+    ],
+    [
+     "e5d7",
+     "h8g8",
+     "g1f1"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Behind the knight, the bishop aims at h8.",
+      "de": "Hinter dem Springer zielt der Läufer auf h8."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Nxd7+ captures the queen and uncovers the bishop's check on h8.",
+    "de": "Sxd7+ schlägt die Dame und gibt den Weg frei für das Läuferschach auf h8."
+   }
+  },
+  {
+   "id": "discovered-rook-sacrifice",
+   "category": "tactics",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "3q2k1/5ppp/8/8/8/3B4/8/3R2K1 w - - 0 1",
+   "goal": {
+    "en": "Discovered attack",
+    "de": "Abzugsangriff"
+   },
+   "task": {
+    "en": "Sacrifice the bishop with check and win the queen.",
+    "de": "Opfere den Läufer mit Schach und gewinne die Dame."
+   },
+   "solutions": [
+    [
+     "d3h7",
+     "g8h8",
+     "d1d8"
+    ],
+    [
+     "d3h7",
+     "g8h7",
+     "d1d8"
+    ],
+    [
+     "d3h7",
+     "g8f8",
+     "d1d8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "When the bishop leaves d3, the rook attacks the queen on d8.",
+      "de": "Wenn der Läufer d3 verlässt, greift der Turm die Dame auf d8 an."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bxh7+ gives check. Whatever Black does, the rook on d1 then captures the queen.",
+    "de": "Lxh7+ gibt Schach. Was Schwarz auch macht, danach schlägt der Turm auf d1 die Dame."
+   }
+  },
+  {
+   "id": "ladder-mate",
+   "category": "challenge",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "4k3/8/8/8/8/8/1R6/R5K1 w - - 0 1",
+   "goal": {
+    "en": "Ladder mate in two",
+    "de": "Treppenmatt in zwei Zügen"
+   },
+   "task": {
+    "en": "Checkmate in two moves with the two rooks.",
+    "de": "Setze mit den beiden Türmen in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "b2b7",
+     "e8d8",
+     "a1a8"
+    ],
+    [
+     "b2b7",
+     "e8f8",
+     "a1a8"
+    ],
+    [
+     "a1a7",
+     "e8d8",
+     "b2b8"
+    ],
+    [
+     "a1a7",
+     "e8f8",
+     "b2b8"
+    ]
+   ],
+   "explanation": {
+    "en": "The rooks work like a ladder: one guards the 7th row, the other gives checkmate on the 8th.",
+    "de": "Die Türme arbeiten wie eine Treppe: Einer bewacht die 7. Reihe, der andere setzt auf der 8. Reihe matt."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "One rook closes the 7th row, the other gives mate on the 8th.",
+      "de": "Ein Turm sperrt die 7. Reihe, der andere setzt auf der 8. Reihe matt."
+     }
+    }
+   ]
+  },
+  {
+   "id": "rook-king-mate-in-two",
+   "category": "challenge",
+   "level": 1,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/8/5K2/8/8/8/8/R7 w - - 0 1",
+   "goal": {
+    "en": "King and rook together",
+    "de": "König und Turm zusammen"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "f6f7",
+     "h8h7",
+     "a1h1"
+    ],
+    [
+     "f6g6",
+     "h8g8",
+     "a1a8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "First bring your king closer, then the rook gives mate.",
+      "de": "Bringe zuerst deinen König näher, dann setzt der Turm matt."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Kf7 or Kg6! Whatever Black plays, the next move is checkmate.",
+    "de": "Kf7 oder Kg6! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "royal-fork",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "fen": "3q3k/6pp/8/4N3/8/8/6PP/6K1 w - - 0 1",
+   "goal": {
+    "en": "A knight check wins the queen",
+    "de": "Ein Springerschach gewinnt die Dame"
+   },
+   "task": {
+    "en": "Win the black queen in two moves.",
+    "de": "Gewinne die schwarze Dame in zwei Zügen."
+   },
+   "solutions": [
+    [
+     "e5f7",
+     "*",
+     "f7d8"
+    ]
+   ],
+   "explanation": {
+    "en": "Nf7+ is a fork: after the king moves, the knight captures the queen on d8.",
+    "de": "Sf7+ ist eine Gabel: Nachdem der König gezogen hat, schlägt der Springer die Dame auf d8."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "A knight check can attack the king and the queen at the same time.",
+      "de": "Ein Springerschach kann König und Dame gleichzeitig angreifen."
+     }
+    }
+   ]
+  },
+  {
+   "id": "back-rank-deflection",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "r5k1/5ppp/8/8/8/8/3Q1PPP/3R2K1 w - - 0 1",
+   "goal": {
+    "en": "Lure the defender away",
+    "de": "Den Verteidiger weglocken"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "d2d8",
+     "a8d8",
+     "d1d8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The black rook guards the back rank. Can you force it to leave?",
+      "de": "Der schwarze Turm bewacht die Grundreihe. Kannst du ihn zwingen, sie zu verlassen?"
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qd8+! After Rxd8 the rook on d1 gives mate on the back rank. Whatever Black plays, the next move is checkmate.",
+    "de": "Dd8+! Nach Txd8 setzt der Turm auf d1 auf der Grundreihe matt. Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "promotion-mate",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "8/4P2k/5K2/8/8/8/8/8 w - - 0 1",
+   "goal": {
+    "en": "Promotion with mate",
+    "de": "Umwandlung mit Matt"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "e7e8r",
+     "h7h6",
+     "e8h8"
+    ],
+    [
+     "e7e8q",
+     "h7h6",
+     "e8h8"
+    ],
+    [
+     "e7e8q",
+     "h7h6",
+     "e8g6"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "A new queen (or rook) can be very strong.",
+      "de": "Eine neue Dame (oder ein Turm) kann sehr stark sein."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "e8=R or e8=Q! Whatever Black plays, the next move is checkmate.",
+    "de": "e8=T oder e8=D! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-1",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "2k5/ppp5/3Q4/5K1B/8/8/7P/8 w - - 0 1",
+   "goal": {
+    "en": "Queen and bishop attack",
+    "de": "Angriff mit Dame und Läufer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "d6e6",
+     "c8d8",
+     "e6e8"
+    ],
+    [
+     "d6e6",
+     "c8b8",
+     "e6e8"
+    ],
+    [
+     "d6e6",
+     "c8b8",
+     "e6g8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Start with a check that leaves the king almost no squares.",
+      "de": "Beginne mit einem Schach, das dem König fast keine Felder lässt."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qe6+! Whatever Black plays, the next move is checkmate.",
+    "de": "De6+! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-2",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "2k5/ppp2B2/8/3Q4/8/5K2/5PPP/8 w - - 0 1",
+   "goal": {
+    "en": "Queen and bishop attack",
+    "de": "Angriff mit Dame und Läufer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "f7e6",
+     "c8b8",
+     "d5d8"
+    ],
+    [
+     "d5e6",
+     "c8d8",
+     "e6e8"
+    ],
+    [
+     "d5e6",
+     "c8b8",
+     "e6e8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Start with a check that leaves the king almost no squares.",
+      "de": "Beginne mit einem Schach, das dem König fast keine Felder lässt."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Be6+ or Qe6+! Whatever Black plays, the next move is checkmate.",
+    "de": "Le6+ oder De6+! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-3",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "2k5/ppp5/8/2Q5/8/8/2B1KP1P/8 w - - 0 1",
+   "goal": {
+    "en": "Queen and bishop attack",
+    "de": "Angriff mit Dame und Läufer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "c2f5",
+     "c8d8",
+     "c5f8"
+    ],
+    [
+     "c2f5",
+     "c8b8",
+     "c5f8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Start with a check that leaves the king almost no squares.",
+      "de": "Beginne mit einem Schach, das dem König fast keine Felder lässt."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bf5+! Whatever Black plays, the next move is checkmate.",
+    "de": "Lf5+! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-9",
+   "category": "challenge",
+   "level": 2,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "4Rnk1/5ppp/1Q6/3N4/8/8/5P2/1K6 w - - 0 1",
+   "goal": {
+    "en": "Break through",
+    "de": "Durchbruch"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "e8f8",
+     "g8f8",
+     "b6b8"
+    ],
+    [
+     "e8f8",
+     "g8f8",
+     "b6d8"
+    ],
+    [
+     "d5e7",
+     "g8h8",
+     "e8f8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "Start with a check that leaves the king almost no squares.",
+      "de": "Beginne mit einem Schach, das dem König fast keine Felder lässt."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rxf8+ or Ne7+! Whatever Black plays, the next move is checkmate.",
+    "de": "Txf8+ oder Se7+! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "smothered-mate",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "5r1k/6pp/7N/3Q4/8/8/5PPP/6K1 w - - 0 1",
+   "goal": {
+    "en": "Smothered mate",
+    "de": "Ersticktes Matt"
+   },
+   "task": {
+    "en": "Checkmate in two moves. Sacrifice the queen!",
+    "de": "Setze in zwei Zügen matt. Opfere die Dame!"
+   },
+   "solutions": [
+    [
+     "d5g8",
+     "f8g8",
+     "h6f7"
+    ]
+   ],
+   "explanation": {
+    "en": "After Qg8+ Rxg8 the king is surrounded by its own pieces. Nf7 is checkmate: the smothered mate.",
+    "de": "Nach Dg8+ Txg8 ist der König von seinen eigenen Figuren eingeschlossen. Sf7 ist matt: das erstickte Matt."
+   },
+   "hints": [
+    {
+     "text": {
+      "en": "Give check with the queen on g8. Black has to capture.",
+      "de": "Gib mit der Dame auf g8 Schach. Schwarz muss schlagen."
+     }
+    }
+   ]
+  },
+  {
+   "id": "mate-in-two-4",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "4N2k/6pp/8/8/8/8/8/KQ6 w - - 0 1",
+   "goal": {
+    "en": "Queen and knight attack",
+    "de": "Angriff mit Dame und Springer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "b1b2",
+     "h8g8",
+     "b2g7"
+    ],
+    [
+     "b1b2",
+     "h7h6",
+     "b2g7"
+    ],
+    [
+     "b1b2",
+     "h7h5",
+     "b2g7"
+    ],
+    [
+     "b1b7",
+     "h8g8",
+     "b7g7"
+    ],
+    [
+     "b1b7",
+     "g7g6",
+     "b7g7"
+    ],
+    [
+     "b1b7",
+     "g7g5",
+     "b7g7"
+    ],
+    [
+     "b1b7",
+     "h7h6",
+     "b7g7"
+    ],
+    [
+     "b1b7",
+     "h7h5",
+     "b7g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qb2 or Qb7! Whatever Black plays, the next move is checkmate.",
+    "de": "Db2 oder Db7! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-5",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "5N1k/Q5pp/8/8/8/8/3K4/8 w - - 0 1",
+   "goal": {
+    "en": "Queen and knight attack",
+    "de": "Angriff mit Dame und Springer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "f8e6",
+     "h8g8",
+     "a7g7"
+    ],
+    [
+     "f8e6",
+     "g7g6",
+     "a7a8"
+    ],
+    [
+     "f8e6",
+     "g7g6",
+     "a7b8"
+    ],
+    [
+     "f8e6",
+     "g7g6",
+     "a7g7"
+    ],
+    [
+     "f8e6",
+     "g7g5",
+     "a7a8"
+    ],
+    [
+     "f8e6",
+     "g7g5",
+     "a7b8"
+    ],
+    [
+     "f8e6",
+     "g7g5",
+     "a7g7"
+    ],
+    [
+     "f8e6",
+     "h7h6",
+     "a7g7"
+    ],
+    [
+     "f8e6",
+     "h7h5",
+     "a7g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Ne6! Whatever Black plays, the next move is checkmate.",
+    "de": "Se6! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-6",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "5r1k/4K1pp/1R6/8/4B3/8/8/6Q1 w - - 0 1",
+   "goal": {
+    "en": "Attack in the corner",
+    "de": "Angriff in der Ecke"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "e7f8",
+     "g7g6",
+     "g1d4"
+    ],
+    [
+     "e7f8",
+     "g7g6",
+     "g1a1"
+    ],
+    [
+     "e7f8",
+     "g7g5",
+     "g1d4"
+    ],
+    [
+     "e7f8",
+     "g7g5",
+     "g1a1"
+    ],
+    [
+     "e7f8",
+     "h7h6",
+     "g1g7"
+    ],
+    [
+     "e7f8",
+     "h7h5",
+     "g1g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Kxf8! Whatever Black plays, the next move is checkmate.",
+    "de": "Kxf8! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-7",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "5r1k/6pp/8/3B4/2R5/8/K1Q2PPP/8 w - - 0 1",
+   "goal": {
+    "en": "Attack in the corner",
+    "de": "Angriff in der Ecke"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "c4c8",
+     "f8g8",
+     "c8g8"
+    ],
+    [
+     "c4c8",
+     "f8e8",
+     "c8e8"
+    ],
+    [
+     "c4c8",
+     "f8d8",
+     "c8d8"
+    ],
+    [
+     "c4c8",
+     "f8c8",
+     "c2c8"
+    ],
+    [
+     "c4c8",
+     "g7g6",
+     "c2c3"
+    ],
+    [
+     "c4c8",
+     "g7g6",
+     "c2b2"
+    ],
+    [
+     "c4c8",
+     "g7g5",
+     "c2c3"
+    ],
+    [
+     "c4c8",
+     "g7g5",
+     "c2b2"
+    ],
+    [
+     "c4c8",
+     "h7h6",
+     "c8f8"
+    ],
+    [
+     "c4c8",
+     "h7h5",
+     "c8f8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Rc8! Whatever Black plays, the next move is checkmate.",
+    "de": "Tc8! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-8",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "k7/4Q3/3K4/8/8/8/5P2/8 w - - 0 1",
+   "goal": {
+    "en": "Queen endgame",
+    "de": "Damenendspiel"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "d6c7",
+     "a8a7",
+     "e7a3"
+    ],
+    [
+     "d6c6",
+     "a8b8",
+     "e7b7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Kc7 or Kc6! Whatever Black plays, the next move is checkmate.",
+    "de": "Kc7 oder Kc6! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-10",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "5r1k/1Q4pp/3B4/8/R2K4/8/7P/8 w - - 0 1",
+   "goal": {
+    "en": "Attack in the corner",
+    "de": "Angriff in der Ecke"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "d6f8",
+     "h8g8",
+     "b7g7"
+    ],
+    [
+     "d6f8",
+     "g7g6",
+     "b7g7"
+    ],
+    [
+     "d6f8",
+     "g7g5",
+     "b7g7"
+    ],
+    [
+     "d6f8",
+     "h7h6",
+     "b7g7"
+    ],
+    [
+     "d6f8",
+     "h7h5",
+     "b7g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Bxf8! Whatever Black plays, the next move is checkmate.",
+    "de": "Lxf8! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-11",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "7k/6pp/4N3/8/2K5/8/5PPP/7Q w - - 0 1",
+   "goal": {
+    "en": "Queen and knight attack",
+    "de": "Angriff mit Dame und Springer"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "h1a1",
+     "h8g8",
+     "a1g7"
+    ],
+    [
+     "h1a1",
+     "h7h6",
+     "a1g7"
+    ],
+    [
+     "h1a1",
+     "h7h5",
+     "a1g7"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Qa1! Whatever Black plays, the next move is checkmate.",
+    "de": "Da1! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  },
+  {
+   "id": "mate-in-two-12",
+   "category": "challenge",
+   "level": 3,
+   "type": "moves",
+   "rules": "legal",
+   "mate": true,
+   "anyMate": true,
+   "fen": "3k4/8/8/2K5/8/8/Q4PPP/8 w - - 0 1",
+   "goal": {
+    "en": "Queen endgame",
+    "de": "Damenendspiel"
+   },
+   "task": {
+    "en": "Checkmate in two moves.",
+    "de": "Setze in zwei Zügen matt."
+   },
+   "solutions": [
+    [
+     "c5d6",
+     "d8e8",
+     "a2g8"
+    ],
+    [
+     "c5d6",
+     "d8c8",
+     "a2a8"
+    ]
+   ],
+   "hints": [
+    {
+     "text": {
+      "en": "The first move is quiet: it gives no check, but takes away the escape squares.",
+      "de": "Der erste Zug ist ruhig: Er gibt kein Schach, nimmt aber die Fluchtfelder weg."
+     }
+    },
+    {
+     "text": {
+      "en": "This piece makes the first move.",
+      "de": "Diese Figur macht den ersten Zug."
+     }
+    }
+   ],
+   "explanation": {
+    "en": "Kd6! Whatever Black plays, the next move is checkmate.",
+    "de": "Kd6! Was Schwarz auch spielt, der nächste Zug ist matt."
+   }
+  }
+ ]
+}
