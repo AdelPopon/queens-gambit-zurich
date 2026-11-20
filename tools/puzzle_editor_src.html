@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>QGZ Puzzle Editor</title>
+<!-- SOURCE of tools/puzzle-editor.html. tools/build.py copies the board,
+     pieces, chess rules and puzzle logic into it, so the editor is ONE file
+     that also works offline (double-click it). Edit this file, not the output. -->
+<style>
+/*INLINE:css/puzzles.css*/
+:root { --g-ink:#202334; --g-indigo:#3949AB; --g-blue:#0070B4; --muted:#5d6072; --header-h:0px; --g-radius:16px; --g-radius-sm:10px; --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --fs-label:.75rem; --fs-small:.85rem; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.45 var(--font-body); color: var(--g-ink); background: linear-gradient(160deg,#EAF3FF,#F6F8FD 40%,#E4E9FF); min-height: 100vh; }
+h1 { font-size: 1.25rem; margin: 0; }
+h2 { font-size: 1rem; margin: 0 0 .5rem; text-transform: uppercase; letter-spacing: .08em; color: var(--g-indigo); }
+button, select, input, textarea { font: inherit; }
+.bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1rem; background: #fff; border-bottom: 1px solid #dde3f3; position: sticky; top: 0; z-index: 10; }
+.bar h1 { margin-right: auto; }
+.b { border: 1px solid #c7cfe6; background: #fff; border-radius: 8px; padding: .45rem .8rem; cursor: pointer; }
+.b:hover { border-color: var(--g-indigo); }
+.b.primary { background: var(--g-indigo); border-color: var(--g-indigo); color: #fff; }
+.b.on { background: #E4E9FF; border-color: var(--g-indigo); }
+.b.small { padding: .25rem .55rem; font-size: .85rem; }
+.b.danger { color: #B23A34; }
+.wrap { display: grid; gap: 1rem; padding: 1rem; grid-template-columns: 260px minmax(320px, 520px) minmax(360px, 1fr); align-items: start; }
+@media (max-width: 1150px) { .wrap { grid-template-columns: 1fr; } }
+.card { background: rgba(255,255,255,.85); border: 1px solid #e3e8f6; border-radius: 14px; padding: 1rem; }
+.list { max-height: calc(100vh - 160px); overflow: auto; }
+.list .cat { margin: .75rem 0 .25rem; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.list [data-list] button { display: flex; width: 100%; text-align: left; gap: .4rem; border: 0; background: none; padding: .35rem .45rem; border-radius: 6px; cursor: pointer; }
+.list [data-list] button:hover { background: #EEF2FC; }
+.list [data-list] button.cur { background: #E4E9FF; font-weight: 600; }
+.list .err { color: #B23A34; }
+.palette { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .3rem; margin: .75rem 0; }
+.palette button { aspect-ratio: 1; min-width: 0; border: 1px solid #c7cfe6; background: #fff; border-radius: 8px; padding: 2px; cursor: pointer; }
+.palette button.on { border: 2px solid var(--g-indigo); background: #E4E9FF; }
+.palette img { width: 100%; height: 100%; }
+.row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .5rem 0; }
+.mode { padding: .5rem .75rem; border-radius: 8px; background: #FFF6DA; border: 1px solid #F0D27A; font-size: .9rem; margin-top: .5rem; }
+label { font-weight: 600; font-size: .85rem; display: block; margin: .6rem 0 .2rem; }
+input[type=text], select, textarea { width: 100%; padding: .45rem .55rem; border: 1px solid #c7cfe6; border-radius: 8px; background: #fff; }
+textarea { min-height: 3.2em; resize: vertical; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.two label { margin-top: .2rem; font-weight: 500; color: var(--muted); }
+.sect { border-top: 1px solid #e3e8f6; margin-top: 1rem; padding-top: .75rem; }
+.errors { margin: .5rem 0 0; padding: .6rem .8rem; border-radius: 8px; font-size: .88rem; }
+.errors.bad { background: #FCEBEA; color: #8E2A25; }
+.errors.good { background: #E7F5EE; color: #1F6B47; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .85rem; }
+.hint { color: var(--muted); font-size: .82rem; margin: .2rem 0; }
+.test { margin-top: .75rem; padding: .75rem; border-radius: 10px; background: #EEF2FC; }
+.test p { margin: .2rem 0; }
+.opt { display: grid; grid-template-columns: 1.2rem 5rem 1fr 1fr 2rem; gap: .35rem; align-items: center; margin: .3rem 0; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>QGZ Puzzle Editor</h1>
+  <button class="b" data-act="load-site" title="Load the collection that is live on queensgambitzurich.ch">Load from website</button>
+  <label class="b" style="margin:0;font-weight:400">Open file…<input type="file" accept=".json,application/json" data-act="open" hidden></label>
+  <button class="b primary" data-act="download">Download puzzles.json</button>
+  <span class="hint" data-status></span>
+</div>
+
+<div class="wrap">
+  <!-- Collection -->
+  <div class="card list">
+    <div class="row"><button class="b primary small" data-act="new">+ New puzzle</button><button class="b small" data-act="dup">Duplicate</button></div>
+    <div class="row"><button class="b small" data-act="up">↑</button><button class="b small" data-act="down">↓</button><button class="b small danger" data-act="del">Delete</button></div>
+    <div data-list></div>
+  </div>
+
+  <!-- Board -->
+  <div class="card">
+    <h2>Position</h2>
+    <div data-board></div>
+    <div class="mode" data-mode></div>
+    <div class="palette" data-palette></div>
+    <div class="row">
+      <button class="b small" data-act="clear">Empty board</button>
+      <button class="b small" data-act="startpos">Start position</button>
+      <button class="b small" data-act="flip">Flip board</button>
+      <span>To move:</span>
+      <button class="b small" data-turn="w">White</button><button class="b small" data-turn="b">Black</button>
+    </div>
+    <label for="f-fen">FEN</label>
+    <div class="row" style="flex-wrap:nowrap"><input type="text" id="f-fen" class="mono" data-f="fen"><button class="b small" data-act="fen">Apply</button></div>
+    <p class="hint">Click a piece in the palette, then click squares to place it (the cross removes pieces). Or paste a FEN.</p>
+  </div>
+
+  <!-- Form -->
+  <div class="card">
+    <h2>Exercise</h2>
+    <div class="two">
+      <div><label for="f-id">ID (unique, e.g. knight-fork-2)</label><input type="text" id="f-id" class="mono" data-f="id"></div>
+      <div><label for="f-cat">Category</label><select id="f-cat" data-f="category"></select></div>
+    </div>
+    <div class="two">
+      <div><label for="f-level">Difficulty</label><select id="f-level" data-f="level"><option value="1">★ Easy</option><option value="2">★★ Medium</option><option value="3">★★★ Hard</option></select></div>
+      <div><label for="f-rules">Rules</label><select id="f-rules" data-f="rules"><option value="legal">Normal chess (both kings)</option><option value="free">Piece movement only (no kings needed)</option></select></div>
+    </div>
+    <label>Exercise type</label>
+    <div class="row">
+      <button class="b" data-type="moves">Play moves</button>
+      <button class="b" data-type="squares">Tap squares</button>
+      <button class="b" data-type="choice">Answer a question</button>
+    </div>
+    <label>Learning goal (short title)</label>
+    <div class="two"><input type="text" data-f="goal.en" placeholder="English"><input type="text" data-f="goal.de" placeholder="Deutsch"></div>
+    <label>Instruction for the child</label>
+    <div class="two"><textarea data-f="task.en" placeholder="English"></textarea><textarea data-f="task.de" placeholder="Deutsch"></textarea></div>
+
+    <div class="sect" data-for="moves">
+      <h2>Solution</h2>
+      <p class="hint">One line per row, moves as UCI (e2e4, e7e8q), player and opponent alternating. Use * for "any opponent reply". Several rows = several correct solutions.</p>
+      <textarea class="mono" data-f="solutions" rows="4"></textarea>
+      <div class="row">
+        <button class="b small" data-act="record">● Record a line on the board</button>
+        <button class="b small" data-act="record-star" hidden>Opponent: any reply (*)</button>
+        <button class="b small primary" data-act="record-done" hidden>Add line</button>
+      </div>
+      <div class="row">
+        <label style="margin:0;font-weight:500"><input type="checkbox" data-f="mate"> Must end in checkmate</label>
+        <label style="margin:0;font-weight:500"><input type="checkbox" data-f="anyMate"> Accept any checkmate on the last move</label>
+      </div>
+    </div>
+
+    <div class="sect" data-for="squares">
+      <h2>Answer squares</h2>
+      <div class="row">
+        <select data-f="answer.mode" style="width:auto"><option value="all">Find ALL squares</option><option value="one">Find the ONE square</option></select>
+        <button class="b small" data-act="pick-answer">Pick squares on the board</button>
+        <button class="b small" data-act="from-piece">Fill from a piece's moves…</button>
+      </div>
+      <input type="text" class="mono" data-f="answer.squares" placeholder="e.g. b3 b5 c2">
+      <p class="hint" data-from-note></p>
+    </div>
+
+    <div class="sect" data-for="choice">
+      <h2>Answer options</h2>
+      <div class="row"><button class="b small" data-act="yesno">Yes / No</button><button class="b small" data-act="addopt">+ Option</button>
+        <select data-f="check" style="width:auto" title="Let the editor check the answer automatically"><option value="">No automatic check</option><option value="inCheck">Check: "Is the king in check?"</option><option value="isMate">Check: "Is this checkmate?"</option></select></div>
+      <div data-opts></div>
+    </div>
+
+    <div class="sect">
+      <h2>Hints (optional)</h2>
+      <div data-hints></div>
+      <button class="b small" data-act="addhint">+ Hint</button>
+    </div>
+
+    <div class="sect">
+      <h2>Explanation after solving</h2>
+      <div class="two"><textarea data-f="explanation.en" placeholder="English"></textarea><textarea data-f="explanation.de" placeholder="Deutsch"></textarea></div>
+    </div>
+
+    <div class="sect">
+      <div class="row"><button class="b primary" data-act="test">▶ Test this exercise</button><button class="b" data-act="test-de">Test in German</button></div>
+      <div class="errors" data-errors></div>
+      <div class="test" data-test hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/*INLINE:js/vendor/chess.js*/
+</script>
+<script>
+/*INLINE:js/puzzles/pieces.js*/
+</script>
+<script>
+/*INLINE:js/puzzles/engine.js*/
+</script>
+<script>
+/*INLINE:js/puzzles/board.js*/
+</script>
+<script>
+(function () {
+  "use strict";
+  var E = window.QGZPuzzle, Chess = window.Chess;
+  var SITE_JSON = "https://queensgambitzurich.ch/data/puzzles.json";
+  var STORE = "qgz-puzzle-editor-v1";
+  var START = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+
+  var col = null, cur = 0, tool = "wP", mode = "setup", recording = null, testState = null, testLang = "en";
+
+  /* ---------- Storage (this browser only) ---------- */
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(col)); } catch (e) {} }
+  function restore() { try { return JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { return null; } }
+  function status(t) { $("[data-status]").textContent = t; }
+
+  /* ---------- Board ---------- */
+  var board = new QGZBoard($("[data-board]"), {
+    lang: "en", label: "Editor board",
+    onSquare: onSquare,
+    onDrop: function (a, b) { if (mode === "record") recordMove(a, b); else if (mode === "test") testMove(a, b); else if (mode === "setup") { var pc = pieces()[a]; var m = pieces(); delete m[a]; m[b] = pc; setPieces(m); } },
+    canDrag: function (sq) { return mode === "setup" || mode === "record" || (mode === "test" && testState && E.targets(testState, sq).length > 0); }
+  });
+  var orient = "w";
+
+  function P() { return col.puzzles[cur]; }
+  function pieces() { return QGZBoard.parseFen(P().fen); }
+  function toFen(map, turn) {
+    var rows = [];
+    for (var r = 8; r >= 1; r--) {
+      var row = "", empty = 0;
+      "abcdefgh".split("").forEach(function (f) {
+        var pc = map[f + r];
+        if (!pc) { empty++; return; }
+        if (empty) { row += empty; empty = 0; }
+        row += pc[0] === "w" ? pc[1] : pc[1].toLowerCase();
+      });
+      rows.push(row + (empty || ""));
+    }
+    var c = "";
+    if (map.e1 === "wK" && map.h1 === "wR") c += "K";
+    if (map.e1 === "wK" && map.a1 === "wR") c += "Q";
+    if (map.e8 === "bK" && map.h8 === "bR") c += "k";
+    if (map.e8 === "bK" && map.a8 === "bR") c += "q";
+    return rows.join("/") + " " + turn + " " + (c || "-") + " - 0 1";
+  }
+  function setPieces(map) {
+    var p = P();
+    p.fen = toFen(map, p.fen.split(" ")[1] || "w");
+    autoRules();
+    changed(true);
+  }
+  function autoRules() {
+    var p = P();
+    if (!E.hasKings(p.fen)) p.rules = "free";
+  }
+
+  /* ---------- Modes ---------- */
+  var MODES = {
+    setup: "Set up the position.",
+    record: "Recording: play the solution on the board (both sides). Then click “Add line”.",
+    answer: "Click the answer squares (click again to remove). Then click “Done”.",
+    from: "Click the piece whose moves are the answer.",
+    hint: "Click the squares this hint should highlight. Then click “Done”.",
+    test: "Testing: solve the exercise as a child would."
+  };
+  var hintIndex = 0;
+  function setMode(m) {
+    mode = m;
+    $("[data-mode]").innerHTML = MODES[m] + (m === "answer" || m === "hint" || m === "test" ? ' <button class="b small" data-act="done">Done</button>' : "");
+    $("[data-palette]").style.display = m === "setup" ? "" : "none";
+    $("[data-test]").hidden = m !== "test";
+    $$('[data-act="record-star"],[data-act="record-done"]').forEach(function (b) { b.hidden = m !== "record"; });
+    paint();
+  }
+
+  function paint() {
+    var p = P();
+    board.clearMarks();
+    if (mode === "record") { board.setFen(recording.chess.fen()); return; }
+    if (mode === "test") return;
+    board.setFen(p.fen);
+    if (mode === "answer" || (mode === "setup" && p.type === "squares")) {
+      ((p.answer && p.answer.squares) || []).forEach(function (q) { board.mark(q, "is-found"); });
+    }
+    if (mode === "hint") ((p.hints[hintIndex] || {}).squares || []).forEach(function (q) { board.mark(q, "is-hint"); });
+  }
+
+  function onSquare(sq) {
+    var p = P();
+    if (mode === "setup") {
+      var m = pieces();
+      if (tool === "x" || m[sq] === tool) delete m[sq]; else m[sq] = tool;
+      setPieces(m);
+    } else if (mode === "answer") {
+      p.answer = p.answer || { mode: "all", squares: [] };
+      var a = p.answer.squares, i = a.indexOf(sq);
+      if (i > -1) a.splice(i, 1); else a.push(sq);
+      delete p.answer.from;
+      changed(true);
+    } else if (mode === "from") {
+      var c = E.load(p.fen, E.rulesOf(p));
+      var piece = c.get(sq);
+      if (!piece) return;
+      // moves of that piece, whoever is to move
+      if (piece.color !== c.turn()) { var f = p.fen.split(" "); f[1] = piece.color; f[3] = "-"; c = E.load(f.join(" "), E.rulesOf(p)); }
+      var t = c.moves({ square: sq, verbose: true }).map(function (x) { return x.to; });
+      t = t.filter(function (x, i) { return t.indexOf(x) === i; }).sort();
+      p.answer = { mode: "all", from: sq, squares: t };
+      if (p.fen.split(" ")[1] !== piece.color) { var f2 = p.fen.split(" "); f2[1] = piece.color; p.fen = f2.join(" "); }
+      setMode("setup");
+      changed(true);
+    } else if (mode === "hint") {
+      var h = p.hints[hintIndex], j = (h.squares = h.squares || []).indexOf(sq);
+      if (j > -1) h.squares.splice(j, 1); else h.squares.push(sq);
+      changed(true);
+    } else if (mode === "record") {
+      if (recording.sel && recording.sel !== sq) { recordMove(recording.sel, sq); return; }
+      recording.sel = sq; board.clearMarks("is-sel"); board.mark(sq, "is-sel");
+    } else if (mode === "test") testSquare(sq);
+  }
+
+  /* ---------- Recording a solution line ---------- */
+  function startRecording() {
+    var p = P();
+    recording = { chess: E.load(p.fen, E.rulesOf(p)), moves: [], sel: null, side: p.fen.split(" ")[1] };
+    setMode("record");
+  }
+  function recordMove(a, b) {
+    var r = recording; r.sel = null;
+    var legal = r.chess.moves({ square: a, verbose: true }).filter(function (m) { return m.to === b; })[0];
+    if (!legal) { board.flash(b, "is-bad"); board.clearMarks("is-sel"); return; }
+    var promo = legal.promotion ? (prompt("Promote to (q, r, b, n)?", "q") || "q").toLowerCase()[0] : "";
+    var m = r.chess.move({ from: a, to: b, promotion: promo || "q" });
+    r.moves.push(m.from + m.to + (m.promotion && legal.promotion ? m.promotion : ""));
+    var p = P();
+    if (E.rulesOf(p) === "free") { var f = r.chess.fen().split(" "); f[1] = r.side; f[3] = "-"; r.chess.load(f.join(" "), { skipValidation: true }); }
+    board.setFen(r.chess.fen()); board.clearMarks(); board.mark(a, "is-last"); board.mark(b, "is-last");
+    status("Line so far: " + r.moves.join(" "));
+  }
+  function recordStar() {
+    var r = recording;
+    if (r.moves.length % 2 !== 1) { alert("Use * right after one of the player's moves."); return; }
+    var replies = r.chess.moves({ verbose: true });
+    if (!replies.length) return;
+    r.chess.move(replies[0]);
+    r.moves.push("*");
+    board.setFen(r.chess.fen());
+    status("Line so far: " + r.moves.join(" ") + " (the board shows one possible reply)");
+  }
+  function finishRecording() {
+    var p = P();
+    if (recording.moves.length) { p.solutions = (p.solutions || []).concat([recording.moves]); }
+    recording = null;
+    setMode("setup");
+    changed(true);
+  }
+
+  /* ---------- Test ---------- */
+  var TT = {
+    en: { ok: "Correct!", solved: "Solved!", wrong: "Not quite. Try again.", illegal: "That piece cannot move there.", left: " more to find.", reply: "Opponent answered: " },
+    de: { ok: "Richtig!", solved: "Gelöst!", wrong: "Nicht ganz. Versuche es nochmals.", illegal: "Diese Figur kann nicht dorthin ziehen.", left: " Felder fehlen noch.", reply: "Antwort: " }
+  };
+  function startTest(lang) {
+    var p = P(), errs = E.validate(p, col);
+    if (errs.length) { showErrors(errs); return; }
+    testLang = lang; testState = E.start(p);
+    setMode("test");
+    board.setFen(p.fen);
+    var box = $("[data-test]");
+    box.innerHTML = "<p><strong>" + esc(p.goal ? p.goal[lang] : "") + "</strong></p><p>" + esc(p.task[lang]) + "</p><p data-tfb></p><div class=row data-topts></div><div class=row><button class='b small' data-act=thint>Hint</button><button class='b small' data-act=treset>Start again</button></div>";
+    if (p.type === "choice") (p.options || []).forEach(function (o) {
+      var b = document.createElement("button"); b.className = "b"; b.textContent = o.label[lang];
+      b.onclick = function () { var r = E.tryChoice(testState, o.id); tfb(r.correct ? TT[lang].ok + " " + TT[lang].solved + " " + expl() : TT[lang].wrong); };
+      $("[data-topts]").appendChild(b);
+    });
+  }
+  function expl() { var p = P(); return p.explanation ? "— " + (p.explanation[testLang] || "") : ""; }
+  function tfb(t) { var e = $("[data-tfb]"); if (e) e.textContent = t; }
+  function testMove(a, b) {
+    var r = E.tryMove(testState, a, b);
+    if (!r.ok) { board.flash(b, "is-bad"); tfb(r.reason === "illegal" ? TT[testLang].illegal : TT[testLang].wrong); return; }
+    board.setFen(E.fen(testState)); board.clearMarks();
+    board.mark(r.played.to, "is-ok");
+    if (r.reply) { board.mark(r.reply.from, "is-last"); board.mark(r.reply.to, "is-last"); }
+    tfb(r.done ? TT[testLang].solved + " " + expl() : TT[testLang].ok + (r.reply ? " " + TT[testLang].reply + r.reply.san : ""));
+  }
+  function testSquare(sq) {
+    var p = P();
+    if (p.type === "squares") {
+      var r = E.trySquare(testState, sq);
+      if (!r.correct) { board.flash(sq, "is-bad"); tfb(TT[testLang].wrong); return; }
+      board.mark(sq, "is-found");
+      tfb(r.done ? TT[testLang].solved + " " + expl() : r.left + TT[testLang].left);
+    } else if (p.type === "moves") {
+      if (testState.sel && E.targets(testState, testState.sel).indexOf(sq) > -1) { var f = testState.sel; testState.sel = null; testMove(f, sq); return; }
+      board.clearMarks("is-sel is-dot is-cap");
+      if (E.targets(testState, sq).length) { testState.sel = sq; board.mark(sq, "is-sel"); E.targets(testState, sq).forEach(function (t) { board.mark(t, board.pieces[t] ? "is-cap" : "is-dot"); }); }
+    }
+  }
+
+  /* ---------- Form <-> data ---------- */
+  function get(obj, path) { return path.split(".").reduce(function (o, k) { return o ? o[k] : undefined; }, obj); }
+  function set(obj, path, val) {
+    var ks = path.split("."), last = ks.pop();
+    ks.forEach(function (k) { obj = obj[k] = obj[k] || {}; });
+    if (val === "" || val === false || val == null) delete obj[last]; else obj[last] = val;
+  }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function fillForm() {
+    var p = P();
+    $$("[data-f]").forEach(function (el) {
+      var k = el.dataset.f, v = get(p, k);
+      if (k === "solutions") v = (p.solutions || []).map(function (l) { return l.join(" "); }).join("\n");
+      if (k === "answer.squares") v = ((p.answer && p.answer.squares) || []).join(" ");
+      if (k === "rules") v = E.rulesOf(p);
+      if (el.type === "checkbox") el.checked = !!v; else el.value = v == null ? "" : v;
+    });
+    $("#f-cat").innerHTML = col.categories.map(function (c) { return '<option value="' + c.id + '">' + esc(c.title.en) + "</option>"; }).join("");
+    $("#f-cat").value = p.category;
+    $$("[data-type]").forEach(function (b) { b.classList.toggle("on", b.dataset.type === p.type); });
+    $$("[data-for]").forEach(function (s) { s.hidden = s.dataset.for !== p.type; });
+    $$("[data-turn]").forEach(function (b) { b.classList.toggle("on", b.dataset.turn === p.fen.split(" ")[1]); });
+    $("[data-from-note]").textContent = p.answer && p.answer.from ? "Generated from the moves of the piece on " + p.answer.from + " (checked automatically). Changing squares by hand removes this link." : "";
+    renderOpts(); renderHints();
+  }
+
+  function readForm(el) {
+    var p = P(), k = el.dataset.f, v = el.type === "checkbox" ? el.checked : el.value;
+    if (k === "level") v = +v;
+    if (k === "solutions") { p.solutions = v.split("\n").map(function (l) { return l.trim().split(/[\s,]+/).filter(Boolean); }).filter(function (l) { return l.length; }); return changed(); }
+    if (k === "answer.squares") { p.answer = p.answer || { mode: "all" }; p.answer.squares = v.toLowerCase().split(/[\s,]+/).filter(Boolean); delete p.answer.from; return changed(); }
+    if (k === "fen") return;
+    if (k === "id") v = v.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    set(p, k, v);
+    changed();
+  }
+
+  function renderOpts() {
+    var p = P(), box = $("[data-opts]");
+    box.innerHTML = (p.options || []).map(function (o, i) {
+      return '<div class="opt"><input type="radio" name="correct" ' + (p.answer && p.answer.choice === o.id ? "checked" : "") + ' data-oc="' + i + '" title="Correct answer">' +
+        '<input type="text" class="mono" value="' + esc(o.id) + '" data-o="' + i + '.id">' +
+        '<input type="text" value="' + esc(o.label.en) + '" placeholder="English" data-o="' + i + '.label.en">' +
+        '<input type="text" value="' + esc(o.label.de) + '" placeholder="Deutsch" data-o="' + i + '.label.de">' +
+        '<button class="b small danger" data-odel="' + i + '" title="Remove">×</button></div>';
+    }).join("") + (p.options && p.options.length ? '<p class="hint">The round button marks the correct answer.</p>' : "");
+  }
+  function renderHints() {
+    var p = P(); p.hints = p.hints || [];
+    $("[data-hints]").innerHTML = p.hints.map(function (h, i) {
+      h.text = h.text || { en: "", de: "" };
+      return '<div class="two" style="margin-top:.5rem"><textarea data-h="' + i + '.en" placeholder="Hint ' + (i + 1) + ' (English)">' + esc(h.text.en) + '</textarea><textarea data-h="' + i + '.de" placeholder="Tipp ' + (i + 1) + ' (Deutsch)">' + esc(h.text.de) + "</textarea></div>" +
+        '<div class="row"><button class="b small" data-hsq="' + i + '">Highlight squares… ' + ((h.squares || []).join(" ") || "(automatic)") + '</button><button class="b small danger" data-hdel="' + i + '">Remove hint</button></div>';
+    }).join("") + '<p class="hint">Without highlight squares, the last hint marks the piece to move (or one answer square) automatically.</p>';
+  }
+
+  function renderList() {
+    var box = $("[data-list]"), html = "";
+    col.categories.forEach(function (c) {
+      var items = col.puzzles.map(function (p, i) { return [p, i]; }).filter(function (x) { return x[0].category === c.id; });
+      html += '<p class="cat">' + esc(c.title.en) + " (" + items.length + ")</p>";
+      items.forEach(function (x) {
+        var bad = E.validate(x[0], col).length;
+        html += '<button data-pick="' + x[1] + '" class="' + (x[1] === cur ? "cur" : "") + '"><span>' + "★★★".slice(0, x[0].level || 1) + "</span><span>" + esc(x[0].id) + "</span>" + (bad ? '<span class="err" title="Has problems">⚠</span>' : "") + "</button>";
+      });
+    });
+    var orphans = col.puzzles.filter(function (p) { return !col.categories.some(function (c) { return c.id === p.category; }); });
+    if (orphans.length) html += '<p class="cat err">Without category: ' + orphans.length + "</p>";
+    box.innerHTML = html;
+  }
+
+  function showErrors(errs) {
+    var e = $("[data-errors]");
+    e.className = "errors " + (errs.length ? "bad" : "good");
+    e.innerHTML = errs.length ? "<strong>To fix:</strong><br>" + errs.map(esc).join("<br>") : "✓ This exercise is valid.";
+  }
+
+  function changed(refill) {
+    var p = P();
+    if (refill) fillForm();
+    $("#f-fen").value = p.fen;
+    showErrors(E.validate(p, col));
+    renderList();
+    if (mode !== "record" && mode !== "test") paint();
+    save();
+  }
+
+  function select(i) { cur = Math.max(0, Math.min(i, col.puzzles.length - 1)); recording = null; setMode("setup"); fillForm(); changed(); }
+
+  function blank() {
+    var catId = P() ? P().category : col.categories[0].id;
+    var n = col.puzzles.filter(function (p) { return p.category === catId; }).length + 1, id = catId + "-" + n;
+    while (col.puzzles.some(function (p) { return p.id === id; })) id += "-new";
+    return { id: id, category: catId, level: 1, type: "moves", rules: "legal", fen: "4k3/8/8/8/8/8/8/4K3 w - - 0 1",
+      goal: { en: "", de: "" }, task: { en: "", de: "" }, solutions: [], hints: [], explanation: { en: "", de: "" } };
+  }
+
+  /* ---------- Collection I/O ---------- */
+  function useCollection(data, label) {
+    var errs = data && data.puzzles ? [] : ["This file is not a puzzle collection."];
+    if (errs.length) { alert(errs[0]); return; }
+    col = data;
+    if (!col.puzzles.length) col.puzzles.push(blank());
+    status(label + " · " + col.puzzles.length + " exercises");
+    select(0);
+  }
+  function download() {
+    var errs = E.validateCollection(col);
+    if (errs.length && !confirm("Some exercises still have problems:\n\n" + errs.slice(0, 8).join("\n") + (errs.length > 8 ? "\n…" : "") + "\n\nThe website would refuse them. Download anyway?")) return;
+    var out = JSON.parse(JSON.stringify(col));
+    out.puzzles.forEach(clean);
+    var blob = new Blob([JSON.stringify(out, null, 1) + "\n"], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "puzzles.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    status("Downloaded puzzles.json (" + out.puzzles.length + " exercises)");
+  }
+  // Remove fields that do not belong to the exercise type, and empty texts
+  function clean(p) {
+    if (p.type !== "moves") { delete p.solutions; delete p.mate; delete p.anyMate; }
+    if (p.type !== "squares" && p.type !== "choice") delete p.answer;
+    if (p.type === "squares") p.answer = { mode: p.answer.mode || "all", from: p.answer.from, squares: p.answer.squares };
+    if (p.type === "squares" && !p.answer.from) delete p.answer.from;
+    if (p.type === "choice") p.answer = { choice: p.answer && p.answer.choice };
+    if (p.type !== "choice") { delete p.options; delete p.check; }
+    p.hints = (p.hints || []).filter(function (h) { return (h.text && (h.text.en || h.text.de)) || (h.squares && h.squares.length); });
+    p.hints.forEach(function (h) { if (h.text && !h.text.en && !h.text.de) delete h.text; if (h.squares && !h.squares.length) delete h.squares; });
+    if (!p.hints.length) delete p.hints;
+    ["goal", "explanation"].forEach(function (k) { if (p[k] && !p[k].en && !p[k].de) delete p[k]; });
+  }
+
+  /* ---------- Events ---------- */
+  document.addEventListener("input", function (e) {
+    if (e.target.dataset.f && e.target.dataset.f !== "fen") readForm(e.target);
+    var o = e.target.dataset.o, h = e.target.dataset.h;
+    if (o) { var i = +o.split(".")[0]; set(P().options[i], o.split(".").slice(1).join("."), e.target.value); changed(); }
+    if (h) { var j = +h.split(".")[0]; P().hints[j].text[h.split(".")[1]] = e.target.value; changed(); }
+  });
+  document.addEventListener("change", function (e) {
+    if (e.target.dataset.f && (e.target.tagName === "SELECT" || e.target.type === "checkbox")) readForm(e.target);
+    if (e.target.dataset.oc) { var p = P(); p.answer = { choice: p.options[+e.target.dataset.oc].id }; changed(); }
+    if (e.target.dataset.act === "open" && e.target.files[0]) {
+      var rd = new FileReader();
+      rd.onload = function () { try { useCollection(JSON.parse(rd.result), e.target.files[0].name); } catch (x) { alert("Not a valid JSON file: " + x.message); } };
+      rd.readAsText(e.target.files[0]);
+    }
+  });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("button, [data-pick]");
+    if (!t) return;
+    var p = P(), act = t.dataset.act;
+    if (t.dataset.pick) return select(+t.dataset.pick);
+    if (t.dataset.tool) { tool = t.dataset.tool; $$("[data-tool]").forEach(function (b) { b.classList.toggle("on", b === t); }); setMode("setup"); return; }
+    if (t.dataset.turn) { var f = p.fen.split(" "); f[1] = t.dataset.turn; p.fen = f.join(" "); return changed(true); }
+    if (t.dataset.type) {
+      p.type = t.dataset.type;
+      if (p.type === "squares" && !(p.answer && p.answer.squares)) p.answer = { mode: "all", squares: [] };
+      if (p.type === "choice" && !p.options) { p.options = [{ id: "yes", label: { en: "Yes", de: "Ja" } }, { id: "no", label: { en: "No", de: "Nein" } }]; p.answer = { choice: "yes" }; }
+      if (p.type === "moves" && !p.solutions) p.solutions = [];
+      return changed(true);
+    }
+    if (t.dataset.odel) { p.options.splice(+t.dataset.odel, 1); return changed(true); }
+    if (t.dataset.hdel) { p.hints.splice(+t.dataset.hdel, 1); return changed(true); }
+    if (t.dataset.hsq) { hintIndex = +t.dataset.hsq; return setMode("hint"); }
+    switch (act) {
+      case "load-site":
+        fetch(location.protocol === "file:" ? SITE_JSON : new URL("../data/puzzles.json", location.href), { cache: "no-cache" })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+          .then(function (d) { if (!confirm("Replace the collection in the editor with the one from the website?")) return; useCollection(d, "Loaded from website"); })
+          .catch(function (x) { alert("Could not load from the website (" + x.message + "). Use “Open file…” instead."); });
+        break;
+      case "download": download(); break;
+      case "new": col.puzzles.splice(cur + 1, 0, blank()); select(cur + 1); break;
+      case "dup": var d = JSON.parse(JSON.stringify(p)); d.id = p.id + "-copy"; col.puzzles.splice(cur + 1, 0, d); select(cur + 1); break;
+      case "del": if (confirm("Delete “" + p.id + "”?")) { col.puzzles.splice(cur, 1); if (!col.puzzles.length) col.puzzles.push(blank()); select(cur); } break;
+      case "up": if (cur > 0) { col.puzzles.splice(cur - 1, 0, col.puzzles.splice(cur, 1)[0]); select(cur - 1); } break;
+      case "down": if (cur < col.puzzles.length - 1) { col.puzzles.splice(cur + 1, 0, col.puzzles.splice(cur, 1)[0]); select(cur + 1); } break;
+      case "clear": p.fen = "8/8/8/8/8/8/8/8 " + p.fen.split(" ")[1] + " - - 0 1"; autoRules(); changed(true); break;
+      case "startpos": p.fen = START; p.rules = "legal"; changed(true); break;
+      case "flip": orient = orient === "w" ? "b" : "w"; board.setOrientation(orient); paint(); break;
+      case "fen":
+        var v = $("#f-fen").value.trim();
+        try { QGZBoard.parseFen(v); if (v.split(" ").length < 2) v += " w - - 0 1"; p.fen = v; autoRules(); changed(true); }
+        catch (x) { alert("This FEN cannot be read."); }
+        break;
+      case "record": startRecording(); break;
+      case "record-star": recordStar(); break;
+      case "record-done": finishRecording(); break;
+      case "pick-answer": setMode("answer"); break;
+      case "from-piece": setMode("from"); break;
+      case "done": setMode("setup"); changed(true); break;
+      case "yesno": p.options = [{ id: "yes", label: { en: "Yes", de: "Ja" } }, { id: "no", label: { en: "No", de: "Nein" } }]; p.answer = { choice: "yes" }; changed(true); break;
+      case "addopt": p.options = (p.options || []).concat([{ id: "opt" + ((p.options || []).length + 1), label: { en: "", de: "" } }]); changed(true); break;
+      case "addhint": p.hints = (p.hints || []).concat([{ text: { en: "", de: "" } }]); changed(true); break;
+      case "test": startTest("en"); break;
+      case "test-de": startTest("de"); break;
+      case "thint": var hh = E.hint(testState); board.clearMarks("is-hint"); hh.squares.forEach(function (q) { board.mark(q, "is-hint"); }); tfb(hh.text ? hh.text[testLang] : "…"); break;
+      case "treset": startTest(testLang); break;
+    }
+  });
+
+  /* ---------- Start ---------- */
+  var pal = $("[data-palette]");
+  ["wK", "wQ", "wR", "wB", "wN", "wP", "x", "bK", "bQ", "bR", "bB", "bN", "bP"].forEach(function (k) {
+    var b = document.createElement("button"); b.type = "button"; b.dataset.tool = k; b.title = k === "x" ? "Remove piece" : k;
+    b.innerHTML = k === "x" ? "✕" : '<img alt="' + k + '" src="' + QGZ_PIECES[k] + '">';
+    if (k === tool) b.classList.add("on");
+    pal.appendChild(b);
+  });
+  var saved = restore();
+  if (saved && saved.puzzles) useCollection(saved, "Restored your last session");
+  else {
+    // Embedded copy of the collection at build time
+    useCollection(/*INLINE_JSON:data/puzzles.json*/null, "Collection from the website build");
+  }
+})();
+</script>
+</body>
+</html>

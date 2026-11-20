@@ -244,7 +244,13 @@
     "No Elo rating": "Keine Elo-Zahl",
     "No chess club": "Kein Schachclub",
     "Please enter your Elo rating (100 to 3500), or tick “No Elo rating”.": "Bitte gib deine Elo-Zahl (100 bis 3500) ein oder kreuze «Keine Elo-Zahl» an.",
-    "Please enter your chess club, or tick “No chess club”.": "Bitte gib deinen Schachclub ein oder kreuze «Kein Schachclub» an."
+    "Please enter your chess club, or tick “No chess club”.": "Bitte gib deinen Schachclub ein oder kreuze «Kein Schachclub» an.",
+    "Puzzles": "Aufgaben",
+    "Chess puzzles": "Schachaufgaben",
+    "Kids Chess · Puzzles": "Kids Chess · Aufgaben",
+    "Original exercises by Queen's Gambit Zürich, from how the pieces move to your first combinations. For children and adults, free and without an account.": "Eigene Übungen von Queen's Gambit Zürich: von den Zügen der Figuren bis zu den ersten Kombinationen. Für Kinder und Erwachsene, kostenlos und ohne Konto.",
+    "The puzzles need JavaScript.": "Die Aufgaben brauchen JavaScript.",
+    "Chess pieces: Colin M.L. Burnett (BSD licence). Move rules: chess.js (BSD licence).": "Schachfiguren: Colin M.L. Burnett (BSD-Lizenz). Zugregeln: chess.js (BSD-Lizenz)."
   },
   "kids_strings": {
     "Registration for three chess mornings for children aged 5–13. Choose one, two or all three sessions.": "Anmeldung für drei Schachvormittage für Kinder von 5 bis 13 Jahren. Wählen Sie einen, zwei oder alle drei Termine.",
